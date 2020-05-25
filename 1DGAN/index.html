@@ -1,0 +1,114 @@
+<!--
+Copyright 2018 Google LLC. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==============================================================================
+-->
+
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../shared/tfjs-examples.css" />
+
+  <style>
+    .negativeWeight {
+      color: #cc0000;
+    }
+
+    .positiveWeight {
+      color: #00aa00;
+    }
+
+    #buttons {
+      margin-top: 20px;
+      padding: 5px;
+    }
+
+    #oneHidden {
+      border-left: 1px solid #ededed;
+      border-right: 1px solid #ededed;
+    }
+
+    #linear,
+    #oneHidden,
+    #twoHidden {
+      padding: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class='tfjs-example-container centered-container'>
+    <section class='title-area'>
+      <h1>Multivariate Regression</h1>
+      <p class='subtitle'>Compare different models for housing price prediction.</p>
+    </section>
+
+    <section>
+      <p class='section-head'>Description</p>
+      <p>
+        This example shows you how to perform regression with more than one input feature using the
+        <a href="https://www.cs.toronto.edu/~delve/data/boston/bostonDetail.html">Boston Housing Dataset</a>,
+        which is a famous dataset derived from information collected by the U.S. Census Service concerning housing
+        in the area of Boston Massachusetts.
+      </p>
+      <p>
+        It allows you to compare the performance of 3 different models for predicting the house prices. When training
+        the linear model, it will also display the largest 5 weights (by absolute value) of the model and
+        the feature associated with each of those weights.
+      </p>
+    </section>
+
+    <section>
+      <p class='section-head'>Status</p>
+      <p id="status">Loading data...</p>
+      <p id="baselineStatus">Baseline not computed...</p>
+    </section>
+
+    <section>
+      <p class='section-head'>Training Progress</p>
+      <div class="with-cols">
+        <div id="linear">
+          <div class="chart"></div>
+          <div class="status"></div>
+          <div id="modelInspectionOutput">
+            <p id="inspectionHeadline"></p>
+            <table id="myTable"></table>
+          </div>
+        </div>
+        <div id="oneHidden">
+          <div class="chart"></div>
+          <div class="status"></div>
+        </div>
+        <div id="twoHidden">
+          <div class="chart"></div>
+          <div class="status"></div>
+        </div>
+      </div>
+
+      <div id="buttons">
+        <div class="with-cols">
+          <button id="simple-mlr">Train Linear Regressor</button>
+          <button id="nn-mlr-1hidden">Train Neural Network Regressor (1 hidden layer)</button>
+          <button id="nn-mlr-2hidden">Train Neural Network Regressor (2 hidden layers)</button>
+        </div>
+      </div>
+
+    </section>
+  </div>
+  <script src="index.js"></script>
+</body>
+
+</html>
