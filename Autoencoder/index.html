@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MNIST in TensorFlow.js Layers API</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  <style>
+    #train {
+      margin-top: 10px;
+    }
+
+    label {
+      display: inline-block;
+      width: 250px;
+      padding: 6px 0 6px 0;
+    }
+
+    .canvases {
+      display: inline-block;
+    }
+
+    .prediction-canvas {
+      width: 100px;
+    }
+
+    .pred {
+      font-size: 20px;
+      line-height: 25px;
+      width: 100px;
+    }
+
+    .pred-correct {
+      background-color: #00cf00;
+    }
+
+    .pred-incorrect {
+      background-color: red;
+    }
+
+    .pred-container {
+      display: inline-block;
+      width: 100px;
+      margin: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="tfjs-example-container">
+    <section class='title-area'>
+      <h1>TensorFlow.js: Digit Recognizer with Layers</h1>
+      <p class='subtitle'>Train a model to autoencode handwritten digits from the MNIST database using the tf.layers
+        api.
+      </p>
+    </section>
+
+    <section>
+      <p class='section-head'>Description</p>
+      <p>
+        This examples lets you train a MNIST Autoencoder using a Fully Connected Neural Network (also known as a DenseNet).<br><br>
+        You can select the structure for the DenseNet and see the performance of the model.
+      </p>
+      <p>The MNIST dataset is used as training data.</p>
+    </section>
+
+    <section>
+      <p class='section-head'>Training Parameters</p>
+
+
+      <div>
+        <label># Batch size:</label>
+        <input id="batchsize" value="320">
+      </div>
+
+      <div>
+        <label># of training epochs:</label>
+        <input id="train-epochs" value="3">
+      </div>
+
+      <div>
+        <label>N hidden layers in encoder and decoder</label>
+        <input id="n_layers" value="2">
+      </div>
+
+
+      <div>
+        <label>Output dimension of each layer</label>
+        <input id="n_units" value="128">
+      </div>
+
+      <div>
+        <label>Hidden code dimension</label>
+        <input id="hidden" value="2">
+      </div>
+
+
+      <button id="train">Train Model</button>
+      <button id="Create">Create model</button>
+    </section>
+
+    <section>
+      <p class='section-head'>Training Progress</p>
+      <p id="status"></p>
+      <p id="message"></p>
+
+      <div id="stats">
+        <div class="canvases">
+          <label id="loss-label"></label>
+          <div id="loss-canvas"></div>
+        </div>
+        <div class="canvases">
+          <label id="accuracy-label"></label>
+          <div id="accuracy-canvas"></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class='section-head'>Inference Examples</p>
+      <div id="images"></div>
+    </section>
+
+
+  </div>
+  <div id="new"></div>
+
+  <!-- TODO(cais): Decide. DO NOT SUBMIT. -->
+  <!-- <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+  <!-- Import tfjs-vis -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
+  <script src="index.js" type="module"></script>
+
+</body>
+
+</html>
