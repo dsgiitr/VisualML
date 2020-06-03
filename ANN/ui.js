@@ -202,9 +202,13 @@ export function wireUpEvaluateTableCallbacks(predictOnManualInputCallback) {
 export function loadTrainParametersFromUI() {
   return {
     epochs: Number(document.getElementById('train-epochs').value),
-    learningRate: Number(document.getElementById('learning-rate').value)
+    learningRate: Number(document.getElementById('learning-rate').value),
+    optimizer: document.getElementById('optimizer').value,
+    batch_size: Number(document.getElementById('batch-size').value),
+    
   };
 }
+
 
 export function status(statusText) {
   console.log(statusText);

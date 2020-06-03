@@ -23,33 +23,49 @@ import * as loader from './loader';
 import * as ui from './ui';
 
 let model;
+const params = ui.loadTrainParametersFromUI();
 
 /**
  * Train a `tf.Model` to recognize Iris flower type.
  *
- * @param xTrain Training feature data, a `tf.Tensor` of shape
- *   [numTrainExamples, 4]. The second dimension include the features
- *   petal length, petalwidth, sepal length and sepal width.
- * @param yTrain One-hot training labels, a `tf.Tensor` of shape
- *   [numTrainExamples, 3].
- * @param xTest Test feature data, a `tf.Tensor` of shape [numTestExamples, 4].
- * @param yTest One-hot test labels, a `tf.Tensor` of shape
- *   [numTestExamples, 3].
+ * @param trainDataset A tf.Dataset object yielding features and targets. The
+ *   features must be of shape [numTrainExamples, 4], while the targets must be
+ *   [numTrainExamples, 3]. The four feature dimensions include the
+ *   petal_length, petal_width, sepal_length and sepal_width.  The target is
+ *   one-hot encoded labels of the three iris categories.
+ * @param validataionDataset A tf.Dataset of the same format as the trainDataset
+ *   for use in validation.
  * @returns The trained `tf.Model` instance.
  */
-async function trainModel(xTrain, yTrain, xTest, yTest) {
+async function trainModel(trainDataset, validationDataset,arr) {
   ui.status('Training model... Please wait.');
 
-  const params = ui.loadTrainParametersFromUI();
+  
 
   // Define the topology of the model: two dense layers.
   const model = tf.sequential();
-  model.add(tf.layers.dense(
-      {units: 10, activation: 'sigmoid', inputShape: [xTrain.shape[1]]}));
+  model.add(tf.layers.dense({
+    units: arr[0],
+    activation: 'sigmoid',
+    inputShape: [data.IRIS_NUM_FEATURES]
+  }));
+  var i=0;
+  for(i=1;i<arr.length;i++){
+    model.add(tf.layers.dense({units: arr[i], activation: 'sigmoid'}));
+  }
   model.add(tf.layers.dense({units: 3, activation: 'softmax'}));
   model.summary();
+  
+  var optimizer = params.optimizer;
 
-  const optimizer = tf.train.adam(params.learningRate);
+  if (optimizer === "RMSprop") {
+    optimizer = tf.train.rmsprop(params.learningRate);
+  } else if (optimizer === "Adam") {
+    optimizer = tf.train.adam(params.learningRate);
+  } else {
+    optimizer = tf.train.sgd(params.learningRate);
+  }
+  
   model.compile({
     optimizer: optimizer,
     loss: 'categoricalCrossentropy',
@@ -61,23 +77,26 @@ async function trainModel(xTrain, yTrain, xTest, yTest) {
   const accContainer = document.getElementById('accuracyCanvas');
   const beginMs = performance.now();
   // Call `model.fit` to train the model.
-  const history = await model.fit(xTrain, yTrain, {
+  await model.fitDataset(trainDataset, {
     epochs: params.epochs,
-    validationData: [xTest, yTest],
+    validationData: validationDataset,
     callbacks: {
       onEpochEnd: async (epoch, logs) => {
         // Plot the loss and accuracy values at the end of every training epoch.
         const secPerEpoch =
             (performance.now() - beginMs) / (1000 * (epoch + 1));
-        ui.status(`Training model... Approximately ${
-            secPerEpoch.toFixed(4)} seconds per epoch`)
+        ui.status(
+            `Training model... Approximately ` +
+            `${secPerEpoch.toFixed(4)} seconds per epoch`);
         trainLogs.push(logs);
         tfvis.show.history(lossContainer, trainLogs, ['loss', 'val_loss'])
         tfvis.show.history(accContainer, trainLogs, ['acc', 'val_acc'])
+        const [{xs: xTest, ys: yTest}] = await validationDataset.toArray();
         calculateAndDrawConfusionMatrix(model, xTest, yTest);
       },
     }
   });
+
   const secPerEpoch = (performance.now() - beginMs) / (1000 * params.epochs);
   ui.status(
       `Model training complete:  ${secPerEpoch.toFixed(4)} seconds per epoch`);
@@ -126,8 +145,7 @@ async function calculateAndDrawConfusionMatrix(model, xTest, yTest) {
   const confMatrixData = await tfvis.metrics.confusionMatrix(labels, preds);
   const container = document.getElementById('confusion-matrix');
   tfvis.render.confusionMatrix(
-      container,
-      {values: confMatrixData, labels: data.IRIS_CLASSES},
+      container, {values: confMatrixData, labels: data.IRIS_CLASSES},
       {shadeDiagonal: true},
   );
 
@@ -138,73 +156,74 @@ async function calculateAndDrawConfusionMatrix(model, xTest, yTest) {
  * Run inference on some test Iris flower data.
  *
  * @param model The instance of `tf.Model` to run the inference with.
- * @param xTest Test data feature, a `tf.Tensor` of shape [numTestExamples, 4].
- * @param yTest Test true labels, one-hot encoded, a `tf.Tensor` of shape
- *   [numTestExamples, 3].
+ * @param testDataset A tf.Dataset object yielding features and targets. The
+ *   features must be of shape [numTrainExamples, 4], while the targets must be
+ *   [numTrainExamples, 3]. The four feature dimensions include the
+ *   petal_length, petal_width, sepal_length and sepal_width.  The target is
+ *   one-hot encoded labels of the three iris categories.
  */
-async function evaluateModelOnTestData(model, xTest, yTest) {
+async function evaluateModelOnTestData(model, testDataset) {
   ui.clearEvaluateTable();
-
-  tf.tidy(() => {
-    const xData = xTest.dataSync();
-    const yTrue = yTest.argMax(-1).dataSync();
-    const predictOut = model.predict(xTest);
-    const yPred = predictOut.argMax(-1);
-    ui.renderEvaluateTable(
-        xData, yTrue, yPred.dataSync(), predictOut.dataSync());
-    calculateAndDrawConfusionMatrix(model, xTest, yTest);
-  });
-
+  const [{xs: xTest, ys: yTest}] = await testDataset.toArray();
+  const xData = xTest.dataSync();
+  const yTrue = yTest.argMax(-1).dataSync();
+  const predictOut = model.predict(xTest);
+  const yPred = predictOut.argMax(-1);
+  ui.renderEvaluateTable(xData, yTrue, yPred.dataSync(), predictOut.dataSync());
+  calculateAndDrawConfusionMatrix(model, xTest, yTest);
   predictOnManualInput(model);
 }
 
 const HOSTED_MODEL_JSON_URL =
     'https://storage.googleapis.com/tfjs-models/tfjs/iris_v1/model.json';
 
+   
+    
+
+
 /**
  * The main function of the Iris demo.
  */
 async function iris() {
-  const [xTrain, yTrain, xTest, yTest] = data.getIrisData(0.15);
+  const testFraction = 0.15;
+  let [trainDataset, testDataset] = await data.getIrisData(testFraction);
+  // Batch datasets.
+  trainDataset = trainDataset.batch(params.batch_size);
+  testDataset = testDataset.batch(params.batch_size);
+  var x=0;
+  var arr=Array();
+  
+  document.getElementById('button1').addEventListener('click',async()=>{
+           
+            
+           
+            
+           
+            arr[x] = Number(document.getElementById('#ofneuron').value);
+            
+            document.getElementById('#ofneuron').value="0";
+            
+            
+           x++;
+           document.getElementById('pos').value=x+1;
+          
+          
+          
+  
+  });
 
-  const localLoadButton = document.getElementById('load-local');
-  const localSaveButton = document.getElementById('save-local');
-  const localRemoveButton = document.getElementById('remove-local');
 
   document.getElementById('train-from-scratch')
       .addEventListener('click', async () => {
-        model = await trainModel(xTrain, yTrain, xTest, yTest);
-        await evaluateModelOnTestData(model, xTest, yTest);
-        localSaveButton.disabled = false;
+        model = await trainModel(trainDataset, testDataset,arr);
+        await evaluateModelOnTestData(model, testDataset);
+        
       });
-
-  if (await loader.urlExists(HOSTED_MODEL_JSON_URL)) {
-    ui.status('Model available: ' + HOSTED_MODEL_JSON_URL);
-    const button = document.getElementById('load-pretrained-remote');
-    button.addEventListener('click', async () => {
-      ui.clearEvaluateTable();
-      model = await loader.loadHostedPretrainedModel(HOSTED_MODEL_JSON_URL);
-      await predictOnManualInput(model);
-      localSaveButton.disabled = false;
-    });
-  }
-
-  localLoadButton.addEventListener('click', async () => {
-    model = await loader.loadModelLocally();
-    await predictOnManualInput(model);
-  });
-
-  localSaveButton.addEventListener('click', async () => {
-    await loader.saveModelLocally(model);
-    await loader.updateLocalModelStatus();
-  });
-
-  localRemoveButton.addEventListener('click', async () => {
-    await loader.removeModelLocally();
-    await loader.updateLocalModelStatus();
-  });
-
-  await loader.updateLocalModelStatus();
+  document.getElementById('model-summary').addEventListener('click',async()=>{
+    const surface = { name: 'Model Summary', tab: 'Model Inspection'};
+    tfvis.show.modelSummary(surface, model);
+    
+  });    
 
   ui.status('Standing by.');
   ui.wireUpEvaluateTableCallbacks(() => predictOnManualInput(model));
