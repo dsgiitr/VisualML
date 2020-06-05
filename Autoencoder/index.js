@@ -47,7 +47,7 @@ function createConvModel(n_layers,n_units,hidden) {
 
   var o = this.decoder.apply(z)
   this.auto = tf.model({inputs: i, outputs: o})
-  this.auto.compile({optimizer: 'adam', loss: 'meanSquaredError', lr: 0.1})
+
 }
 let epochs;
 
@@ -64,10 +64,12 @@ async function train(model) {
   // Get number of training epochs from the UI.
   const element=document.getElementById('train-epochs')
   const trainEpochs = Number(element.value)
+  const lr = Number(document.getElementById('lr').value)
 
   const ele=document.getElementById('new')
   ele.innerHTML="Training..."
   epochs=Number(epochs)+Number(trainEpochs)
+
   // We'll keep a buffer of loss and accuracy values over time.
   let trainBatchCount = 0;
 
@@ -82,7 +84,9 @@ async function train(model) {
   // callbacks, so that we can plot the loss and accuracy values in the page
   // as the training progresses.
   const y=trainData.xs.reshape([-1,28,28])
-  let valAcc;
+
+  model.auto.compile({optimizer: 'adam', loss: 'meanSquaredError', lr: lr})
+
   await model.auto.fit(y, y, {
     batchSize,
     validationSplit,
@@ -114,13 +118,13 @@ async function showPredictions(model,epochs) {                              //Tr
 
 
 
-let data;
+var data,vis=Number(500);
 async function run(){
   data = new MnistData();
   await data.load();
 }
 
-let model;
+var model;
 async function load() {
   const n_units=document.getElementById('n_units').value
   const n_layers=document.getElementById('n_layers').value
@@ -129,16 +133,73 @@ async function load() {
   const elem=document.getElementById('new')
   elem.innerHTML="Model Created!!!"
   epochs=0;
+  vis=Number(document.getElementById('vis').value);
 }
 async function runtrain(){
   await train(model);
+  vis=Number(document.getElementById('vis').value);
 }
 
 
 // This is our main function. It loads the MNIST data, trains the model, and
 // then shows what the model predicted on unseen test data.
+
+load()                                                       //load model
+
+
+
+
+
+
+var container=document.getElementById('cn')               //plot2d area
+const canvas=document.getElementById('celeba-scene')
+
+
+      // sample from the latent space at obj.x, obj.y
+function sample(obj) {                                    //plotting
+  obj.x = (obj.x - 0.5) * vis;
+  obj.y = (obj.y - 0.5) * vis;
+  // convert 10, 50 into a vector
+  var y = tf.tensor2d([[obj.x, obj.y]]);
+  // sample from region 10, 50 in latent space
+
+  var prediction = model.decoder.predict(y).dataSync();
+
+  for(var i=0;i<prediction.length;i++){prediction[i]+=50;prediction[i]/=100;}
+  prediction=(tf.tensor(prediction)).toFloat();
+
+  const inputMax = prediction.max();
+const inputMin = prediction.min();
+prediction= prediction.sub(inputMin).div(inputMax.sub(inputMin));                         //scaling
+  prediction=prediction.reshape([28,28]);
+
+  prediction=prediction.mul(255).toInt();
+
+
+  // log the prediction to the browser console
+  tf.browser.toPixels(prediction, canvas);
+}
+
+
+
+function plot2d(){
+  load();
+  const decision=Number(document.getElementById("hidden").value)
+  if(decision===Number(2)){
+    canvas.style.display="block";
+  window.c2d = new Controls2D({ onDrag: sample, container: container });
+  sample({x:0,y:0});}
+  else {  var context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.style.display="none";                                                  //clearing canvas for higher dimensions
+    container.innerHTML="";}
+}
+
+plot2d();
+
+const el=document.getElementById('Create')                                                //listeners
+el.addEventListener('click', plot2d);
 const element=document.getElementById('train')
 element.addEventListener('click', runtrain);
-const elemen=document.getElementById('Create')
-elemen.addEventListener('click', load);
+
 document.addEventListener('DOMContentLoaded', run);
