@@ -97,6 +97,7 @@ limitations under the License.
     .wrong-prediction {
       background-color: red;
     }
+    .button2 {background-color: #008CBA;} /* Blue */
   </style>
 
   <body>
@@ -167,17 +168,13 @@ limitations under the License.
               <input id="pos" type="number" value="1"></input>
               <span class="input-label">Number of neurons:</span>
               <input id="#ofneuron" type="number" value="0"></input>
-              <input type="button" id="button1" value="Add" ></input>
+              <button  id="button1"  >Add</button>
             </div>
+            
             <button id="train-from-scratch">Train model </button>
-            <button id="model-summary">Model Summary</button>
+            
           </div>
         </div>
-
-       
-
-          
-        
       </section>
 
       <section>
@@ -204,7 +201,17 @@ limitations under the License.
           </div>
         </div>
       </section>
-
+      <section>
+        <p class='section-head'>Visualization of Neural Network</p>
+        <div>
+        <button id="model-summary">Model Summary</button>
+      </div>
+      <div>
+        <button id="structure">NN Structure</button>
+      </div>
+      <canvas id="myCanvas" width="0" height="0" style="border:1px solid #d3d3d3;">   
+      </canvas>
+      </section>
       <section>
         <p class='section-head'>Test Examples</p>
 
