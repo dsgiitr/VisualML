@@ -12,6 +12,7 @@
       margin-top: 10px;
     }
 
+
     label {
       display: inline-block;
       width: 250px;
@@ -70,11 +71,19 @@
       <p class='section-head'>Training Parameters</p>
 
 
+
+
+
       <div>
         <label># Batch size:</label>
         <input id="batchsize" value="320">
       </div>
 
+      <div>
+        <label># LearnRate:</label>
+        <input id="lr" value="0.1">
+      </div>
+      
       <div>
         <label># of training epochs:</label>
         <input id="train-epochs" value="3">
@@ -92,47 +101,53 @@
       </div>
 
       <div>
-        <label>Hidden code dimension</label>
+        <label>Hidden code dimension (Set it to 2 for graph visualization)</label>
         <input id="hidden" value="2">
       </div>
+      <div>
+        <label>Visualization scale</label>
+        <input id="vis" value="50">
+      </div>
+
 
 
       <button id="train">Train Model</button>
       <button id="Create">Create model</button>
     </section>
 
-    <section>
-      <p class='section-head'>Training Progress</p>
-      <p id="status"></p>
-      <p id="message"></p>
-
-      <div id="stats">
-        <div class="canvases">
-          <label id="loss-label"></label>
-          <div id="loss-canvas"></div>
-        </div>
-        <div class="canvases">
-          <label id="accuracy-label"></label>
-          <div id="accuracy-canvas"></div>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <p class='section-head'>Inference Examples</p>
-      <div id="images"></div>
-    </section>
 
 
-  </div>
+
+
   <div id="new"></div>
+  <div id="cn">
+
+</div>
+<canvas id="celeba-scene" style="height:400px; width:400px;"></canvas>
+
+</div>
 
   <!-- TODO(cais): Decide. DO NOT SUBMIT. -->
   <!-- <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
   <!-- Import tfjs-vis -->
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/tensorflow/1.2.7/tf.min.js'></script>
+  <script src="three.min.js"></script>
+  <script src='Control2d.js'></script>
+  <script src='https://duhaime.s3.amazonaws.com/blog/latent-spaces/ThreeWorld.js'></script>
+  <script src='https://threejs.org/examples/js/controls/TrackballControls.js'></script>
+
+
+
   <script src="index.js" type="module"></script>
+
+
+
+
+
+
+
 
 </body>
 
