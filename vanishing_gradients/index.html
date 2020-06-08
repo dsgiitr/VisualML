@@ -1,0 +1,680 @@
+<!--
+Copyright 2018 Google LLC. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==============================================================================
+-->
+
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <!--
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tfjs-examples.css" />
+</head>
+
+<body>
+  <style>
+    :root {
+      --light-color: #666;
+      --background-color: #aaa;
+      --foreground-color: #666;
+      --hover-color: #888;
+      --hot-color: #8ed081;
+    }
+
+    form {
+      display: flex;
+      max-width: 600px;
+      max-height: 450px;
+      margin: auto;
+      margin-left: 0px;
+      font-family: 'Roboto', sans-serif;
+    }
+    #activations {
+      flex: 1;
+      flex-basis: auto;
+      flex-grow: unset;
+      overflow-y: auto;
+      color: var(--hot-color);
+      background-color: var(--background-color);
+    }
+    #activations h3 {
+      font-size: 0.8em;
+      text-align: center;
+      background-color: var(--light-color);
+      color: #fff;
+      padding-top: 1em;
+      padding-bottom: 1em;
+      margin: 0;
+    }
+    #main {
+      flex: 10;
+    }
+    #weights, #controls {
+      display: none;
+    }
+    #activations ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    #activations ul li label:hover {
+      background-color: var(--hover-color);
+    }
+    #activations ul li input:checked ~ label {
+      background-color: #fff;
+      color: var(--foreground-color);
+    }
+    #activations ul li input:checked#a_sigmoid ~ label {
+      background-color: #8ed081;
+    }
+    #activations ul li input:checked#a_hardsigmoid ~ label {
+      background-color: #430ade;
+    }
+    #activations ul li input:checked#a_softplus ~ label {
+      background-color: #f33;
+    }
+    #activations ul li input:checked#a_softsign ~ label {
+      background-color: #8af;
+    }
+    #activations ul li input:checked#a_tanh ~ label {
+      background-color: #e2c044;
+    }
+    #activations ul li input:checked#a_softmax ~ label {
+      background-color: #f4c095;
+    }
+    #activations ul li input:checked#a_linear ~ label {
+      background-color: #d2d6ef;
+    }
+    #activations ul li input:checked#a_relu ~ label {
+      background-color: #f19a3e;
+    }
+    #activations ul li input:checked#a_relu6 ~ label {
+      background-color: #b9ffb7;
+    }
+    #activations ul li input:checked#a_selu ~ label {
+      background-color: #ba84f4;
+    }
+    #activations ul li input:checked#a_elu ~ label {
+      background-color: #e29;
+    }
+    #activations ul li {
+      margin: 0.4em;
+    }
+    #activations ul li span {
+      background-color: #fff;
+      padding: 0;
+      border-radius: 0.5em;
+      padding-left: 1em;
+      padding-right: 1em;
+      display: inline-block;
+      min-width: 6em;
+      opacity: 0.8;
+    }
+    #activations ul li input {
+      display: none;
+    }
+    #activations ul li label {
+      text-align: center;
+      font-family: monospace;
+      font-size: 1.4em;
+      display: block;
+      cursor: pointer;
+      padding: 0.2em;
+      border-radius: 0.5em;
+      background-color: var(--background-color);
+      color: var(--foreground-color);
+    }
+    #weights {
+      border-bottom: 1px solid #888;
+    }
+    #weights > div {
+      display: flex;
+      padding: 2px;
+      background-color: #f3f3f3;
+    }
+    #weights label {
+      width: 5em;
+      text-align: right;
+      padding: 0.2em;
+    }
+    
+    #weights input[type="range"] {
+      display: block;
+      width: 90%;
+      margin-left: 5%;
+      margin-right: 5%;
+    }
+    #controls {
+      border-top: 1px solid #888;
+      background-color: #f3f3f3;
+      padding: 0.4em;
+    }
+    #plot {
+      min-height: 200px;
+      height: 350px;
+      border-right: 1px solid #888;
+    }
+    #plot.select_function {
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 0;
+    }
+
+  </style>
+
+  <style>
+    
+    input {
+      width: 75px;
+    }
+
+    .input-div {
+      padding: 5px;
+      font-family: monospace;
+      font-size: 16px;
+    }
+
+    .input-label {
+      display: inline-block;
+      width: 160px;
+    }
+
+    td {
+      padding-left: 5px;
+      padding-right: 5px;
+      padding-bottom: 5px;
+    }
+
+    #predict-header {
+      font-weight: bold;
+    }
+
+    .output-div {
+      padding: 5px;
+      padding-top: 20px;
+      font-family: monospace;
+      font-weight: bold;
+    }
+
+    #evaluate-table {
+      display: inline-block;
+    }
+
+    #evaluate-table td, #evaluate-table th {
+      font-family: monospace;
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    #evaluate-table th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .region {
+      border-left: 1px dashed #ccc;
+      margin-bottom: 5px;
+      padding-left: 24px;
+      margin-left: -24px;
+    }
+
+    .load-save-section {
+      padding-top: 3px;
+      padding-bottom: 3px;
+    }
+
+    .logit-span {
+      padding-right: 1em;
+    }
+    .correct-prediction {
+      background-color: greenyellow
+    }
+    .wrong-prediction {
+      background-color: red;
+    }
+  </style>
+  <script>
+    let models;
+    function init () {
+      const activationFunctions = getSelectedActivationFunctions();
+
+      models = activationFunctions.map(activationFunctionName => {
+        // Create a model
+        model = tf.sequential();
+        model.add(tf.layers.dense({
+          units: 1,
+          useBias: true,
+          activation: activationFunctionName,
+          inputDim: 1,
+        }));
+        model.compile({
+          loss: 'meanSquaredError',
+          optimizer: tf.train.adam(),
+        });
+        // this is not a valid property on LayersModel, but needed a quick way to attach some metadata
+        model.activationFunction = activationFunctionName;
+        return model;
+      });
+
+      updateWeights();
+    }
+
+    function getSelectedActivationFunctions () {
+      const inputs = document.querySelectorAll(`#activations input:checked`);
+      return inputs ? [...inputs].map(input => input.value) : [];
+    }
+
+    document.onreadystatechange = init;
+
+    function setWeight () {
+      document.getElementById(`weight`).value = document.getElementById(`weight_value`).value;
+      updateWeights();
+    }
+
+    function setBias () {
+      document.getElementById(`bias`).value = document.getElementById(`bias_value`).value;
+      updateWeights();
+    }
+
+    function updateWeights () {
+      const newWeight = parseFloat(document.getElementById(`weight`).value);
+      const newBias = parseFloat(document.getElementById(`bias`).value);
+      tf.tidy(() => {
+        models.forEach(model => model.layers[0].setWeights([tf.tensor2d([[newWeight]]), tf.tensor1d([newBias])]));
+      });
+
+      replot();
+      displayWeights();
+    }
+
+    function replot () {
+      const min = parseFloat(document.getElementById(`min`).value);
+      const max = parseFloat(document.getElementById(`max`).value);
+
+      const xs = tf.linspace(min, max, 100);
+
+      const series = tf.tidy(() => models.map(model => {
+        const ys = model.predict(xs.reshape([100, 1]));
+
+        return {
+          x: xs.dataSync(),
+          y: ys.dataSync(),
+          type: 'scatter',
+          name: model.activationFunction,
+        };
+      }));
+
+      // Clear tensor from memory
+      xs.dispose();
+
+      const activationFunctions = getSelectedActivationFunctions();
+      const functionColors = {
+        sigmoid: '#8ed081',
+        hardSigmoid: '#430ade',
+        softplus: '#f33',
+        softsign: '#8af',
+        tanh: '#f4c095',
+        softmax: '#e2c044',
+        linear: '#d2d6ef',
+        relu: '#f19a3e',
+        relu6: '#b9ffb7',
+        selu: '#a846a0',
+        elu: '#d30c7b',
+      };
+      let options = {
+        colorway: activationFunctions.map(name => functionColors[name]),
+        margin: {
+          l: 40,
+          r: 20,
+          b: 20,
+          t: 10,
+          pad: 0,
+        },
+      };
+      const plotElement = document.getElementById("plot");
+      if (activationFunctions.length === 0) {
+        plotElement.innerHTML = "Please select one or more activation functions";
+        plotElement.classList.add(`select_function`);
+        document.getElementById(`weights`).style.display = "none";
+        document.getElementById(`controls`).style.display = "none";
+        return;
+      }
+      if (activationFunctions.length === 1) {
+        switch (activationFunctions[0]) {
+          case "sigmoid":
+          case "hardSigmoid":
+            options.yaxis = {range: [0, 1.05]};
+            break;
+          case "softsign":
+          case "tanh":
+            options.yaxis = {range: [-1.05, 1.05]};
+            break;
+          case "relu6":
+            options.yaxis = {range: [0, 6.1]};
+            break;
+        }
+      }
+
+      plotElement.classList.remove(`select_function`);
+      document.getElementById("plot").innerText = "";
+      Plotly.newPlot('plot', series, options, {displaylogo: false});
+    }
+
+    function displayWeights () {
+      if (models.length) {
+        document.getElementById(`weights`).style.display = "block";
+        document.getElementById(`controls`).style.display = "block";
+        const weights = models[0].layers[0].getWeights();
+        document.getElementById(`weight`).value = weights[0].dataSync()[0].toFixed(2);
+        document.getElementById(`weight_value`).value = weights[0].dataSync()[0].toFixed(2);
+        document.getElementById(`bias`).value = weights[1].dataSync()[0].toFixed(2);
+        document.getElementById(`bias_value`).value = weights[1].dataSync()[0].toFixed(2);
+      }
+    }
+  </script>
+  <body>
+    <div class='tfjs-example-container'>
+      <section class='title-area'>
+        <h1>Vanishing Gradients</h1>
+        <p class='subtitle'>Comparing the activation functions</p>
+      </section>
+
+      <section>
+        <p class='section-head'>Description</p>
+        <p>
+
+          This example explains the problem of vanishing gradients (which you may encounter when training a deep neural
+          network) and and also use of some activation function to prevent it. It describes the situation where a deep 
+          multilayer feed-forward network or a recurrent neural network is unable to propagate useful gradient information
+          from the output end of the model back to the layers near the input end of the model.
+        <p>
+          Many fixes and workarounds have been proposed and investigated, such as alternate weight initialization schemes,
+          unsupervised pre-training, layer-wise training, and variations on gradient descent. Perhaps the most common change 
+          is the use of the rectified linear activation function .
+        </p> 
+        </p><br>
+      </section>
+      <section>
+        <p class='section-head'>How the  choice of activation function avoids vanishing gradients?</p><br>
+        <p class='subtitle'>(RELU vs Sigmoid)</p>
+        <p>
+          Activation functions, like the sigmoid function, squishes a large input space into a small input space between 0 and 1. 
+          Therefore, a large change in the input of the sigmoid function will cause a small change in the output. Hence, the 
+          derivative becomes small.A small gradient means that the weights and biases of the initial layers will not be updated 
+          effectively with each training session. Since these initial layers are often crucial to recognizing the core elements of 
+          the input data, it can lead to overall inaccuracy of the whole network.
+        </p>
+        <p>
+          The simplest solution is to use other activation functions, such as ReLU, which doesn’t cause a small derivatives.
+          The really nice thing about this function is the the gradient is either 0 or 1, which means it never saturates, and so 
+          gradients can’t vanish — they are transferred perfectly across a network. 
+        </p><br>
+        <p class='subtitle'>You can visualize it by plotting these activation functions and many more by the options given below...</p>
+      </section>
+      <div>
+            <form id="activations">
+            <ul>
+          <li>
+            <input type="checkbox" id="a_sigmoid" name="activation" value="sigmoid" onchange="init()"/>
+            <label for="a_sigmoid"><span>sigmoid</span></label>
+          </li>
+          <li>
+            <input type="checkbox" id="a_hardsigmoid" name="activation" value="hardSigmoid" onchange="init()"/>
+            <label for="a_hardsigmoid"><span>hardSigmoid</span></label>
+          </li>
+          <li>
+            <input type="checkbox" id="a_softplus" name="activation" value="softplus" onchange="init()"/>
+            <label for="a_softplus"><span>softplus</span></label></li>
+          <li>
+            <input type="checkbox" id="a_softsign" name="activation" value="softsign" onchange="init()"/>
+            <label for="a_softsign"><span>softsign</span></label></li>
+          <li>
+            <input type="checkbox" id="a_tanh" name="activation" value="tanh" onchange="init()"/>
+            <label for="a_tanh"><span>tanh</span></label></li>
+          <li>
+            <input type="checkbox" id="a_softmax" name="activation" value="softmax" onchange="init()"/>
+            <label for="a_softmax"><span>softmax</span></label></li>
+          <li>
+            <input type="checkbox" id="a_linear" name="activation" value="linear" onchange="init()"/>
+            <label for="a_linear"><span>linear</span></label></li>
+          <li>
+            <input type="checkbox" id="a_relu" name="activation" value="relu" onchange="init()"/>
+            <label for="a_relu"><span>relu</span></label></li>
+          <li>
+            <input type="checkbox" id="a_relu6" name="activation" value="relu6" onchange="init()"/>
+            <label for="a_relu6"><span>relu6</span></label></li>
+          <li>
+            <input type="checkbox" id="a_selu" name="activation" value="selu" onchange="init()"/>
+            <label for="a_selu"><span>selu</span></label></li>
+          <li>
+            <input type="checkbox" id="a_elu" name="activation" value="elu" onchange="init()"/>
+            <label for="a_elu"><span>elu</span></label></li>
+        </ul>
+      </form>
+      <form>
+      <div id="main">
+        <div id="weights">
+          <div>
+            <label>Weight: </label>
+
+            <input type="range" min="-10" max="10" step="0.1" value="1" oninput="updateWeights()" onchange="updateWeights()" class="slider" id="weight"/>
+            <input id="weight_value" type="number" step="0.1" oninput="setWeight()" value="0"/>
+          </div>
+
+          <div>
+            <label>Bias: </label>
+            <input type="range" min="-10" max="10" step="0.1" value="1" oninput="updateWeights()" onchange="updateWeights()" class="slider" id="bias"/>
+            <input id="bias_value" type="number" step="0.1" oninput="setBias()" value="0"/>
+          </div>
+
+        </div>
+        <div id="plot"></div>
+        <div id="controls">
+          <label>Inputs from <input id="min" type="number" value="-5" onchange="replot()"/>
+            to <input id="max" type="number" value="5" onchange="replot()"/></label>
+        </div>
+      </div> 
+  </div>
+</form>
+      <section>
+        <p class='section-head'>About the dataset and model</p>
+      <p>
+          This example uses a neural network to classify tabular data representing different flowers. The data used for
+          each flower are the petal length and width as well as the sepal length and width. The goal is to visualize the 
+          problem of vanishing gradients and also to predict what kind of flower it is based on those features of each 
+          data point. The data comes from the famous <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set">Iris 
+          flower</a> data set.
+      </p>
+     </section>
+      <section>
+        <p class='section-head'>Instructions</p>
+        <p>
+        <p>
+          Using the options below you can set the activation function, learning rate, num_epochs, num_layers, 
+          num_neurons_per_Layer according to your choice.
+        </p>
+        <p>
+          You can visualize the neural network of your choice and visualize the gradients w.r.t each weight
+          by analyzing the intensity of path connecting the neurons.
+        </p>
+        <p>
+          Using the buttons below you can either train a new model from scratch or load a pre-trained model and
+          test its performance.
+        </p>
+        <p>
+          If you train a model from scratch you can also save it to browser local storage.
+        </p>
+        <p>
+          If you load a pre-trained model you can edit the properties in first row of "Test Examples" to generate
+          a prediction for those data points.
+        </p>
+      </section>
+
+      <section>
+        <p class='section-head'>Controls</p>
+
+        <div class="region">
+          <h3>Train Model</h3>
+          <div class="create-model">
+            <div class="input-div">
+              <label class="input-label">Activation Function:</label>
+              <select id="activations_f" name="activations">
+              <option value="sigmoid">Sigmoid</option>
+              <option value="relu">RELU</option>
+              <option value="tanh">Tanh</option>
+              <option value="linear">Linear</option>
+              </select>
+             </div>
+
+            <div class="input-div">
+              <label class="input-label">Num_Layers:</label>
+              <input id="num-layers" type="number" value="6"></input>
+            </div>
+
+            <div class="input-div">
+              <label class="input-label">Num_neurons:</label>
+              <input id="num-neurons" type="number" value="5"></input>
+            </div>  
+
+            <div class="input-div">
+              <label class="input-label">Train Epochs:</label>
+              <input id="train-epochs" type="number" value="10"></input>
+            </div>
+            <div class="input-div">
+              <span class="input-label">Learning Rate:</span>
+              <input id="learning-rate" type="number" value="0.01"></input>
+            </div>
+            <div>
+            <canvas id="myCanvas" height="0" width="0" ></canvas>
+            </div><br>
+            <div>
+            <button id="show-nn-architecture">Show NN architecture</button>
+            </div><br>
+            <button id="train-from-scratch">Train model from scratch</button>
+            <button id="model-summary">Model Summary</button>     
+          </div>
+        </div>
+
+        <div class="region">
+          <h3>Save/Load Model</h3>
+          <div class="load-save-section">
+            <button id="load-pretrained-remote">Load hosted pretrained model</button>
+          </div>
+
+          <div class="load-save-section">
+            <button id="load-local" disabled="true">Load locally-saved model</button>
+            <button id="save-local" disabled="true">Save model locally</button>
+            <button id="remove-local" disabled="true">Remove model locally</button>
+            <span id='local-model-status'>Status unavailable.</span>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class='section-head'>Status</p>
+        <div>
+          <span id="demo-status">Standing by.</span>
+        </div>
+      </section>
+
+      <section>
+        <p class='section-head'>Training Progress</p>
+        <div class='with-cols'>
+          <div>
+            <h4>Loss</h4>
+            <div class="canvases" id="lossCanvas"></div>
+          </div>
+          <div>
+            <h4>Accuracy</h4>
+            <div class="canvases" id="accuracyCanvas"></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class='section-head'>Test Examples</p>
+
+        <div id="evaluate">
+          <table id="evaluate-table">
+            <tr>
+              <th>Petal length</th>
+              <th>Petal width</th>
+              <th>Sepal length</th>
+              <th>Sepal width</th>
+              <th>True class</th>
+              <th>Predicted class</th>
+              <th>Class Probabilities</th>
+            </tr>
+            <tbody id="evaluate-tbody">
+              <tr>
+                <td>
+                  <input id="petal-length" value="5.1"></input>
+                  <button id="petal-length-inc">+</button>
+                  <button id="petal-length-dec">-</button>
+                </td>
+                <td>
+                  <input id="petal-width" value="3.5"></input>
+                  <button id="petal-width-inc">+</button>
+                  <button id="petal-width-dec">-</button>
+                </td>
+                <td>
+                  <input id="sepal-length" value="1.4"></input>
+                  <button id="sepal-length-inc">+</button>
+                  <button id="sepal-length-dec">-</button>
+                </td>
+                <td>
+                  <input id="sepal-width" value="0.2"></input>
+                  <button id="sepal-width-inc">+</button>
+                  <button id="sepal-width-dec">-</button>
+                </td>
+                <td></td>
+                <td id="winner"></td>
+                <td id="logits"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+
+
+      <div>
+        <div class="horizontal-section">
+
+
+
+          <div id="horizontal-section">
+
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+
+</html>
