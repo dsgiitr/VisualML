@@ -1,15 +1,26 @@
-# TensorFlow.js Example: Training MNIST
+# MNIST_CNN-tf.js
+This repository contains a **CNN** implemented in **TensorFlow.js**.
 
-This example shows you how to train MNIST (using the layers API).
+## Dependencies
+These dependencies are required to be installed.
 
-You can check out the tutorial that accompanies this example [here](https://www.tensorflow.org/js/tutorials/training/handwritten_digit_cnn).
+* Node.js version 8.9 or higher
+* [Yarn](https://classic.yarnpkg.com/en/docs/install/#debian-stable)
 
-This model will compute accuracy over 1000 random test set examples every 5
-steps, plotting loss and accuracy as the model is training. Training time can
-be reduced by computing accuracy over fewer examples less often.
+### How to build an example
+```cd``` into the directory
 
-Note: currently the entire dataset of MNIST images is stored in a PNG image we have
-sprited, and the code in `data.js` is responsible for converting it into
-`Tensor`s. This will become much simpler in the near future.
+If you are using ```yarn```:
+```
+cd MNIST
+yarn
+yarn watch
+```
 
-[See this example live!](https://storage.googleapis.com/tfjs-examples/mnist/dist/index.html)
+
+#### Details
+The package contains two scripts:
+
+```yarn watch```: starts a local development HTTP server which watches the filesystem for changes so you can edit the code (JS or HTML) and see changes when you refresh the page immediately.
+
+```yarn build```: generates a dist/ folder which contains the build artifacts and can be used for deployment.
