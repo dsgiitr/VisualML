@@ -21,6 +21,12 @@ limitations under the License.
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="./tfjs-examples.css" />
+  <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+  <style>
+    
+    #wrapper{position:relative; width:300px; height:150px;}
+    #tip{background-color:white; border:1px solid blue; position:absolute; left:-200px; top:100px;}
+</style>
 </head>
 
 <body>
@@ -124,7 +130,19 @@ limitations under the License.
           
         </p>
         <p>
-          If you train a model from scratch you can also save it to browser local storage.
+          Change the hyperparameters as you would like them to be.
+        </p>
+        <p>
+          Add the number of neurons for the the number of layers you want to have in the required neural network.
+        </p>
+        <p>
+          Train the model.<br><br>A Model Summery Tab will appear you can maximise it or hide it.
+        </p>
+        <p>
+          You can visualize the architecture by clicking on the NN Structure button.<br><br>
+          If you want to visualize the coloured edges(coloured according to their weight sign),you can click on the 
+          checkbox and click on NN Structure again, the edges will appear coloured and varied in width and color 
+          intensity on the basis of the weight magnitude. 
         </p>
         <p>
           You can edit the properties in first row of "Test Examples" to generate
@@ -143,7 +161,7 @@ limitations under the License.
           <div class="create-model">
             <div class="input-div">
               <label class="input-label">Train Epochs:</label>
-              <input id="train-epochs" type="number" value="40"></input>
+              <input id="train-epochs" type="number" value="10"></input>
             </div>
             <div class="input-div">
               <label class="input-label">Optimizer:</label>
@@ -203,14 +221,18 @@ limitations under the License.
       </section>
       <section>
         <p class='section-head'>Visualization of Neural Network</p>
-        <div>
-        <button id="model-summary">Model Summary</button>
-      </div>
+        
       <div>
         <button id="structure">NN Structure</button>
       </div>
-      <canvas id="myCanvas" width="0" height="0" style="border:1px solid #d3d3d3;">   
-      </canvas>
+      <div>
+        <label class="input-label">Coloured Edges:</label>
+      <input type="checkbox" id="myCheck">
+      </div>
+      <div >
+      <canvas id="graph" width=0 height=0 ></canvas>
+      <canvas id="tip" width=200 height=80></canvas>
+      </div>
       </section>
       <section>
         <p class='section-head'>Test Examples</p>
@@ -274,6 +296,7 @@ limitations under the License.
     </div>
 
     <script src="index.js"></script>
+    
   </body>
 
 </html>

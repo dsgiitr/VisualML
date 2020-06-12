@@ -23,6 +23,7 @@ import * as data from './data';
 import * as ui from './ui';
 
 let model;
+
 const params = ui.loadTrainParametersFromUI();
 
 /**
@@ -55,7 +56,9 @@ async function trainModel(trainDataset, validationDataset,arr) {
   }
   model.add(tf.layers.dense({units: 3, activation: 'softmax'}));
   model.summary();
-  
+  const surface = { name: 'Model Summary', tab: 'Model Inspection'};
+  tfvis.show.modelSummary(surface, model);
+
   var optimizer = params.optimizer;
 
   if (optimizer === "RMSprop") {
@@ -100,6 +103,7 @@ async function trainModel(trainDataset, validationDataset,arr) {
   const secPerEpoch = (performance.now() - beginMs) / (1000 * params.epochs);
   ui.status(
       `Model training complete:  ${secPerEpoch.toFixed(4)} seconds per epoch`);
+  
   return model;
 }
 
@@ -172,15 +176,12 @@ async function evaluateModelOnTestData(model, testDataset) {
   ui.renderEvaluateTable(xData, yTrue, yPred.dataSync(), predictOut.dataSync());
   calculateAndDrawConfusionMatrix(model, xTest, yTest);
   predictOnManualInput(model);
+
+  
 }
 
 const HOSTED_MODEL_JSON_URL =
     'https://storage.googleapis.com/tfjs-models/tfjs/iris_v1/model.json';
-
-   
-    
-
-
 /**
  * The main function of the Iris demo.
  */
@@ -193,8 +194,6 @@ async function iris() {
   trainDataset = trainDataset.batch(params.batch_size);
   testDataset = testDataset.batch(params.batch_size);
   var x=0;
-  
-  
   document.getElementById('button1').addEventListener('click',async()=>{
             arr[x] = Number(document.getElementById('#ofneuron').value);
             if(arr[x]>maxi){
@@ -206,27 +205,33 @@ async function iris() {
            x++;
            document.getElementById('pos').value=x+1;
   });
-
-
   document.getElementById('train-from-scratch')
       .addEventListener('click', async () => {
         model = await trainModel(trainDataset, testDataset,arr);
+       
         await evaluateModelOnTestData(model, testDataset);
         
       });
-  document.getElementById('model-summary').addEventListener('click',async()=>{
-    const surface = { name: 'Model Summary', tab: 'Model Inspection'};
-    tfvis.show.modelSummary(surface, model);
-    
-  });    
+      
 
   ui.status('Standing by.');
 
   document.getElementById('structure').addEventListener('click',async()=>{
-    var ctx = document.getElementById("myCanvas");
     
-    ctx.height=75*maxi;
-    ctx.width=1000;
+    var graph = document.getElementById("graph");
+    graph.width=1000;
+    graph.height=75*maxi;
+    const check=document.getElementById("myCheck").checked;
+    
+    
+    var canvasOffset = $("#graph").offset();
+    var offsetX = canvasOffset.left;
+    var offsetY = canvasOffset.top;
+    
+
+    var tipCanvas = document.getElementById("tip");
+    
+    var tipCtx = tipCanvas.getContext("2d");
     
     var nn=Array();
     nn[0]=data.IRIS_NUM_FEATURES;
@@ -237,49 +242,156 @@ async function iris() {
     nn[i+1]=3;
     
     var l=Number(document.getElementById('pos').value)+1;
-    ctx = ctx.getContext("2d");
+    var ctx = graph.getContext("2d");
+    var graph;
     var arr1=Array();
     var count1,count2;
     for(i=0;i<l;i++){
      arr1[i]=((75*maxi)/2)-60*(nn[i]/2);
     }
     var j,k;
+
+    var dots = [];
+
   
     for(i=0;i<l;i++){
+      if(i<l-1){
+       var a= model.layers[i].getWeights()[0].arraySync();
+       
+      }
       count1=arr1[i];
        for(j=0;j<nn[i];j++){
            count2=arr1[i+1];
            if(i+1<l){
                for(k=0;k<nn[i+1];k++){
                   ctx.beginPath(); 
-                  ctx.moveTo(80*(i+1),count1);
-                  ctx.lineTo(80*(i+2),count2);
+                  ctx.moveTo(150*(i+1),count1);
+                  ctx.lineTo(150*(i+2),count2);
+                  if(check==true){
+                    if(Number(a[j][k])>0){
+                      var b=255-100*a[j][k];
+                     ctx.lineWidth=5*a[j][k]; 
+                    ctx.strokeStyle='rgb(0,0,'+b+')';
+                    }
+                    else{
+                      var c=255+100*a[j][k];
+                      ctx.lineWidth=-5*a[j][k];
+                    ctx.strokeStyle='rgb('+c+',0,0)';
+                    }
+                  }
+                  else{
                   ctx.strokeStyle='black';
+                  }
                   ctx.stroke();
                   count2+=60;
                 }
                }
+
             ctx.beginPath();
-            ctx.arc(80*(i+1),count1, 10,0,2*Math.PI);
+            ctx.lineWidth=1;
+            ctx.arc(150*(i+1),count1, 10,0,2*Math.PI);
             ctx.fillStyle='rgb(200,255,0)';
             ctx.fill();
             ctx.strokeStyle='black';
             ctx.stroke();
+            if(i==0){
+              dots.push({
+                x: 150*(i+1),
+                y: count1,
+                r: 10,
+                rXr: 100,
+                tip1:"layer no.: "+(i+1),
+                tip2:"input no.: "+(j+1),
+                tip3:""
+                
+                
+                });
+            }
+
+            else if(i+1<l){
+            dots.push({
+              x: 150*(i+1),
+              y: count1,
+              r: 10,
+              rXr: 100,
+              tip1:"layer no.: "+(i+1),
+              tip2:"neuron no.: "+(j+1),
+              tip3:"activation:  'SIGMOID' " 
+              
+              
+              });
+            }
+            else{
+              dots.push({
+                x: 150*(i+1),
+                y: count1,
+                r: 10,
+                rXr: 100,
+                tip1:"layer no.: "+(i+1),
+                tip2:"neuron no.: "+(j+1),
+                tip3:"activation:  'SOFTMAX' " 
+                
+                
+            });
+            }
+
             count1+=60;
         }
     }
+    dots.push({
+      x: 150*(i+1),
+      y:((75*maxi)/2)-30,
+      r:30,
+      rXr:900,
+      tip1:"",
+      tip2:"predicted class",
+      tip3:""
+
+    });
+    // request mousemove events
+    
+    // show tooltip when mouse hovers over dot
+    graph.addEventListener("mousemove",function(e){
+     var mouseX=parseInt(e.pageX-offsetX);
+     var mouseY=parseInt(e.pageY-offsetY);
+      // Put your mousemove stuff here
+      var hit = false;
+      for (var m = 0; m < dots.length; m++) {
+          var dot = dots[m];
+          var dx = mouseX - dot.x;
+          var dy = mouseY - dot.y;
+          if (dx * dx + dy * dy < dot.rXr) {
+              tipCanvas.style.left = (e.pageX + 10) + "px";
+              tipCanvas.style.top = (e.pageY + 10) + "px";
+              tipCtx.clearRect(0, 0, tipCanvas.width, tipCanvas.height);
+              tipCtx.font = '15px Verdana';
+              
+              if(m<=(dots.length-1)){
+              tipCtx.fillText(dot.tip1, 10, 20);
+              tipCtx.fillText(dot.tip2,10,40);
+              tipCtx.fillText(dot.tip3,10,60);
+              }
+              
+              hit = true;
+              break;
+          }
+      }
+      if (!hit) { tipCanvas.style.left = "-200px"; }
+    });
+
+
     count1=arr1[l-1];
     for(k=0;k<3;k++){
       
       ctx.beginPath(); 
-      ctx.moveTo(80*(i),count1);
-      ctx.lineTo(80*(i+1),((75*maxi)/2)-20);
+      ctx.moveTo(150*(i),count1);
+      ctx.lineTo(150*(i+1),(((75*maxi)/2)-30));
       ctx.strokeStyle='black';
       ctx.stroke();
       count1+=60;
     }
     ctx.beginPath();
-    ctx.arc(80*(i+1),((75*maxi)/2)-20, 30,0,2*Math.PI);
+    ctx.arc(150*(i+1),((75*maxi)/2)-30, 30,0,2*Math.PI);
     ctx.fillStyle='rgb(200,255,0)';
     ctx.fill();
     ctx.strokeStyle='black';
@@ -287,28 +399,51 @@ async function iris() {
     ctx.font = "15px Arial";
     ctx.fillStyle = "black";
     ctx.textAlign = "center";
-    ctx.fillText("output", 80*(i+1),((75*maxi)/2)-20);
+    ctx.fillText("output", 150*(i+1),(((75*maxi)/2)-30));
     
     function canvas_arrow(context, fromx, fromy, tox, toy) {
       var headlen = 10; // length of head in pixels
-      var dx = tox - fromx;
-      var dy = toy - fromy;
-      var angle = Math.atan2(dy, dx);
+      var dX = tox - fromx;
+      var dY = toy - fromy;
+      var angle = Math.atan2(dY, dX);
       context.moveTo(fromx, fromy);
       context.lineTo(tox, toy);
       context.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
       context.moveTo(tox, toy);
       context.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
-      context.strokeStyle="blue";
+      context.strokeStyle="black";
     }
     count1=arr1[0];
     for(i=0;i<4;i++){
       ctx.beginPath();
-      canvas_arrow(ctx,30, count1, 80, count1);
+      canvas_arrow(ctx,30, count1, 140, count1);
       ctx.stroke();
       count1+=60;
     }
+    if(check){
+    ctx.font = "15px Arial";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    ctx.fillText("Positive Weights", 900,20);
+    ctx.font = "15px Arial";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    ctx.fillText("Negative Weights", 900,40);
+    ctx.beginPath(); 
+    ctx.moveTo(800,20);
+    ctx.lineTo(830,20);
+    ctx.strokeStyle='blue';
+    ctx.stroke();
+    ctx.beginPath(); 
+    ctx.moveTo(800,40);
+    ctx.lineTo(830,40);
+    ctx.strokeStyle='red';
+    ctx.stroke();
+    }
   });
+
+
+ 
 
   ui.wireUpEvaluateTableCallbacks(() => predictOnManualInput(model));
 }
