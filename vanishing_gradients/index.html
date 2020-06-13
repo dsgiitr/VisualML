@@ -20,11 +20,10 @@ limitations under the License.
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <!--
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
--->
   <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="tfjs-examples.css" />
 </head>
@@ -418,18 +417,18 @@ limitations under the License.
       </section>
       <section>
         <p class='section-head'>How the  choice of activation function avoids vanishing gradients?</p><br>
-        <p class='subtitle'>(RELU vs Sigmoid)</p>
         <p>
           Activation functions, like the sigmoid function, squishes a large input space into a small input space between 0 and 1. 
           Therefore, a large change in the input of the sigmoid function will cause a small change in the output. Hence, the 
           derivative becomes small.A small gradient means that the weights and biases of the initial layers will not be updated 
           effectively with each training session. Since these initial layers are often crucial to recognizing the core elements of 
           the input data, it can lead to overall inaccuracy of the whole network.
-        </p>
+        </p><br><br>
         <p>
-          The simplest solution is to use other activation functions, such as ReLU, which doesn’t cause a small derivatives.
-          The really nice thing about this function is the the gradient is either 0 or 1, which means it never saturates, and so 
-          gradients can’t vanish — they are transferred perfectly across a network. 
+          The simplest solution is to use other activation functions, such as leakyRelu, Relu etc which don't cause a small derivatives.
+          The really nice thing about Relu is the the gradient is either 0 or 1, which means it never saturates, and so 
+          gradients can’t vanish — they are transferred perfectly across a network. However problem of dead relu may exist i.e.
+          situation may come when grads may become exactly 0 but this problem is solved by its modification LeakyRelu
         </p><br>
         <p class='subtitle'>You can visualize it by plotting these activation functions and many more by the options given below...</p>
       </section>
@@ -501,34 +500,32 @@ limitations under the License.
       <section>
         <p class='section-head'>About the dataset and model</p>
       <p>
-          This example uses a neural network to classify tabular data representing different flowers. The data used for
-          each flower are the petal length and width as well as the sepal length and width. The goal is to visualize the 
-          problem of vanishing gradients and also to predict what kind of flower it is based on those features of each 
-          data point. The data comes from the famous <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set">Iris 
-          flower</a> data set.
+          This example uses a fully connected  neural network . The data used for each flower are the petal length and width as well 
+          as the sepal length and width. The goal is to visualize the problem of vanishing gradients  The data comes from the famous 
+          <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set"> Iris flower</a> data set.
       </p>
      </section>
       <section>
         <p class='section-head'>Instructions</p>
         <p>
         <p>
-          Using the options below you can set the activation function, learning rate, num_epochs, num_layers, 
-          num_neurons_per_Layer according to your choice.
+          Using the options below you can set the activation function, num_layers, 
+          num_neurons_per_Layer, batch size according to your choice.
         </p>
+        <br>
         <p>
           You can visualize the neural network of your choice and visualize the gradients w.r.t each weight
-          by analyzing the intensity of path connecting the neurons.
+          by analyzing the intensity of path connecting the neurons. Positive gradients are represented by
+          blue links and negative gradients are represented by red links.
         </p>
+        <br>
         <p>
-          Using the buttons below you can either train a new model from scratch or load a pre-trained model and
-          test its performance.
-        </p>
-        <p>
-          If you train a model from scratch you can also save it to browser local storage.
-        </p>
-        <p>
-          If you load a pre-trained model you can edit the properties in first row of "Test Examples" to generate
-          a prediction for those data points.
+          It is advised to keep batch size greater than 1 as we are not optimizing the neural network. we are
+          simply performing a forward pass by randomly selecting input data  of chosen batch size out of 150 egs 
+          of iris flower data set and then calculating the loss and then gradients of loss w.r.t. each weight.
+          <br>
+          Hence with batch size=1 ,you may encounter exploding gradient problem showing  black colour links
+          all over in architecture.
         </p>
       </section>
 
@@ -543,123 +540,30 @@ limitations under the License.
               <select id="activations_f" name="activations">
               <option value="sigmoid">Sigmoid</option>
               <option value="relu">RELU</option>
+              <option value="leakyRelu">LeakyRelu</option>
               <option value="tanh">Tanh</option>
-              <option value="linear">Linear</option>
               </select>
              </div>
 
             <div class="input-div">
               <label class="input-label">Num_Layers:</label>
-              <input id="num-layers" type="number" value="6"></input>
+              <input id="num-layers" type="number" value="4"></input>
             </div>
 
             <div class="input-div">
               <label class="input-label">Num_neurons:</label>
-              <input id="num-neurons" type="number" value="5"></input>
-            </div>  
-
+              <input id="num-neurons" type="number" value="4"></input>
+            </div> 
             <div class="input-div">
-              <label class="input-label">Train Epochs:</label>
-              <input id="train-epochs" type="number" value="10"></input>
+              <label class="input-label">batch_Size:</label>
+              <input id="batch" type="number" value="4"></input>
             </div>
-            <div class="input-div">
-              <span class="input-label">Learning Rate:</span>
-              <input id="learning-rate" type="number" value="0.01"></input>
-            </div>
-            <div>
             <canvas id="myCanvas" height="0" width="0" ></canvas>
             </div><br>
             <div>
             <button id="show-nn-architecture">Show NN architecture</button>
             </div><br>
-            <button id="train-from-scratch">Train model from scratch</button>
-            <button id="model-summary">Model Summary</button>     
-          </div>
-        </div>
-
-        <div class="region">
-          <h3>Save/Load Model</h3>
-          <div class="load-save-section">
-            <button id="load-pretrained-remote">Load hosted pretrained model</button>
-          </div>
-
-          <div class="load-save-section">
-            <button id="load-local" disabled="true">Load locally-saved model</button>
-            <button id="save-local" disabled="true">Save model locally</button>
-            <button id="remove-local" disabled="true">Remove model locally</button>
-            <span id='local-model-status'>Status unavailable.</span>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <p class='section-head'>Status</p>
-        <div>
-          <span id="demo-status">Standing by.</span>
-        </div>
-      </section>
-
-      <section>
-        <p class='section-head'>Training Progress</p>
-        <div class='with-cols'>
-          <div>
-            <h4>Loss</h4>
-            <div class="canvases" id="lossCanvas"></div>
-          </div>
-          <div>
-            <h4>Accuracy</h4>
-            <div class="canvases" id="accuracyCanvas"></div>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <p class='section-head'>Test Examples</p>
-
-        <div id="evaluate">
-          <table id="evaluate-table">
-            <tr>
-              <th>Petal length</th>
-              <th>Petal width</th>
-              <th>Sepal length</th>
-              <th>Sepal width</th>
-              <th>True class</th>
-              <th>Predicted class</th>
-              <th>Class Probabilities</th>
-            </tr>
-            <tbody id="evaluate-tbody">
-              <tr>
-                <td>
-                  <input id="petal-length" value="5.1"></input>
-                  <button id="petal-length-inc">+</button>
-                  <button id="petal-length-dec">-</button>
-                </td>
-                <td>
-                  <input id="petal-width" value="3.5"></input>
-                  <button id="petal-width-inc">+</button>
-                  <button id="petal-width-dec">-</button>
-                </td>
-                <td>
-                  <input id="sepal-length" value="1.4"></input>
-                  <button id="sepal-length-inc">+</button>
-                  <button id="sepal-length-dec">-</button>
-                </td>
-                <td>
-                  <input id="sepal-width" value="0.2"></input>
-                  <button id="sepal-width-inc">+</button>
-                  <button id="sepal-width-dec">-</button>
-                </td>
-                <td></td>
-                <td id="winner"></td>
-                <td id="logits"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-
-
+            
       <div>
         <div class="horizontal-section">
 
