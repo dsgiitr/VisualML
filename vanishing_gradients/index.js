@@ -28,23 +28,29 @@ import * as tfvis from '@tensorflow/tfjs-vis';
 
 
   var acc=0;
+  var xl=Array();
+  var yl=Array();
 document.getElementById('show-nn-architecture')
       .addEventListener('click', async() => {
+        xl=[];yl=[];
+        
+        console.clear();
+
         var a_f=document.getElementById("activations_f");
         var layers=Number(document.getElementById('num-layers').value);
         var neurons=Number(document.getElementById('num-neurons').value);
         var batch=Number(document.getElementById('batch').value);
-
+        var l_r=Number(document.getElementById('lr').value);
+        var iter=Number(document.getElementById('iter').value);
 
   var [xTrain, yTrain, xTest, yTest] = data.getIrisData(0);
-  var random=Math.floor(Math.random() * 146)
-  var x  =  tf.slice(xTrain,[random,0],[batch,-1]);
-  var y  =  tf.slice(yTrain,[random,0],[batch,-1]);
+  
+  var tgrads;
 
 
 
-var w=Array()
-var b=Array()
+var w=Array();
+var b=Array();
 if(layers>1)
 {
 
@@ -68,7 +74,15 @@ else
 {
   w[0]        =  tf.variable(tf.randomNormal([4, 3],0,0.5));
   b[0]        =  tf.variable(tf.randomNormal([1, 3],0,0.5));
-}  
+
+} 
+
+for(var m=0;m<iter;m++)
+{
+  var random=Math.floor(Math.random() * (150-batch));
+  var x  =  tf.slice(xTrain,[random,0],[batch,-1]);
+  var y  =  tf.slice(yTrain,[random,0],[batch,-1]);
+
   var f=() =>{
        var output = (x.dot(w[0])).add(b[0]);
 
@@ -105,13 +119,29 @@ else
        
     
        var loss   = tf.losses.softmaxCrossEntropy(y,output);
+       
        return loss;
+     }
+     var {value, grads} = tf.variableGrads(f);
+        
+     
+    console.log("Loss for iteration("+m+"):"+value.arraySync());
+    yl.push(value.arraySync());
+
+
+     for(var j=0;j<layers;j++)
+     {
+      w[j]=tf.variable(tf.sub(w[j],grads[2*j+acc].mul(l_r)));
+      b[j]=tf.variable(tf.sub(b[j],grads[2*j+acc+1].mul(l_r)));
+     }
+     
+     acc+=2*layers;
+
+     tgrads=grads;
+    
 }
-
-   
-
-
-  var {value, grads} = tf.variableGrads(f);
+   acc-=2*layers;
+  
   
   var abs_grads=Array();
 
@@ -119,7 +149,7 @@ else
 
   for(var i=0;i<layers;i++)
   {
-    abs_grads[i] = tf.abs(grads[2*i+acc]).arraySync();
+    abs_grads[i] = tf.abs(tgrads[2*i+acc]).arraySync();
   }
 
 
@@ -158,7 +188,7 @@ for(var i=0;i<layers;i++)
 
   for(var i=0;i<layers;i++)
   {
-    for(var j=0;j<grads[2*i+acc].arraySync().length;j++)
+    for(var j=0;j<tgrads[2*i+acc].arraySync().length;j++)
     {
       for(var k=0;k<abs_grads[i][j].length;k++)
       {
@@ -295,7 +325,7 @@ for(var i=0;i<layers;i++)
                 ctx2.lineWidth=4;
                 ctx2.moveTo(d_h*(m+1),cds[m][n]);
                 ctx2.lineTo(d_h*(m+2),cds[m+1][p]);
-                if(grads[2*m+acc].arraySync()[n][p]<0)
+                if(tgrads[2*m+acc].arraySync()[n][p]<0)
                 {
                   ctx2.strokeStyle="rgba(255,0,0,"+abs_grads[m][n][p]+")";
                 }
@@ -335,8 +365,45 @@ for(var i=0;i<layers;i++)
        ctx2.fillText("Petal width", 1,cds[0][1]+17);
        ctx2.fillText("Sepal length",1,cds[0][2]+17);
        ctx2.fillText("Sepal width",1,cds[0][3]+17);
+       ctx2.beginPath();
+       ctx2.fillStyle="black"
+       ctx2.font = "17px Arial";
+       ctx2.font = "25px Arial";
+       ctx2.fillText("Loss vs Iteration",20,h);
        circles();
       
-      acc+=2*layers;
+      acc+=4*layers;
 
-} );      
+for(var z=0;z<iter;z++)
+{
+  xl.push(z);
+}
+      console.log(xl);
+      console.log(yl);
+
+      Plotly.newPlot('graph', [{
+  x: xl,
+  y: yl,
+  line: {simplify: false},
+}], {}, {showSendToCloud:true});
+
+function plot() {
+  Plotly.animate('graph', {
+    data: [{y: yl}],
+    traces: [0],
+    layout: {}
+  }, {
+    transition: {
+      duration: 500,
+      easing: 'cubic-in-out'
+    },
+    frame: {
+      duration: 500
+    }
+  })
+}
+plot();
+
+} );
+
+
