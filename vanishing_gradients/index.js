@@ -18,7 +18,7 @@
  */
 import * as tf from '@tensorflow/tfjs';
 import * as tfvis from '@tensorflow/tfjs-vis';
-
+import Plotly from 'plotly.js-dist';
 
  import * as data from './data';
 
@@ -26,15 +26,32 @@ import * as tfvis from '@tensorflow/tfjs-vis';
 
 
 
+//acc: a variable to get the correct index in grads tensor
+// xl: x coordinates for graph of loss vs epoch
+// yl: y coordinates for ......................
+//xtr_a: x coordinates for graph of train accuracy and epoch
+//ytr_a: y .................................................
+//xte_a: x coordinates for test accuracy vs epoch
+//yte_a: y........................................
 
   var acc=0;
   var xl=Array();
   var yl=Array();
+
+  var xtr_a=Array();
+  var ytr_a=Array();
+
+  var xte_a=Array();
+  var yte_a=Array();
+
 document.getElementById('show-nn-architecture')
       .addEventListener('click', async() => {
         xl=[];yl=[];
+        xtr_a=[];ytr_a=[];
+        xte_a=[];yte_a=[];
         
         console.clear();
+
 
         var a_f=document.getElementById("activations_f");
         var layers=Number(document.getElementById('num-layers').value);
@@ -43,8 +60,10 @@ document.getElementById('show-nn-architecture')
         var l_r=Number(document.getElementById('lr').value);
         var iter=Number(document.getElementById('iter').value);
 
-  var [xTrain, yTrain, xTest, yTest] = data.getIrisData(0);
+  var [xTrain, yTrain, xTest, yTest] = data.getIrisData(0.2);
   
+
+
   var tgrads;
 
 
@@ -77,14 +96,12 @@ else
 
 } 
 
-for(var m=0;m<iter;m++)
-{
-  var random=Math.floor(Math.random() * (150-batch));
-  var x  =  tf.slice(xTrain,[random,0],[batch,-1]);
-  var y  =  tf.slice(yTrain,[random,0],[batch,-1]);
 
-  var f=() =>{
-       var output = (x.dot(w[0])).add(b[0]);
+
+
+   function model(w,b,x)
+  {
+     var output = (tf.dot(x,w[0])).add(b[0]);
 
        if(a_f=="leakyRelu")
        {
@@ -116,31 +133,119 @@ for(var m=0;m<iter;m++)
               output=(tf.dot(tf.tanh(output),w[i])).add(b[i]);
            }
           }
-       
+          return output;
+  }
+for(var e=0;e<iter;e++)
+{
+  const random_train = tf.util.createShuffledIndices(120);
+  const random_test = tf.util.createShuffledIndices(30);
+  var total_loss=0;
+  for(var m=0;m<(120/batch);m++)
+  {
+    var x=[];
+    var y=[];
     
-       var loss   = tf.losses.softmaxCrossEntropy(y,output);
+    if(m>(120/batch)-1)
+    {
+      for(var i=0;i<120-m*batch;i++)
+      {
+        x.push(xTrain.slice([random_train[m*batch+i],0],[1,-1]).arraySync());
+        y.push(yTrain.slice([random_train[m*batch+i],0],[1,-1]).arraySync());
+      } 
+    }
+    else
+    {
+      for(var i=0;i<batch;i++)
+      {
+        x.push(xTrain.slice([random_train[m*batch+i],0],[1,-1]).arraySync());
+        y.push(yTrain.slice([random_train[m*batch+i],0],[1,-1]).arraySync());
+      }
+    }
+    x=tf.tensor(x).squeeze();
+    y=tf.tensor(y).squeeze();
+
+    var f=() =>{
+         
+         
+      
+         var loss   = tf.losses.softmaxCrossEntropy(y,model(w,b,x));
+         
+         return loss;
+       }
+       var {value, grads} = tf.variableGrads(f);
+      total_loss+=value.arraySync();
        
-       return loss;
-     }
-     var {value, grads} = tf.variableGrads(f);
-        
-     
-    console.log("Loss for iteration("+m+"):"+value.arraySync());
-    yl.push(value.arraySync());
+      
+      
 
 
-     for(var j=0;j<layers;j++)
-     {
-      w[j]=tf.variable(tf.sub(w[j],grads[2*j+acc].mul(l_r)));
-      b[j]=tf.variable(tf.sub(b[j],grads[2*j+acc+1].mul(l_r)));
-     }
-     
-     acc+=2*layers;
+       for(var j=0;j<layers;j++)
+       {
+        w[j]=tf.variable(tf.sub(w[j],grads[2*j+acc].mul(l_r)));
+        b[j]=tf.variable(tf.sub(b[j],grads[2*j+acc+1].mul(l_r)));
+       }
 
-     tgrads=grads;
+      
+       
+       acc+=2*layers;
+
+       tgrads=grads;
+      
+  }
+  console.log("Loss for epoch("+e+"):"+total_loss/(Math.ceil(120/batch)));
+  yl.push(total_loss/(Math.ceil(120/batch)));
+
+
+    var train_o = model(w,b,xTrain);
+    var probs   = train_o.softmax();
+
+    var test_o = model(w,b,xTest);
+    var probstest   = tf.softmax(test_o);
+
+    var max_idx_ptr = tf.argMax(probs,1).arraySync();
+    var max_idx_train = tf.argMax(yTrain,1).arraySync();
+
+    var max_idx_pte = tf.argMax(probstest,1).arraySync();
+    var max_idx_test = tf.argMax(yTest,1).arraySync();
+
     
-}
+
+    var correct_train=0;
+    for(var i=0;i<120;i++)
+    {
+      if(max_idx_ptr[i]==max_idx_train[i])
+      {
+        correct_train+=1;
+      }
+    }
+    ytr_a.push(correct_train/120);
+
+
+    var correct_test=0;
+    for(var i=0;i<30;i++)
+    {
+      if(max_idx_pte[i]==max_idx_test[i])
+      {
+        correct_test+=1;
+      }
+    }
+    yte_a.push(correct_test/30);
+
+}//end of epoch loop  
    acc-=2*layers;
+   
+
+//printing test loss
+   var test_loss=tf.losses.softmaxCrossEntropy(yTest,model(w,b,xTest));
+   //console.log(test_loss.arraySync());
+   var tl=document.getElementById("testloss");
+    var ctx3=tl.getContext("2d");
+    ctx3.clearRect(0, 0, 850, 30);
+    ctx3.beginPath();
+    ctx3.strokeStyle="black";
+    ctx3.font="20px Arial";
+    ctx3.fillText("Also, Loss on validation set after ("+iter+") epochs of training is: "+test_loss.arraySync(),5,20);
+
   
   
   var abs_grads=Array();
@@ -204,6 +309,7 @@ for(var i=0;i<layers;i++)
 //r is radius of neuron,d_h is horizontal dist. b/w centres of neurons
 // h is height of canvas and w its width
 //b_n boundary of neurons
+
 
 
         
@@ -369,7 +475,7 @@ for(var i=0;i<layers;i++)
        ctx2.fillStyle="black"
        ctx2.font = "17px Arial";
        ctx2.font = "25px Arial";
-       ctx2.fillText("Loss vs Iteration",20,h);
+       ctx2.fillText(" Average Training Loss vs epoch",20,h-5);
        circles();
       
       acc+=4*layers;
@@ -377,11 +483,14 @@ for(var i=0;i<layers;i++)
 for(var z=0;z<iter;z++)
 {
   xl.push(z);
+  xte_a.push(z);
+  xtr_a.push(z);
 }
-      console.log(xl);
-      console.log(yl);
 
-      Plotly.newPlot('graph', [{
+    
+    
+
+  Plotly.newPlot('graph', [{
   x: xl,
   y: yl,
   line: {simplify: false},
@@ -403,6 +512,69 @@ function plot() {
   })
 }
 plot();
+
+
+
+Plotly.newPlot('graph2', [{
+  x: xtr_a,
+  y: ytr_a,
+  line: {simplify: false},
+}], {}, {showSendToCloud:true});
+
+function plot2() {
+  Plotly.animate('graph2', {
+    data: [{y: ytr_a}],
+    traces: [0],
+    layout: {}
+  }, {
+    transition: {
+      duration: 500,
+      easing: 'cubic-in-out'
+    },
+    frame: {
+      duration: 500
+    }
+  })
+}
+plot2();
+
+
+
+Plotly.newPlot('graph3', [{
+  x: xte_a,
+  y: yte_a,
+  line: {simplify: false},
+}], {}, {showSendToCloud:true});
+
+function plot3() {
+  Plotly.animate('graph3', {
+    data: [{y: yte_a}],
+    traces: [0],
+    layout: {}
+  }, {
+    transition: {
+      duration: 500,
+      easing: 'cubic-in-out'
+    },
+    frame: {
+      duration: 500
+    }
+  })
+}
+plot3();
+
+
+var tracanvas=document.getElementById("tra");
+var tra =  tracanvas.getContext("2d");
+tra.beginPath();
+tra.font="25px Arial";
+tra.fillText("Train accuracy(120 egs) vs epoch => ",5,20);
+
+var teacanvas=document.getElementById("tea");
+var tea =  teacanvas.getContext("2d");
+tea.beginPath();
+tea.font="25px Arial";
+tea.fillText("Test accuracy(30 egs) vs epoch => ",5,20);
 
 } );
 
