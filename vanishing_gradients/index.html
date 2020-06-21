@@ -501,7 +501,7 @@ limitations under the License.
         <p class='section-head'>About the dataset and model</p>
       <p>
           This example uses a fully connected  neural network . The data used for each flower are the petal length and width as well 
-          as the sepal length and width. The goal is to visualize the problem of vanishing gradients  The data comes from the famous 
+          as the sepal length and width. The data comes from the famous 
           <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set"> Iris flower</a> data set.
       </p>
      </section>
@@ -509,24 +509,27 @@ limitations under the License.
         <p class='section-head'>Instructions</p>
         <p>
         <p>
-          Using the options below you can set the activation function, num_layers, 
-          num_neurons_per_Layer, batch size according to your choice.
+         # Using the options below you can set the activation function, num_layers, num_neurons_per_Layer, 
+          batch size, learning rate, num_iterations according to your choice.
         </p>
-        <br>
         <p>
-          You can visualize the neural network of your choice and visualize the gradients w.r.t each weight
-          by analyzing the intensity of path connecting the neurons. Positive gradients are represented by
+         # You can visualize the neural network of your choice and visualize the gradients w.r.t each weight
+          by analyzing the intensity of links connecting the neurons. Positive gradients are represented by
           blue links and negative gradients are represented by red links.
+          <br><br>
+          <p class="subtitle">Note that gradient values at final iteration are used in printing nn architecture.</p>
         </p>
-        <br>
         <p>
-          It is advised to keep batch size greater than 1 as we are not optimizing the neural network. we are
-          simply performing a forward pass by randomly selecting input data  of chosen batch size out of 150 egs 
-          of iris flower data set and then calculating the loss and then gradients of loss w.r.t. each weight.
-          <br>
-          Hence with batch size=1 ,you may encounter exploding gradient problem showing  black colour links
-          all over in architecture.
+          # In each iteration, input of chosen batch size is randomly selected from 120 egs out of 150 egs provided by 
+          iris dataset and then model parameters are optimized using gradient descent. Rest 30 egs are for validation.
+          Also you can see value of loss at each iteration in console.
+          <br><br>
+          # Also a plot (Loss vs iteration) will show up on clicking the given button.
+          <br><br>
+          # It is strictly  advised to keep batch size  with batch size=1, you may encounter exploding gradients
+          problem showing  black colour links all over in architecture.
         </p>
+        <p># Wait for some time after clicking the button.</p>
       </section>
 
       <section>
@@ -547,22 +550,43 @@ limitations under the License.
 
             <div class="input-div">
               <label class="input-label">Num_Layers:</label>
-              <input id="num-layers" type="number" value="4"></input>
+              <input id="num-layers" type="number" value="2"></input>
             </div>
 
             <div class="input-div">
               <label class="input-label">Num_neurons:</label>
-              <input id="num-neurons" type="number" value="4"></input>
+              <input id="num-neurons" type="number" value="6"></input>
             </div> 
             <div class="input-div">
               <label class="input-label">batch_Size:</label>
               <input id="batch" type="number" value="4"></input>
             </div>
+            <div class="input-div">
+              <label class="input-label">Learning_Rate:</label>
+              <input id="lr" type="number" value="0.01"></input>
+            </div>
+            <div class="input-div">
+              <label class="input-label">num_epochs:</label>
+              <input id="iter" type="number" value="20"></input>
+            </div>
             <canvas id="myCanvas" height="0" width="0" ></canvas>
-            </div><br>
+            </div>
+            <div id="graph"></div><br>
             <div>
-            <button id="show-nn-architecture">Show NN architecture</button>
+            <canvas id="testloss" height="25" width="850"></canvas>
+            </div><br><br>
+            <div>
+            <canvas id="tra" height="25" width="500"></canvas>
+            <div id="graph2"></div><br>
+            </div>
+            <div>
+            <canvas id="tea" height="25" width="500"></canvas>
+            <div id="graph3"></div><br>
+            </div>
+            <button id="show-nn-architecture">Train and Show NN-architecture</button>
             </div><br>
+            <body>
+            
             
       <div>
         <div class="horizontal-section">
