@@ -155,7 +155,21 @@ var container=document.getElementById('cn')               //plot2d area
 const canvas=document.getElementById('celeba-scene')
 
 
-      // sample from the latent space at obj.x, obj.y
+function normaltensor(prediction){
+    for(var i=0;i<prediction.length;i++){prediction[i]+=50;prediction[i]/=100;}
+    prediction=(tf.tensor(prediction)).toFloat();
+
+    const inputMax = prediction.max();
+    const inputMin = prediction.min();
+    prediction= prediction.sub(inputMin).div(inputMax.sub(inputMin));
+    return prediction;}
+function normal(prediction){
+  const inputMax = prediction.max();
+  const inputMin = prediction.min();
+  prediction= prediction.sub(inputMin).div(inputMax.sub(inputMin));
+  return prediction;
+}
+
 function sample(obj) {                                    //plotting
   obj.x = (obj.x - 0.5) * vis;
   obj.y = (obj.y - 0.5) * vis;
@@ -165,12 +179,8 @@ function sample(obj) {                                    //plotting
 
   var prediction = model.decoder.predict(y).dataSync();
 
-  for(var i=0;i<prediction.length;i++){prediction[i]+=50;prediction[i]/=100;}
-  prediction=(tf.tensor(prediction)).toFloat();
-
-  const inputMax = prediction.max();
-const inputMin = prediction.min();
-prediction= prediction.sub(inputMin).div(inputMax.sub(inputMin));                         //scaling
+                         //scaling
+  prediction=normaltensor(prediction);
   prediction=prediction.reshape([28,28]);
 
   prediction=prediction.mul(255).toInt();
@@ -186,7 +196,7 @@ function plot2d(){
   load();
   const decision=Number(document.getElementById("hidden").value)
   if(decision===Number(2)){
-    canvas.style.display="block";
+    canvas.style.display="inline-block";
   window.c2d = new Controls2D({ onDrag: sample, container: container });
   sample({x:0,y:0});}
   else {  var context = canvas.getContext('2d');
@@ -195,7 +205,6 @@ function plot2d(){
     container.innerHTML="";}
 }
 
-plot2d();
 
 const el=document.getElementById('Create')                                                //listeners
 el.addEventListener('click', plot2d);
@@ -203,3 +212,72 @@ const element=document.getElementById('train')
 element.addEventListener('click', runtrain);
 
 document.addEventListener('DOMContentLoaded', run);
+
+
+
+
+
+
+const canv=document.getElementById('canv');
+const outcanv=document.getElementById('outcanv');
+var ct = outcanv.getContext('2d');
+// get canvas 2D context and set him correct size
+var ctx = canv.getContext('2d');
+
+function clear(){
+    ctx.clearRect(0, 0, canv.width, canv.height);
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canv.width, canv.height);
+    ct.clearRect(0, 0, outcanv.width, outcanv.height);
+    ct.fillStyle = "#EEEEEE";
+    ct.fillRect(0, 0, outcanv.width, outcanv.height);
+}
+document.getElementById('clear').addEventListener('click',clear);
+document.getElementById('save').addEventListener('click',rundraw);
+clear();
+
+
+  var mouse = {x: 0, y: 0};
+  var last_mouse = {x: 0, y: 0};
+
+  /* Mouse Capturing Work */
+  canv.addEventListener('mousemove', function(e) {
+      last_mouse.x = mouse.x;
+      last_mouse.y = mouse.y;
+
+      mouse.x = (e.pageX - this.offsetLeft)/1.34;
+      mouse.y = (e.pageY - this.offsetTop)/2.7;
+  }, false);
+
+
+  /* Drawing on Paint App */
+  ctx.lineWidth = 15;
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = 'white';
+
+  canv.addEventListener('mousedown', function(e) {
+      canv.addEventListener('mousemove', onPaint, false);
+  }, false);
+
+  canv.addEventListener('mouseup', function() {
+      canv.removeEventListener('mousemove', onPaint, false);
+  }, false);
+
+  var onPaint = function() {
+      ctx.beginPath();
+      ctx.moveTo(last_mouse.x, last_mouse.y);
+      ctx.lineTo(mouse.x, mouse.y);
+      ctx.closePath();
+      ctx.stroke();
+  };
+
+function rundraw(){
+  var sm=tf.browser.fromPixels(canv,1);
+  sm=sm.resizeNearestNeighbor([28,28]).toFloat().reshape([-1,28,28]);
+  sm=normal(sm);
+
+  var pr=model.auto.predict(sm).dataSync();
+  pr=normal(tf.tensor(pr).toFloat()).reshape([28,28]).mul(255.0).toInt();
+  tf.browser.toPixels(pr, outcanv);
+}
