@@ -1,15 +1,12 @@
-# TensorFlow.js Example: Training MNIST
+# TensorFlow.js Example: Training a simple Autoencoder on MNIST
 
-This example shows you how to train MNIST (using the layers API).
+Train a model to autoencode handwritten digits from the MNIST database using the tf.layers api. The MNIST dataset is used as training data.
 
-You can check out the tutorial that accompanies this example [here](https://www.tensorflow.org/js/tutorials/training/handwritten_digit_cnn).
+This examples lets you train a MNIST Autoencoder using a Fully Connected Neural Network (also known as a DenseNet).
 
-This model will compute accuracy over 1000 random test set examples every 5
-steps, plotting loss and accuracy as the model is training. Training time can
-be reduced by computing accuracy over fewer examples less often.
+-You can select the structure for the DenseNet and see the performance of the model.
 
-Note: currently the entire dataset of MNIST images is stored in a PNG image we have
-sprited, and the code in `data.js` is responsible for converting it into
-`Tensor`s. This will become much simpler in the near future.
+-You can also 2d Visualize the encoded space
 
-[See this example live!](https://storage.googleapis.com/tfjs-examples/mnist/dist/index.html)
+-You can also autoencode your drawing
+
