@@ -24,6 +24,7 @@ limitations under the License.
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="tfjs-examples.css" />
 </head>
@@ -40,8 +41,8 @@ limitations under the License.
 
     form {
       display: flex;
-      max-width: 600px;
-      max-height: 450px;
+      max-width: 800px;
+      max-height: 650px;
       margin: auto;
       margin-left: 0px;
       font-family: 'Roboto', sans-serif;
@@ -52,7 +53,7 @@ limitations under the License.
       flex-grow: unset;
       overflow-y: auto;
       color: var(--hot-color);
-      background-color: var(--background-color);
+      background-color: white;
     }
     #activations h3 {
       font-size: 0.8em;
@@ -62,6 +63,10 @@ limitations under the License.
       padding-top: 1em;
       padding-bottom: 1em;
       margin: 0;
+    }
+    .content {
+      font-size: 24px;
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     }
     #main {
       flex: 10;
@@ -253,6 +258,16 @@ limitations under the License.
     .wrong-prediction {
       background-color: red;
     }
+    #parent {
+      display: inline-flex;
+      width: 100%;
+    }
+    #child1 {
+      width: 30%;
+    }
+    #child2 {
+      width: 70%;
+    }
   </style>
   <script>
     let models;
@@ -394,37 +409,36 @@ limitations under the License.
     }
   </script>
   <body>
-    <div class='tfjs-example-container'>
-      <section class='title-area'>
-        <h1>Vanishing Gradients</h1>
+    <div class='container'>
+      <section class='text-center'>
+        <h1>Vanishing Gradients</h1><br />
         <p class='subtitle'>Comparing the activation functions</p>
       </section>
 
       <section>
         <p class='section-head'>Description</p>
-        <p>
-
+        <p class="content">
           This example explains the problem of vanishing gradients (which you may encounter when training a deep neural
           network) and and also use of some activation function to prevent it. It describes the situation where a deep 
           multilayer feed-forward network or a recurrent neural network is unable to propagate useful gradient information
           from the output end of the model back to the layers near the input end of the model.
-        <p>
+        </p>
+        <p class="content">
           Many fixes and workarounds have been proposed and investigated, such as alternate weight initialization schemes,
           unsupervised pre-training, layer-wise training, and variations on gradient descent. Perhaps the most common change 
           is the use of the rectified linear activation function .
-        </p> 
-        </p><br>
+        </p> <br>
       </section>
       <section>
         <p class='section-head'>How the  choice of activation function avoids vanishing gradients?</p><br>
-        <p>
+        <p class="content">
           Activation functions, like the sigmoid function, squishes a large input space into a small input space between 0 and 1. 
           Therefore, a large change in the input of the sigmoid function will cause a small change in the output. Hence, the 
           derivative becomes small.A small gradient means that the weights and biases of the initial layers will not be updated 
           effectively with each training session. Since these initial layers are often crucial to recognizing the core elements of 
           the input data, it can lead to overall inaccuracy of the whole network.
-        </p><br><br>
-        <p>
+        </p>
+        <p class="content">
           The simplest solution is to use other activation functions, such as leakyRelu, Relu etc which don't cause a small derivatives.
           The really nice thing about Relu is the the gradient is either 0 or 1, which means it never saturates, and so 
           gradients can’t vanish — they are transferred perfectly across a network. However problem of dead relu may exist i.e.
@@ -432,74 +446,80 @@ limitations under the License.
         </p><br>
         <p class='subtitle'>You can visualize it by plotting these activation functions and many more by the options given below...</p>
       </section>
-      <div>
-            <form id="activations">
+      <div id="parent">
+        <div id="child1">
+          <form id="activations">
             <ul>
-          <li>
-            <input type="checkbox" id="a_sigmoid" name="activation" value="sigmoid" onchange="init()"/>
-            <label for="a_sigmoid"><span>sigmoid</span></label>
-          </li>
-          <li>
-            <input type="checkbox" id="a_hardsigmoid" name="activation" value="hardSigmoid" onchange="init()"/>
-            <label for="a_hardsigmoid"><span>hardSigmoid</span></label>
-          </li>
-          <li>
-            <input type="checkbox" id="a_softplus" name="activation" value="softplus" onchange="init()"/>
-            <label for="a_softplus"><span>softplus</span></label></li>
-          <li>
-            <input type="checkbox" id="a_softsign" name="activation" value="softsign" onchange="init()"/>
-            <label for="a_softsign"><span>softsign</span></label></li>
-          <li>
-            <input type="checkbox" id="a_tanh" name="activation" value="tanh" onchange="init()"/>
-            <label for="a_tanh"><span>tanh</span></label></li>
-          <li>
-            <input type="checkbox" id="a_softmax" name="activation" value="softmax" onchange="init()"/>
-            <label for="a_softmax"><span>softmax</span></label></li>
-          <li>
-            <input type="checkbox" id="a_linear" name="activation" value="linear" onchange="init()"/>
-            <label for="a_linear"><span>linear</span></label></li>
-          <li>
-            <input type="checkbox" id="a_relu" name="activation" value="relu" onchange="init()"/>
-            <label for="a_relu"><span>relu</span></label></li>
-          <li>
-            <input type="checkbox" id="a_relu6" name="activation" value="relu6" onchange="init()"/>
-            <label for="a_relu6"><span>relu6</span></label></li>
-          <li>
-            <input type="checkbox" id="a_selu" name="activation" value="selu" onchange="init()"/>
-            <label for="a_selu"><span>selu</span></label></li>
-          <li>
-            <input type="checkbox" id="a_elu" name="activation" value="elu" onchange="init()"/>
-            <label for="a_elu"><span>elu</span></label></li>
-        </ul>
-      </form>
-      <form>
-      <div id="main">
-        <div id="weights">
-          <div>
-            <label>Weight: </label>
-
-            <input type="range" min="-10" max="10" step="0.1" value="1" oninput="updateWeights()" onchange="updateWeights()" class="slider" id="weight"/>
-            <input id="weight_value" type="number" step="0.1" oninput="setWeight()" value="0"/>
-          </div>
-
-          <div>
-            <label>Bias: </label>
-            <input type="range" min="-10" max="10" step="0.1" value="1" oninput="updateWeights()" onchange="updateWeights()" class="slider" id="bias"/>
-            <input id="bias_value" type="number" step="0.1" oninput="setBias()" value="0"/>
-          </div>
-
+              <li>
+                <input type="checkbox" id="a_sigmoid" name="activation" value="sigmoid" onchange="init()" checked/>
+                <label for="a_sigmoid"><span>sigmoid</span></label>
+              </li>
+              <li>
+                <input type="checkbox" id="a_hardsigmoid" name="activation" value="hardSigmoid" onchange="init()" />
+                <label for="a_hardsigmoid"><span>hardSigmoid</span></label>
+              </li>
+              <li>
+                <input type="checkbox" id="a_softplus" name="activation" value="softplus" onchange="init()" />
+                <label for="a_softplus"><span>softplus</span></label></li>
+              <li>
+                <input type="checkbox" id="a_softsign" name="activation" value="softsign" onchange="init()" />
+                <label for="a_softsign"><span>softsign</span></label></li>
+              <li>
+                <input type="checkbox" id="a_tanh" name="activation" value="tanh" onchange="init()" checked/>
+                <label for="a_tanh"><span>tanh</span></label></li>
+              <li>
+                <input type="checkbox" id="a_softmax" name="activation" value="softmax" onchange="init()" />
+                <label for="a_softmax"><span>softmax</span></label></li>
+              <li>
+                <input type="checkbox" id="a_linear" name="activation" value="linear" onchange="init()" />
+                <label for="a_linear"><span>linear</span></label></li>
+              <li>
+                <input type="checkbox" id="a_relu" name="activation" value="relu" onchange="init()" checked/>
+                <label for="a_relu"><span>relu</span></label></li>
+              <li>
+                <input type="checkbox" id="a_relu6" name="activation" value="relu6" onchange="init()" />
+                <label for="a_relu6"><span>relu6</span></label></li>
+              <li>
+                <input type="checkbox" id="a_selu" name="activation" value="selu" onchange="init()" />
+                <label for="a_selu"><span>selu</span></label></li>
+              <li>
+                <input type="checkbox" id="a_elu" name="activation" value="elu" onchange="init()" />
+                <label for="a_elu"><span>elu</span></label></li>
+            </ul>
+          </form>
         </div>
-        <div id="plot"></div>
-        <div id="controls">
-          <label>Inputs from <input id="min" type="number" value="-5" onchange="replot()"/>
-            to <input id="max" type="number" value="5" onchange="replot()"/></label>
-        </div>
-      </div> 
-  </div>
-</form>
+        <div id="child2">
+          <form>
+            <div id="main">
+              <div id="weights">
+        
+                <div>
+                  <label>Weight: </label>
+                  <input type="range" min="-10" max="10" step="0.1" value="1" oninput="updateWeights()"
+                    onchange="updateWeights()" class="slider" id="weight" />
+                  <input id="weight_value" type="number" step="0.1" oninput="setWeight()" value="0" />
+                </div>
+        
+                <div>
+                  <label>Bias: </label>
+                  <input type="range" min="-10" max="10" step="0.1" value="1" oninput="updateWeights()"
+                    onchange="updateWeights()" class="slider" id="bias" />
+                  <input id="bias_value" type="number" step="0.1" oninput="setBias()" value="0" />
+                </div>
+        
+              </div>
+              <div id="plot"></div>
+              <div id="controls">
+                <label>Inputs from <input id="min" type="number" value="-5" onchange="replot()" />
+                  to <input id="max" type="number" value="5" onchange="replot()" /></label>
+              </div>
+            </div>
+          </form>
+        </div>        
+      </div>
       <section>
         <p class='section-head'>About the dataset and model</p>
-      <p>
+          <p class="content">
           This example uses a fully connected  neural network . The data used for each flower are the petal length and width as well 
           as the sepal length and width. The data comes from the famous 
           <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set"> Iris flower</a> data set.
@@ -507,29 +527,23 @@ limitations under the License.
      </section>
       <section>
         <p class='section-head'>Instructions</p>
-        <p>
-        <p>
-         # Using the options below you can set the activation function, num_layers, num_neurons_per_Layer, 
-          batch size, learning rate, num_iterations according to your choice.
+        <p class="content">
+          <ol>
+            <li><p>Using the options below you can set the activation function, num_layers, num_neurons_per_Layer, 
+              batch size, learning rate, num_iterations according to your choice.</p></li>
+            <li><p>You can visualize the neural network of your choice and visualize the gradients w.r.t each weight
+              by analyzing the intensity of links connecting the neurons. Positive gradients are represented by
+              blue links and negative gradients are represented by red links.<br>
+              Note that gradient values at final iteration are used in printing nn architecture.</p></li>
+            <li><p> In each iteration, input of chosen batch size is randomly selected from 120 egs out of 150 egs provided by 
+              iris dataset and then model parameters are optimized using gradient descent. Rest 30 egs are for validation.
+              Also you can see value of loss at each iteration in console.</p></li>
+            <li><p>Also a plot (Loss vs iteration) will show up on clicking the given button.</p></li>
+            <li><p>It is strictly  advised to keep batch size  with batch size=1, you may encounter exploding gradients
+              problem showing  black colour links all over in architecture.</p></li>
+            <li><p>Wait for some time after clicking the button.</p></li>
+          </ol>
         </p>
-        <p>
-         # You can visualize the neural network of your choice and visualize the gradients w.r.t each weight
-          by analyzing the intensity of links connecting the neurons. Positive gradients are represented by
-          blue links and negative gradients are represented by red links.
-          <br><br>
-          <p class="subtitle">Note that gradient values at final iteration are used in printing nn architecture.</p>
-        </p>
-        <p>
-          # In each iteration, input of chosen batch size is randomly selected from 120 egs out of 150 egs provided by 
-          iris dataset and then model parameters are optimized using gradient descent. Rest 30 egs are for validation.
-          Also you can see value of loss at each iteration in console.
-          <br><br>
-          # Also a plot (Loss vs iteration) will show up on clicking the given button.
-          <br><br>
-          # It is strictly  advised to keep batch size  with batch size=1, you may encounter exploding gradients
-          problem showing  black colour links all over in architecture.
-        </p>
-        <p># Wait for some time after clicking the button.</p>
       </section>
 
       <section>
