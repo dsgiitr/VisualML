@@ -56,9 +56,9 @@ function Controls2D(obj) {
         boxW = this.box.clientWidth,
         toggleW = this.toggle.clientWidth + 2; // 2px border
     // keep toggle in box
-    if (x < 0) x = 0;
+    if (x < -(boxW - toggleW)/2) x = -(boxW - toggleW)/2;
     if (y < 0) y = 0;
-    if (x > boxW - toggleW) x = boxW - toggleW;
+    if (x > (boxW - toggleW)/2) x = (boxW - toggleW)/2;
     if (y > boxW - toggleW) y = boxW - toggleW;
     this.toggle.style.left = x + 'px';
     this.toggle.style.top = y + 'px';
