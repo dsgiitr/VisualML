@@ -1,5 +1,6 @@
 <html>
-  <head>
+
+<head>
     <title>MNIST in TensorFlow.js Layers API</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,340 +8,260 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
     <style>
-      #train {
-        margin-top: 10px;
-      }
-
-      label {
-        display: inline-block;
-        width: 250px;
-        padding: 6px 0 6px 0;
-      }
-
-      .canvases {
-        display: inline-block;
-      }
-
-      .prediction-canvas {
-        width: 100px;
-      }
-
-      .pred {
-        font-size: 20px;
-        line-height: 25px;
-        width: 100px;
-      }
-
-      .pred-correct {
-        background-color: #00cf1c;
-      }
-
-      .pred-incorrect {
-        background-color: red;
-      }
-
-      .pred-container {
-        display: inline-block;
-        width: 100px;
-        margin: 10px;
-      }
-
-      .btn:hover {
-        background-color: #035aa6 !important;
-      }
-      #container {
-        height: 100%;
-        width: 100%;
-        display: flex;
-      }
-      #parameters {
-        width: 35%;
-      }
-      #images {
-        width: 65%;
-      }
+        #train {
+            margin-top: 10px;
+        }
+        
+        label {
+            display: inline-block;
+            width: 250px;
+            padding: 6px 0 6px 0;
+        }
+        
+        .canvases {
+            display: inline-block;
+        }
+        
+        .prediction-canvas {
+            width: 100px;
+        }
+        
+        .pred {
+            font-size: 20px;
+            line-height: 25px;
+            width: 100px;
+        }
+        
+        .pred-correct {
+            background-color: #00cf1c;
+        }
+        
+        .pred-incorrect {
+            background-color: red;
+        }
+        
+        .pred-container {
+            display: inline-block;
+            width: 100px;
+            margin: 10px;
+        }
+        
+        .btn:hover {
+            background-color: #035aa6 !important;
+        }
+        
+        #container1 {
+            height: 100%;
+            width: 100%;
+            display: flex;
+        }
+        
+        #parameters {
+            width: 35%;
+        }
+        
+        #images {
+            width: 65%;
+        }
+        
+        #container2 {
+            height: 100%;
+            width: 100%;
+            display: flex;
+        }
+        
+        #board {
+            width: 50%;
+        }
+        
+        #chart {
+            width: 50%;
+        }
     </style>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    />
-  </head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+</head>
 
-  <body>
+<body>
     <div style="background-color: #eafdf8;">
-      <div class="tfjs-example-container">
-        <section class="title-area">
-          <h1
-            style="
-              font-family: Roboto, sans-serif;
-              -moz-osx-font-smoothing: grayscale;
-              -webkit-font-smoothing: antialiased;
-              font-size: 3rem;
-              line-height: 3.125rem;
-              font-weight: 400;
-              letter-spacing: normal;
-              text-decoration: inherit;
-              text-transform: inherit;
-            "
-          >
-            Train a Convolutional Neural Network online!
-          </h1>
-          <p
-            class="subtitle"
-            style="
-              font-family: Roboto, sans-serif;
-              -moz-osx-font-smoothing: grayscale;
-              -webkit-font-smoothing: antialiased;
-              font-size: 1.25rem;
-              line-height: 2rem;
-              margin-top: 0.5em;
-              font-weight: 500;
-              letter-spacing: 0.0125em;
-              text-decoration: inherit;
-              text-transform: inherit;
-            "
-          >
-            Train a CNN to recognize handwritten digits from the MNIST database
-            using the tf.layers api.
-          </p>
-        </section>
+        <div class="tfjs-example-container">
+            <section class="title-area">
+                <h1>
+                    Train a Convolutional Neural Network online!
+                </h1>
+                <p class="subtitle">
+                    Train a CNN to recognize handwritten digits from the MNIST database using the tf.layers api.
+                </p>
+            </section>
 
-        <section>
-          <p class="section-head">
-            Description
-          </p>
-          <p>
-            This examples lets you train a handwritten digit recognizer using
-            either a Convolutional Neural Network (also known as a ConvNet or
-            CNN) The CNN contains 8 layers in total. We use the softmax function
-            as the activation for the output layer as it creates a probability
-            distribution over our 10 classes so their output values sum to 1. Go
-            train that model!
-          </p>
-          <p>The MNIST dataset is used as training data.</p>
-        </section>
+            <section>
+                <p class="section-head">
+                    Description
+                </p>
+                <p>
+                    This examples lets you train a handwritten digit recognizer using either a Convolutional Neural Network (also known as a ConvNet or CNN) The CNN contains 8 layers in total. We use the softmax function as the activation for the output layer as it creates
+                    a probability distribution over our 10 classes so their output values sum to 1. Go train that model!
+                </p>
+                <p>The MNIST dataset is used as training data.</p>
+            </section>
 
-        <section>
-          <p class="section-head">Training Parameters</p>
-          <div id="container">
-            <div id="parameters">
-              <div>
-                <label style="font-size: large; font-weight: 500;"
-                  >No. of training epochs:</label
-                >
-                <input id="train-epochs" value="3" />
-              </div>
-              <div>
-                <label style="font-size: large; font-weight: 500;"
-                  >Optimizer:</label
-                >
-                <select id="optimizer">
-                  <option>Adam</option>
-                  <option>RMSprop</option>
-                  <option>SGD</option>
-                </select>
-              </div>
-              <div>
-                <label style="font-size: large; font-weight: 500;"
-                  >Learning Rate:</label
-                >
-                <input id="learning-rate" value="0.003" />
-              </div>
-              <div>
-                <label style="font-size: large; font-weight: 500;"
-                  >Batch Size:</label
-                >
-                <input id="batch-size" value="640" />
-              </div>
+            <section>
+                <p class="section-head">Training Parameters</p>
+                <div id="container1">
+                    <div id="parameters">
+                        <div>
+                            <label style="font-size: large; font-weight: 500;">
+                              No. of training epochs:
+                            </label>
+                            <input id="train-epochs" value="3" />
+                        </div>
+                        <div>
+                            <label style="font-size: large; font-weight: 500;">
+                              Optimizer:
+                            </label>
+                            <select id="optimizer">
+                              <option>
+                                Adam
+                              </option>
+                              <option>
+                                RMSprop
+                              </option>
+                              <option>
+                                SGD
+                              </option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size: large; font-weight: 500;">
+                              Learning Rate:
+                            </label>
+                            <input id="learning-rate" value="0.003" />
+                        </div>
+                        <div>
+                            <label style="font-size: large; font-weight: 500;">
+                              Batch Size:
+                            </label>
+                            <input id="batch-size" value="640" />
+                        </div>
 
-              <button id="train" class="btn btn-dark">
-                Load Data and Train Model
-              </button>
-            </div>
-            <div id="images"></div>
-          </div>
-        </section>
-        <section>
-          <p class="section-head">Training Progress</p>
-          <p id="status"></p>
-          <p id="message"></p>
+                        <button id="train" class="btn btn-dark">
+                          Load Data and Train Model
+                        </button>
+                    </div>
+                    <div id="images">
+                    </div>
+                </div>
+            </section>
+            <section>
+                <p class="section-head">Training Progress</p>
+                <p id="status"></p>
+                <p id="message"></p>
 
-          <div id="stats">
-            <div class="canvases">
-              <label
-                id="loss-label"
-                style="font-size: large; font-weight: 200;"
-              ></label>
-              <div id="loss-canvas"></div>
-            </div>
-            <div class="canvases">
-              <label
-                id="accuracy-label"
-                style="font-size: large; font-weight: 200;"
-              ></label>
-              <div id="accuracy-canvas"></div>
-            </div>
-          </div>
-        </section>
+                <div id="stats">
+                    <div class="canvases">
+                        <label id="loss-label" style="font-size: large; font-weight: 200;"></label>
+                        <div id="loss-canvas"></div>
+                    </div>
+                    <div class="canvases">
+                        <label id="accuracy-label" style="font-size: large; font-weight: 200;"></label>
+                        <div id="accuracy-canvas"></div>
+                    </div>
+                </div>
+            </section>
 
-        <!-- <section>
-          <p class="section-head">Inference Examples</p>
-          <div id="images"></div>
-        </section> -->
-        <section>
-          <p class="section-head" id="heading">Test Your Model</p>
-          <p>
-            Feel free to draw digits on the small blackboard there and get your
-            model to predict the numbers!
-          </p>
-          <p style="font-weight: bold;">
-            Note: Press ` to toggle the bar chart window.
-          </p>
-          <div
-            id="canvas_box"
-            class="canvas-box"
-            style="margin-left: 20em; margin-bottom: 1em;"
-          ></div>
-          <button
-            id="clear-button"
-            class="btn btn-dark"
-            marginTop="1em"
-            marginBottom="1em"
-            style="background-color: crimson; margin-left: 19em; width: 9.5em;"
-          >
-            Clear
-          </button>
-          <button
-            id="predict-button"
-            class="btn btn-dark"
-            marginTop="1em"
-            marginBottom="1em"
-            style="background-color: #00cf1c; margin-left: 10px; width: 9.5em;"
-          >
-            Predict
-          </button>
-          <div id="chart_box"></div>
-        </section>
-        <section>
-          <p class="section-head" id="heading">Visualise Layers</p>
-          <p>
-            Now, you can visualise the layers by seeing the transformation done
-            on image by each layer.
-          </p>
-          <div>
-            <p id="log" marginTop="1em"></p>
-          </div>
-          <button
-            id="visualise-layer0"
-            class="btn btn-dark"
-            marginTop="1em"
-            marginBottom="1em"
-          >
+            <section>
+                <p class="section-head" id="heading">Test Your Model</p>
+                <p>
+                    Feel free to draw digits on the small blackboard there and get your model to predict the numbers!
+                </p>
+                <p style="font-weight: bold;">
+                    Note: Press ` to toggle the bar chart window.
+                </p>
+                <div id="container2">
+                    <div id="board">
+                        <div id="canvas_box" class="canvas-box" style="margin-left: 20em; margin-bottom: 1em;">
+                        </div>
+                        <button id="clear-button" class="btn btn-dark" marginTop="1em" marginBottom="1em" style="background-color: crimson; margin-left: 19em; width: 9.5em;">
+                      Clear
+                    </button>
+                        <button id="predict-button" class="btn btn-dark" marginTop="1em" marginBottom="1em" style="background-color: #00cf1c; margin-left: 10px; width: 9.5em;">
+                      Predict
+                    </button>
+                    </div>
+                    <div id="chart">
+                        <canvas id="myChart" width="600" height="300"></canvas>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <p class="section-head" id="heading">Visualise Layers</p>
+                <p>
+                    Now, you can visualise the layers by seeing the transformation done on image by each layer.
+                </p>
+                <div>
+                    <p id="log" marginTop="1em"></p>
+                </div>
+                <button id="visualise-layer0" class="btn btn-dark" marginTop="1em" marginBottom="1em">
             Visualise Layer-1
           </button>
-          <p style="padding-top: 0.5em;">
-            Layer-1 is a conv2D layer with 8 filters.
-          </p>
-          <div id="Layer0"></div>
-          <button
-            id="visualise-layer1"
-            class="btn btn-dark"
-            marginTop="1em"
-            marginBottom="1em"
-          >
+                <p style="padding-top: 0.5em;">
+                    Layer-1 is a conv2D layer with 8 filters.
+                </p>
+                <div id="Layer0"></div>
+                <button id="visualise-layer1" class="btn btn-dark" marginTop="1em" marginBottom="1em">
             Visualise Layer-2
           </button>
-          <p style="padding-top: 0.5em;">
-            Layer-2 is a downsampling layer that downsamples the input by a
-            factor of 2 in both dimensions.
-          </p>
-          <div id="Layer1"></div>
-          <button
-            id="visualise-layer2"
-            class="btn btn-dark"
-            marginTop="1em"
-            marginBottom="1em"
-          >
+                <p style="padding-top: 0.5em;">
+                    Layer-2 is a downsampling layer that downsamples the input by a factor of 2 in both dimensions.
+                </p>
+                <div id="Layer1"></div>
+                <button id="visualise-layer2" class="btn btn-dark" marginTop="1em" marginBottom="1em">
             Visualise Layer-3
           </button>
-          <p style="padding-top: 0.5em;">
-            Layer-3 is a conv2D layer with 16 filters.
-          </p>
-          <div id="Layer2"></div>
-          <button
-            id="visualise-layer3"
-            class="btn btn-dark"
-            marginTop="1em"
-            marginBottom="1em"
-          >
+                <p style="padding-top: 0.5em;">
+                    Layer-3 is a conv2D layer with 16 filters.
+                </p>
+                <div id="Layer2"></div>
+                <button id="visualise-layer3" class="btn btn-dark" marginTop="1em" marginBottom="1em">
             Visualise Layer-4
           </button>
-          <p style="padding-top: 0.5em;">
-            Layer-4 is a downsampling layer that downsamples the input by a
-            factor of 2 in both dimensions.
-          </p>
-          <div id="Layer3"></div>
-          <button
-            id="visualise-layer4"
-            class="btn btn-dark"
-            marginTop="1em"
-            marginBottom="1em"
-          >
+                <p style="padding-top: 0.5em;">
+                    Layer-4 is a downsampling layer that downsamples the input by a factor of 2 in both dimensions.
+                </p>
+                <div id="Layer3"></div>
+                <button id="visualise-layer4" class="btn btn-dark" marginTop="1em" marginBottom="1em">
             Visualise Layer-5
           </button>
-          <p style="padding-top: 0.5em;">
-            Layer-5 is a conv2D layer with 32 filters.
-          </p>
-          <div id="Layer4"></div>
-          <button
-            id="visualise-layer5"
-            class="btn btn-dark"
-            marginTop="1em"
-            marginBottom="1em"
-          >
+                <p style="padding-top: 0.5em;">
+                    Layer-5 is a conv2D layer with 32 filters.
+                </p>
+                <div id="Layer4"></div>
+                <button id="visualise-layer5" class="btn btn-dark" marginTop="1em" marginBottom="1em">
             Visualise Layer-6
           </button>
-          <p style="padding-top: 0.5em;">Layer-6 is a flattening layer</p>
-          <div id="Layer5"></div>
-          <div id="Spacing1" marginTop="1em"></div>
-          <button
-            id="visualise-layer6"
-            class="btn btn-dark"
-            marginTop="1em"
-            marginBottom="1em"
-          >
+                <p style="padding-top: 0.5em;">Layer-6 is a flattening layer</p>
+                <div id="Layer5"></div>
+                <div id="Spacing1" marginTop="1em"></div>
+                <button id="visualise-layer6" class="btn btn-dark" marginTop="1em" marginBottom="1em">
             Visualise Layer-7
           </button>
-          <p style="padding-top: 0.5em;">
-            Layer-7 is a dense layer with 10 units.
-          </p>
-          <div id="Layer6"></div>
-          <div id="Spacing" marginTop="1em"></div>
-          <button
-            id="visualise-layer7"
-            class="btn btn-dark"
-            marginTop="1em"
-            marginBottom="1em"
-          >
+                <p style="padding-top: 0.5em;">
+                    Layer-7 is a dense layer with 10 units.
+                </p>
+                <div id="Layer6"></div>
+                <div id="Spacing" marginTop="1em"></div>
+                <button id="visualise-layer7" class="btn btn-dark" marginTop="1em" marginBottom="1em">
             Visualise Layer-8
           </button>
-          <p style="padding-top: 0.5em;">
-            Layer-8 is also a dense layer, but it has 10 units. One for each
-            type of output.
-          </p>
-          <div id="Layer7"></div>
-          <div id="Spacing2" marginTop="1em"></div>
-        </section>
-        <section>
-          <p class="section-head">Play with the model</p>
-          <p>
-            Play around with your model in 3D and see each layer as it is.
-          </p>
-          <a class="btn btn-dark" href="https://github.com/Aaryan-Garg/Tensorspace/blob/master/index%202.html">Play</a>
-        </section>
-      </div>
+                <p style="padding-top: 0.5em;">
+                    Layer-8 is also a dense layer, but it has 10 units. One for each type of output.
+                </p>
+                <div id="Layer7"></div>
+                <div id="Spacing2" marginTop="1em"></div>
+            </section>
+        </div>
     </div>
     <script src="index.js"></script>
-    <!-- <script src="app.js"></script> -->
-  </body>
+
+</body>
+
 </html>
