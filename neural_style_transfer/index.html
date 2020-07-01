@@ -1,233 +1,153 @@
-<!DOCTYPE html>
-<html lang="en">
+<!--
+Copyright 2018 Google LLC. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==============================================================================
+-->
+
+<!doctype html>
+
 <head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91864013-5"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-91864013-5');
-    </script>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Arbitrary Style Transfer with TF.js" />
-    <meta name="twitter:description" content="Paint yourself in the style of any painting, right in the browser." />
-
-    <title>Neural Style Transfer</title>
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-
-    <!-- Bootstrap core CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
-    <script src="dist/bundle.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../shared/tfjs-examples.css" />
 </head>
 
 <style>
-  body {
-    overflow-x: hidden;
-    width: 100%;
+  .setting {
+    padding: 6px;
   }
 
-  .centered {
-    margin: auto;
-    display: block;
+  #trainModel {
+    margin-top: 12px;
   }
 
-  #Progress {
-    width: 80%;
-    background-color: transparent;
-    border: 1px solid black;
+  .setting-label {
+    display: inline-block;
+    width: 12em;
   }
 
-  #Bar {
-    width: 0%;
-    height: 30px;
-    background-color: green;
+  .answer-correct {
+    color: green;
   }
 
-  #counter {
-    text-align: center;
-    color: black;
-    font-size: 24px;
-  }
-
-  #btndownload {
-    border-radius: 12px;
-    background: #73AD21;
-    padding: 10px; 
-    margin-bottom: 40px;
-    width: 180px;
-    height: 50px;
-  }
-
-  #btndownload:active {
-    background: #ca0707;
-    color: aliceblue;
+  .answer-wrong {
+    color: red;
   }
 </style>
 
 <body>
-<input type="file" id="file-select" style="display: none" accept="image/x-png,image/gif,image/jpeg"/>
-<!-- As a heading -->
-<div class="jumbotron jumbotron-fluid py-4" style="text-align: center; color: aliceblue; background-color: #512DA8;">
-    <div class="container">
-      <h2>Neural Style Transfer</h2>
-    </div>
-</div>
-<div class="container">
-<div id="mobile-warning" hidden class="alert alert-warning" role="alert">
-  This site may have problems functioning on mobile devices. 
-  Don't worry, you can still read the description below!
-</div>
+  <div class='tfjs-example-container centered-container'>
+    <section class='title-area'>
+      <h1>TensorFlow.js: Addition RNN</h1>
+      <p class='subtitle'>Train a model to learn addition by example</p>
+    </section>
+    <section>
+      <p class='section-head'>Description</p>
+      <p>
+        This example trains a <a href="https://en.wikipedia.org/wiki/Recurrent_neural_network">Recurrent Neural Network</a>
+        to do addition without explicitly defining the addition operator. Instead
+        we feed it examples of sums and let it learn from that.
+      </p>
+      <p>
+        Given a <span class='in-type'>string</span> like
+        <span class='in-example'>3 + 4</span>, it will learn to output
+        a <span class='out-type'>number</span>
+        like <span class=out-example>7</span>.
+      </p>
+      <p>
+        This example generates it's own training data programatically.
+      </p>
+    </section>
 
-<div class="container">
-  <div class="row my-4">
-    <div class="col-lg-5 mx-5 my-4">
-      <h3 style="text-align: center;"> Choose Content Image </h3><br>
-        <img id="content-img" class="centered" src="images/chicago.jpg" height=256 width=100%></img>
-        <br>
-        <label for="content-img-size">Content image size</label>
-        <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top" 
-        title="A bigger content image results in a more detailed output, but increases the processing time significantly."></i>
-        <input type="range" min="256" max="400" value="256" class="custom-range centered" id="content-img-size" >
-        <br>
-        <select id="content-select" class="centered custom-select">
-          <option value="" disabled>Select content</option>
-          <option value="pic">Take a picture</option>
-          <option value="file">Select from file</option>
-          <option value="stata">stata</option>
-          <option value="diana">diana</option>
-          <option value="golden_gate">golden_gate</option>
-          <option value="beach">beach</option>
-          <option value="chicago" selected="selected">chicago</option>
-          <option value="statue_of_liberty">statue_of_liberty</option>
-        </select>
-    </div>
-    <div class="col-lg-5 mx-4 my-4">
-      <h3 style="text-align: center;"> Choose Style Image </h3><br>
-        <img id="style-img" class="centered" crossorigin="anonymous" src="images/seaport.jpg" height=256 width=100%></img>
-        <br>
-        <label for="style-img-size">Style image size</label>
-        <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top" 
-        title='Changing the size of a style image usually affects the texture "seen" by the network.'></i>
-        <input id="style-img-square" type="checkbox" style="vertical-align: middle; float: right;"
-        data-toggle="tooltip" data-placement="top" 
-        title="Force image to square">
-        <input type="range" min="100" max="400" value="256" class="custom-range centered" id="style-img-size">
-        <br>
-        <select id="style-select" class="centered custom-select">
-          <option value="" disabled>Select a style</option>
-          <option value="file">Select from file</option>
-          <option value="random">Random image from wikiart.org</option>
-          <option value="udnie">udnie</option>
-          <option value="stripes">stripes</option>
-          <option value="bricks">bricks</option>
-          <option value="clouds">clouds</option>
-          <option value="towers">towers</option>
-          <option value="sketch">sketch</option>
-          <option value="seaport" selected="selected">seaport</option>
-          <option value="red_circles">red_circles</option>
-          <option value="zigzag">zigzag</option>
-        </select>
-    </div>
-  </div>
-</div>
+    <div>
+      <section>
+        <p class='section-head'>Instructions</p>
+        <p>
+          Click the "Train Model" to start the model training button. You can edit the
+          parameters used to train the model as well.
+        </p>
+      </section>
 
-<div class="container">
-  <div class="row my-4">
-    <div class="col-md-4 offset-md-1"><h5>Choose the Style Prediction Network</h5></div>
-    <div class="col-md-5">
-        <select disabled id="model-select-style" class="centered custom-select">
-          <option value="mobilenet" selected="selected">[Fast] Distilled MobileNet style model</option>
-          <option value="inception">[High quality] Original Inception-v3 style model</option>
-        </select>
-    </div>
-  </div>
-  <div class="row my-4">
-    <div class="col-md-4 offset-md-1"><h5>Choose the Style Transfer Network</h5></div>
-    <div class="col-md-5">
-        <select disabled id="model-select-transformer" class="centered custom-select">
-          <option value="separable" selected="selected">[Fast] Separable Conv-2d Transformer</option>
-          <option value="original">[High quality] Original Transformer model</option>
-        </select>
-    </div>
-  </div>
-</div>
-<br>
-<div class="container">
-  <div class="row my-4">
-    <div class="centered"><h4>Select the extent of stylization</h4></div>
-    <div class="col-md-8 col-12 offset-md-2">
-      <label for="stylized-img-ratio">Stylization strength</label>
-      <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top" 
-      title="This parameter affects the stylization strength. The further to the right, the stronger the stylization. This is done via interpolation between the style vectors of the content and style images."></i>
-      <input type="range" min="0" max="100" value="100" class="custom-range centered" id="stylized-img-ratio">
-    </div>
-  </div>
-  <br>
-  <div class="row my-4">
-    <div class="col-md-6 offset-md-3">
-        <button disabled id="style-button" type="button" class="btn btn-primary btn-block">Loading stylization model. Please wait..</button>
-    </div>
-    <div class="col-md-1">
-        <button type="button" id="randomize" class="btn btn-light btn-block">
-          <i class="fas fa-random" data-toggle="tooltip" data-placement="top" 
-          title="Randomize parameters"></i>
-        </button>
-    </div>
-  </div>
-  <br>
-  <div id="Progress" class="centered">
-    <div id="Bar"></div>
-  </div>
-  <div id="counter" class="centered">Epochs: 0</div>
-  <br>
-  <div style="text-align: center;"><b><h1>Final Image</h1></b></div>
-  <canvas id="stylized" class="centered"></canvas>
-  <br>
-  <button id="btndownload" class="centered">Download</button>
-</div>
+      <div class="controls with-rows">
+        <div class="settings">
+          <div class="setting">
+            <span class="setting-label">Digits:</span>
+            <input id="digits" value="2"></input>
+          </div>
+          <div class="setting">
+            <span class="setting-label">Training Size:</span>
+            <input id="trainingSize" value="5000"></input>
+          </div>
+          <div class="setting">
+            <span class="setting-label">RNN Type:</span>
+            <select id="rnnType">
+              <option value="SimpleRNN">SimpleRNN</option>
+              <option value="GRU">GRU</option>
+              <option value="LSTM">LSTM</option>
+            </select>
+          </div>
+          <div class="setting">
+            <span class="setting-label">RNN Layers:</span>
+            <input id="rnnLayers" value="1"></input>
+          </div>
+          <div class="setting">
+            <span class="setting-label">RNN Hidden Layer Size:</span>
+            <input id="rnnLayerSize" value="128"></input>
+          </div>
+          <div class="setting">
+            <span class="setting-label">Batch Size:</span>
+            <input id="batchSize" value="128"></input>
+          </div>
+          <div class="setting">
+            <span class="setting-label">Train Iterations:</span>
+            <input id="trainIterations" value="100"></input>
+          </div>
+          <div class="setting">
+            <span class="setting-label"># of test examples:</span>
+            <input id="numTestExamples" value="20"></input>
+          </div>
+        </div>
 
-<div class="container"><canvas id="hidden-canvas" style="display: none"></canvas></div>
-<div class="modal fade" id="cam-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Take a snapshot!</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <div>
+          <span>
+            <button class="btn-primary" id="trainModel">Train Model</button>
+          </span>
+        </div>
       </div>
-      <div class="modal-body">
-        <video id="webcam-video" class="centered" width="500" height="375"></video>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="snap-button">Snap!</button>
-      </div>
+
+
+      <section>
+        <p class='section-head'>Training Progress</p>
+        <p id="trainStatus"></p>
+        <div class='with-cols'>
+          <div id="lossChart"></div>
+          <div id="accuracyChart"></div>
+          <!-- <div id="examplesPerSecCanvas"></div> -->
+        </div>
+      </section>
+
+      <section>
+        <p class='section-head'>Test Examples</p>
+        <p id="testExamples"></p>
+      </section>
+
+
+
+
     </div>
   </div>
-</div>
-</div>
 
-<!-- JQuery -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<!-- Bootstrap tooltips -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
-<!-- Bootstrap core JavaScript -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
-<script type="text/javascript">
-  $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-  })
-</script>
 </body>
-</html>
+
+<script src="index.js"></script>
