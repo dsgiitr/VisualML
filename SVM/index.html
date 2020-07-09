@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Support Vector Machine
+    </title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.0/tween.umd.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <div style="background-color: #eafdf8;">
+        <div class="tfjs-example-container">
+            <section class="title-area">
+                <h1 id="heading">
+                    Support Vector Machines
+                </h1>
+                <p class="subtitle" id="subtitle">
+                    The Mr. Perfect of Machine Learning Classifiers.
+                </p>
+            </section>
+            <section>
+                <p class="section-head">
+                    Description
+                </p>
+                <p>
+                    A Support Vector Machine is different from other Machine Learning Classifiers because it aims to create the widest possible street between the two types of examples that does not touch or contain any point.
+                </p>
+                <div id="container">
+                    <div id="MLC" style="margin-right: 1em;">
+                        <span id="d01"></span>
+                        <span id="d02"></span>
+                        <span id="d03"></span>
+                        <span id="d04"></span>
+                        <span id="d05"></span>
+                        <span id="d06"></span>
+                        <span id="d07"></span>
+                        <span id="d08"></span>
+                        <span id="d11"></span>
+                        <span id="d12"></span>
+                        <span id="d13"></span>
+                        <span id="d14"></span>
+                        <span id="d15"></span>
+                        <span id="d16"></span>
+                        <span id="d17"></span>
+                        <span id="d18"></span>
+                        <span id="db1"></span>
+                        <span id="db2"></span>
+                        <span id="db3"></span>
+                        <svg height="190" width="500">
+                            <line x1="150" y1="15" x2="150" y2="15" style="stroke:rgb(255,0,0);stroke-width:2">
+                                <animate 
+                                    attributeName="x2" 
+                                    from="150" 
+                                    to="480" 
+                                    dur="4s" 
+                                    repeatCount="5" 
+                                    fill="freeze"
+                                    values="150; 150; 480; 480;"
+                                    keyTimes="0; 0.5; 0.75; 1" />
+                                <animate 
+                                    attributeName="y2" 
+                                    from="15" 
+                                    to="180" 
+                                    dur="4s" 
+                                    repeatCount="5" 
+                                    fill="freeze"
+                                    values="15; 15; 180; 180;"
+                                    keyTimes="0; 0.5; 0.75; 1" />
+                            </line>
+                            <line x1="230" y1="-10" x2="190" y2="-20" style="stroke:rgb(255,0,0);stroke-width:2">
+                                <animate 
+                                    attributeName="x2" 
+                                    from="230" 
+                                    to="400" 
+                                    dur="4s" 
+                                    repeatCount="5" 
+                                    fill="freeze"
+                                    values="230; 230; 400; 400;"
+                                    keyTimes="0; 0.5; 0.75; 1" />
+                                <animate 
+                                    attributeName="y2" 
+                                    from="0" 
+                                    to="240" 
+                                    dur="4s" 
+                                    repeatCount="5" 
+                                    fill="freeze"
+                                    values="0; 0; 240; 240;"
+                                    keyTimes="0; 0.5; 0.75; 1" />
+                            </line>
+                            <line x1="220" y1="0" x2="220" y2="0" style="stroke:rgb(255,0,0);stroke-width:2">
+                                <animate 
+                                    attributeName="x2" 
+                                    from="220" 
+                                    to="470" 
+                                    dur="4s" 
+                                    repeatCount="5" 
+                                    fill="freeze"
+                                    values="220; 220; 470; 470;"
+                                    keyTimes="0; 0.5; 0.75; 1" />
+                                <animate 
+                                    attributeName="y2" 
+                                    from="0" 
+                                    to="200" 
+                                    dur="4s" 
+                                    repeatCount="5" 
+                                    fill="freeze"
+                                    values="0; 0; 200; 200;"
+                                    keyTimes="0; 0.5; 0.75; 1" />
+                            </line>
+                        </svg>
+                        <p style="margin-top: 2em; text-align: center;">Any other Machine Learning Classifier Decision boundary</p>
+                    </div>
+                    <div id="SVM" style="margin-left: 1em;">
+                        <span id="d_01"></span>
+                        <span id="d_02"></span>
+                        <span id="d_03"></span>
+                        <span id="d_04"></span>
+                        <span id="d_05"></span>
+                        <span id="d_06"></span>
+                        <span id="d_07"></span>
+                        <span id="d_08"></span>
+                        <span id="d_11"></span>
+                        <span id="d_12"></span>
+                        <span id="d_13"></span>
+                        <span id="d_14"></span>
+                        <span id="d_15"></span>
+                        <span id="d_16"></span>
+                        <span id="d_17"></span>
+                        <span id="d_18"></span>
+                        <svg height="190" width="500">
+                            <line x1="190" y1="0" x2="190" y2="0" style="stroke:rgb(255,0,0);stroke-width:2">
+                                <animate 
+                                    attributeName="x2" 
+                                    from="190" 
+                                    to="440" 
+                                    dur="4s" 
+                                    repeatCount="5" 
+                                    fill="freeze"
+                                    values="190; 190; 440; 440;"
+                                    keyTimes="0; 0.5; 0.75; 1" />
+                                <animate 
+                                    attributeName="y2" 
+                                    from="0" 
+                                    to="200" 
+                                    dur="4s" 
+                                    repeatCount="5" 
+                                    fill="freeze"
+                                    values="0; 0; 200; 200;"
+                                    keyTimes="0; 0.5; 0.75; 1" />
+                            </line>
+                          </svg>
+                        <p style="margin-top: 2em; text-align: center">SVM Decision boundary</p>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <p class="section-head">
+                    Parameters
+                </p>
+            </section>
+            <section>
+                <p class="section-head">
+                    Learning Curves and Decision Boundaries
+                </p>
+                <p id="status"></p>
+                <p id="message"></p>
+
+                <div id="stats">
+                    <div class="canvases">
+                        <label id="loss-label" style="font-size: large; font-weight: 200;" />
+                        <div id="loss-canvas" style="width: 600px;" />
+                    </div>
+                    <div class="canvases">
+                        <label id="accuracy-label" style="font-size: large; font-weight: 200;" />
+                        <div id="accuracy-canvas">
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <p class="section-head">
+                    Testing
+                </p>
+            </section>
+        </div>
+    </div>
+</body>
+<script src="./ui.js"></script>
+
+</html>
