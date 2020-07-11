@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <title>PCA</title>
+    <script src="pca.js" defer></script>
+    <script src="iris.js" defer></script>
+  </head>
+  <body>
+    <style>
+         <style>
+    
+            input {
+              width: 75px;
+            }
+
+            .input-div {
+              padding: 5px;
+              font-family: monospace;
+              font-size: 16px;
+            }
+
+            .input-label {
+              display: inline-block;
+              width: 160px;
+            }
+         </style>   
+  <body>
+    <div style="margin-left: 300px; margin-right: 300px;">
+    <div><h1>PRINCIPAL COMPONENT ANALYSIS</h1></div>
+    </div><br><br>
+    <div><img src="gifpca.gif" alt="PCA"></div><br>
+    <button id="Show1"><h3>Show plots without outlier</h3></button>
+    <br>
+    <div><h2>Using Original AXES</h2></div><br>
+    <div style="margin-left: 300px; margin-right: 300px;">
+    <div><h2>3d Plot</h2></div>
+    <div id="3dplot"></div>
+    <div><h2>Plotting on 1st dimension</h2></div>
+    <div id='0-dim'></div>
+    <div><h2>Plotting on 2nd dimension</h2></div>
+    <div id='1-dim'></div>
+    <div><h2>Plotting on 3rd dimension</h2></div>
+    <div id='2-dim'></div>
+    <!--
+    <div><h2>Plotting b/w 1st and 2nd dimension</h2></div>
+    <div id='0-1-dim'></div>
+    <div><h2>Plotting b/w 1st and 3rd dimension</h2></div>
+    <div id='0-2-dim'></div>
+    <div><h2>Plotting b/w 2nd and 3rd dimension</h2></div>
+    <div id='1-2-dim'></div>
+     -->
+    </div><br>
+    <div><h2>Using PRINCIPAL COMPONENTS</h2></div><br>
+    <div style="margin-left: 300px; margin-right: 300px;">
+    <div><h2>3d Plot</h2></div>
+    <div id="3dplot-pca"></div>
+    <div><h2>Plotting b/w 1st and 2nd principal components</h2></div>
+    <div id='0-1-dim-pca'></div>
+    <div><h2>Plotting on 1st Principal component</h2></div>
+    <div id='0-dim-pca'></div>
+    <div><h2>Plotting on 2nd Principal component</h2></div>
+    <div id='1-dim-pca'></div>
+    <div><h2>Plotting on 3rd Principal component</h2></div>
+    <div id='2-dim-pca'></div>
+    </div>
+
+
+    <div><h2>Add the OUTLIER(for eg: [6, 6, 6])</h2></div><br>
+    <div style="margin-left: 100px; margin-right: 300px;">
+    <div class="input-div">
+        <label class="input-label">Value of Ist feature</label>
+        <input id="f1" type="number" value="6"></input>
+    </div>
+    <div class="input-div">
+        <label class="input-label">Value of 2nd feature</label>
+        <input id="f2" type="number" value="6"></input>
+    </div>
+    <div class="input-div">
+        <label class="input-label">Value of 3rd feature</label>
+        <input id="f3" type="number" value="6"></input>
+    </div><br>
+    <button id="Show2"><h3>Show plots with outlier</h3></button>
+    </div><br><br>
+
+
+    <div><h2>Using Original AXES</h2></div><br>
+    <div style="margin-left: 300px; margin-right: 300px;">
+    <div><h2>3d Plot</h2></div>
+    <div id="3dplot-out"></div>
+    <div><h2>Plotting on 1st dimension</h2></div>
+    <div id='0-dim-out'></div>
+    <div><h2>Plotting on 2nd dimension</h2></div>
+    <div id='1-dim-out'></div>
+    <div><h2>Plotting on 3rd dimension</h2></div>
+    <div id='2-dim-out'></div>
+    </div><br>
+
+    <div><h2>Using PRINCIPAL COMPONENTS</h2></div><br>
+    <div style="margin-left: 300px; margin-right: 300px;">
+    <div><h2>3d Plot</h2></div>
+    <div id="3dplot-pca-out"></div>
+    <div><h2>Plotting b/w 1st and 2nd principal components</h2></div>
+    <div id='0-1-dim-pca-out'></div>
+    <div><h2>Plotting on 1st Principal component</h2></div>
+    <div id='0-dim-pca-out'></div>
+    <div><h2>Plotting on 2nd Principal component</h2></div>
+    <div id='1-dim-pca-out'></div>
+    <div><h2>Plotting on 3rd Principal component</h2></div>
+    <div id='2-dim-pca-out'></div>
+    </div><br>
+
+    <div><h1>Using IRIS dataset</h1></div>
+    <br>
+    <button id="Show3"><h3>Show plots using IRIS</h3></button>
+
+    <div><h2>Using Original AXES</h2></div><br>
+    <div style="margin-left: 300px; margin-right: 300px;">
+    <div><h2>Plotting on 1st dimension</h2></div>
+    <div id='0-dim-iris'></div>
+    <div><h2>Plotting on 2nd dimension</h2></div>
+    <div id='1-dim-iris'></div>
+    <div><h2>Plotting on 3rd dimension</h2></div>
+    <div id='2-dim-iris'></div>
+    <div><h2>Plotting on 4th dimension</h2></div>
+    <div id='3-dim-iris'></div>
+    </div><br>
+
+    <div><h2>Using PRINCIPAL COMPONENTS</h2></div><br>
+    <div style="margin-left: 300px; margin-right: 300px;">
+    <div><h2>Variance vs No. of principal components</h2></div>
+    <div id="var-pca"></div>    
+    <div><h2>Plotting b/w 1st, 2nd and 3rd principal components</h2></div>
+    <div id="3dplot-pca-iris"></div>
+    <div><h2>Plotting b/w 1st and 2nd principal components</h2></div>
+    <div id='0-1-dim-pca-iris'></div>
+    <div><h2>Plotting on 1st Principal component</h2></div>
+    <div id='0-dim-pca-iris'></div>
+    <div><h2>Plotting on 2nd Principal component</h2></div>
+    <div id='1-dim-pca-iris'></div>
+    <div><h2>Plotting on 3rd Principal component</h2></div>
+    <div id='2-dim-pca-iris'></div>
+    <div><h2>Plotting on 4th Principal component</h2></div>
+    <div id='3-dim-pca-iris'></div>
+    </div><br>
+
+
+    <br><br>
+  </body>
+</html>
