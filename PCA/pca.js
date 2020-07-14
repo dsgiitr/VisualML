@@ -9,18 +9,19 @@ const D = 3;
 
 function render3DPrediction(ctx, xs, proj = false) {
     let xsOriginal = xs.dataSync();
+    //console.log(xsOriginal);
     if (proj) 
     {
         const dir = xsOriginal.slice(0, 9);
         xsOriginal = xsOriginal.subarray(9);
         const c1dirX = [0, 5 * dir[0]];
-        const c1dirY = [0, 5 * dir[1]];
-        const c1dirZ = [0, 5 * dir[2]];
-        const c2dirX = [0, 5 * dir[3]];
+        const c2dirX = [0, 5 * dir[1]];
+        const c3dirX = [0, 5 * dir[2]];
+        const c1dirY = [0, 5 * dir[3]];
         const c2dirY = [0, 5 * dir[4]];
-        const c2dirZ = [0, 5 * dir[5]];
-        const c3dirX = [0, 5 * dir[6]];
-        const c3dirY = [0, 5 * dir[7]];
+        const c3dirY = [0, 5 * dir[5]];
+        const c1dirZ = [0, 5 * dir[6]];
+        const c2dirZ = [0, 5 * dir[7]];
         const c3dirZ = [0, 5 * dir[8]];
         var c1dir = {
             x: c1dirX,
@@ -72,10 +73,10 @@ function render3DPrediction(ctx, xs, proj = false) {
     const c2Data = [];
     const c3Data = [];
     for (let i = 0; i < xsOriginal.length; i += 3) {
-        if (i < N) {
+        if (i < D*N) {
             c1Data.push({ x: xsOriginal[i], y: xsOriginal[i + 1], z: xsOriginal[i + 2] });
         }
-        else if (N <= i && i < 2 * N) {
+        else if (D*N <= i && i < 2*D* N) {
             c2Data.push({ x: xsOriginal[i], y: xsOriginal[i + 1], z: xsOriginal[i + 2] });
         }
         else {
@@ -158,8 +159,8 @@ function render3DPrediction(ctx, xs, proj = false) {
         var data = [trace1, trace2, trace3];
     }
     var layout = {
-        width: 800,
-        height: 800,
+        width: 600,
+        height: 600,
         margin: {
             l: 0,
             r: 0,
@@ -185,10 +186,10 @@ function render2DPrediction(ctx, xs) {
     const c2Data = [];
     const c3Data = [];
     for (let i = 0; i < xsOriginal.length; i += 2) {
-        if (i < N) {
+        if (i <2*N) {
             c1Data.push({ x: xsOriginal[i], y: xsOriginal[i + 1] });
         }
-        else if (N <= i && i < 2 * N) {
+        else if (2*N <= i && i < 4* N) {
             c2Data.push({ x: xsOriginal[i], y: xsOriginal[i + 1] });
         }
         else {
@@ -257,8 +258,8 @@ function render2DPrediction(ctx, xs) {
     };
     var data = [trace1, trace2, trace3];
     var layout = {
-        width: 800,
-        height: 800,
+        width: 500,
+        height: 500,
         margin: {
             l: 0,
             r: 0,
@@ -355,8 +356,8 @@ function render1DPrediction(ctx, xs) {
     };
     var data = [trace1, trace2, trace3];
     var layout = {
-        width: 800,
-        height: 800,
+        width: 500,
+        height: 500,
         scene: {
             xaxis: { title: 'X' },
         },
@@ -365,7 +366,6 @@ function render1DPrediction(ctx, xs) {
     Plotly.newPlot(ctx, data, layout);
     return ctx;
 }
-
 
 async function pca(xs, nComponents) {
     const batch = xs.shape[0];

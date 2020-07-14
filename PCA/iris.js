@@ -13,13 +13,13 @@ function render3DPrediction1(ctx, xs, proj = false) {
         const dir = xsOriginal.slice(0, 9);
         xsOriginal = xsOriginal.subarray(9);
         const c1dirX = [0, 5 * dir[0]];
-        const c1dirY = [0, 5 * dir[1]];
-        const c1dirZ = [0, 5 * dir[2]];
-        const c2dirX = [0, 5 * dir[3]];
+        const c2dirX = [0, 5 * dir[1]];
+        const c3dirX = [0, 5 * dir[2]];
+        const c1dirY = [0, 5 * dir[3]];
         const c2dirY = [0, 5 * dir[4]];
-        const c2dirZ = [0, 5 * dir[5]];
-        const c3dirX = [0, 5 * dir[6]];
-        const c3dirY = [0, 5 * dir[7]];
+        const c3dirY = [0, 5 * dir[5]];
+        const c1dirZ = [0, 5 * dir[6]];
+        const c2dirZ = [0, 5 * dir[7]];
         const c3dirZ = [0, 5 * dir[8]];
         var c1dir = {
             x: c1dirX,
@@ -72,10 +72,10 @@ function render3DPrediction1(ctx, xs, proj = false) {
     const c3Data = [];
     const c4Data = [];
     for (let i = 0; i < xsOriginal.length; i += 3) {
-        if (i < N1) {
+        if (i < 3*N1) {
             c1Data.push({ x: xsOriginal[i], y: xsOriginal[i + 1], z: xsOriginal[i + 2] });
         }
-        else if (N1 <= i && i < 2 * N1) {
+        else if (3*N1 <= i && i < 6* N1) {
             c2Data.push({ x: xsOriginal[i], y: xsOriginal[i + 1], z: xsOriginal[i + 2] });
         }
         else {
@@ -158,8 +158,8 @@ function render3DPrediction1(ctx, xs, proj = false) {
         var data = [trace1, trace2, trace3];
     }
     var layout = {
-        width: 800,
-        height: 800,
+        width: 600,
+        height: 600,
         margin: {
             l: 0,
             r: 0,
@@ -185,10 +185,10 @@ function render2DPrediction1(ctx, xs) {
     const c2Data = [];
     const c3Data = [];
     for (let i = 0; i < xsOriginal.length; i += 2) {
-        if (i < N1) {
+        if (i <2*N1) {
             c1Data.push({ x: xsOriginal[i], y: xsOriginal[i + 1] });
         }
-        else if (N1 <= i && i < 2 * N1) {
+        else if (2*N1 <= i && i < 4* N1) {
             c2Data.push({ x: xsOriginal[i], y: xsOriginal[i + 1] });
         }
         else {
@@ -257,8 +257,8 @@ function render2DPrediction1(ctx, xs) {
     };
     var data = [trace1, trace2, trace3];
     var layout = {
-        width: 800,
-        height: 800,
+        width: 500,
+        height: 500,
         margin: {
             l: 0,
             r: 0,
@@ -355,8 +355,8 @@ function render1DPrediction1(ctx, xs) {
     };
     var data = [trace1, trace2, trace3];
     var layout = {
-        width: 800,
-        height: 800,
+        width: 500,
+        height: 500,
         scene: {
             xaxis: { title: 'X' },
         },

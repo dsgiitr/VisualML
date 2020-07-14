@@ -12,6 +12,7 @@
     <title>PCA</title>
     <script src="pca.js" defer></script>
     <script src="iris.js" defer></script>
+    <script src="moon.js" defer></script>
   </head>
   <body>
     <style>
@@ -31,7 +32,8 @@
               display: inline-block;
               width: 160px;
             }
-         </style>   
+         </style>
+  </body>         
   <body>
     <div style="margin-left: 300px; margin-right: 300px;">
     <div><h1>PRINCIPAL COMPONENT ANALYSIS</h1></div>
@@ -135,7 +137,7 @@
 
     <div><h2>Using PRINCIPAL COMPONENTS</h2></div><br>
     <div style="margin-left: 300px; margin-right: 300px;">
-    <div><h2>Variance vs No. of principal components</h2></div>
+    <div><h2>Explained_variance vs No. of principal components</h2></div>
     <div id="var-pca"></div>    
     <div><h2>Plotting b/w 1st, 2nd and 3rd principal components</h2></div>
     <div id="3dplot-pca-iris"></div>
@@ -150,8 +152,47 @@
     <div><h2>Plotting on 4th Principal component</h2></div>
     <div id='3-dim-pca-iris'></div>
     </div><br>
+    
+    <div><h1>Using MOON dataset</h1></div>
+    <br>
+    <button id="Show4"><h3>Show plots using Moon-data</h3></button>
 
+    <div><h2>Using Original AXES</h2></div><br>
+    <div style="margin-left: 300px; margin-right: 300px;">
+    <div><h2>2d Plot</h2></div>
+    <div id='2dplot-m'></div>
+    <div><h2>Plotting on 1st dimension</h2></div>
+    <div id='0-dim-m'></div>
+    <div><h2>Plotting on 2nd dimension</h2></div>
+    <div id='1-dim-m'></div>
+    </div><br>
 
-    <br><br>
+    <div><h2>Using PRINCIPAL COMPONENTS</h2></div><br>
+    <div style="margin-left: 300px; margin-right: 300px;">
+       
+    <div><h2>Plotting b/w 1st and 2nd principal components</h2></div>
+    <div id='0-1-dim-pca-m'></div>
+    <div><h2>Plotting on 1st Principal component</h2></div>
+    <div id='0-dim-pca-m'></div>
+    <div><h2>Plotting on 2nd Principal component</h2></div>
+    <div id='1-dim-pca-m'></div>
+    </div><br>
+
+    <div><h2>Kernel PCA (using RBF/Guassian kernel)</h2></div><br>
+    <div style="margin-left: 100px; margin-right: 300px;">
+    <div class="input-div">
+        <label class="input-label">Gamma</label>
+        <input id="gamma" type="number" value="15"></input>
+    </div><br>
+    <button id="Show5"><h3>Show plots using rbf kernel</h3></button>
+
+    <div style="margin-left: 300px; margin-right: 300px;"> 
+    <div><h2>Plotting b/w 1st and 2nd principal components</h2></div>
+    <div id='kpca'></div>
+    <div><h2>Plotting on 1st principal component</h2></div>
+    <div id='kpca-0'></div>
+    <div><h2>Plotting on 2nd principal component</h2></div>
+    <div id='kpca-1'></div>
+    </div><br><br>
   </body>
 </html>
