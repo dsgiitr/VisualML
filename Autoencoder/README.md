@@ -10,3 +10,5 @@ This examples lets you train a MNIST Autoencoder using a Fully Connected Neural 
 
 -You can also autoencode your drawing
 
+Sample website:
+https://r7ohan.000webhostapp.com/Others/proj2/index.html
