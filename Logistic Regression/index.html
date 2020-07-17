@@ -1,0 +1,117 @@
+<html>
+<head>
+  <title>Logistic Regression Visualizer</title>
+  <style>
+  label{
+    font-size:3vh;
+  }
+  input{
+    font-size:3vh;
+  }
+  select{
+    font-size:3vh;
+  }
+  button{
+      font-size:3vh;
+  }
+  pre {
+            overflow-x: auto;
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+         }
+  </style>
+  <script>
+  function update(d,c){
+    document.getElementById(c).innerHTML=Number(document.getElementById(d).value);
+  }
+  </script>
+</head>
+
+<body style="text-align:center;background-color:#EFEFEF;">
+<div id="body" style="text-align:center;width:60%;margin-left:20%;background-color:white;">
+<br>
+
+<span style="font-size:8vh;">LOGISTIC REGRESSION</span>
+<br><br><br>
+
+<pre style="text-align:left;margin-left:7%; width:86%; font-family:Times; font-size:1.3vw;">
+Logistic regression is a classification algorithm used to assign observations to a discrete set of
+
+classes. Unlike linear regression which outputs continuous number values, logistic regression
+
+transforms its output using the logistic sigmoid function to return a probability value which
+
+can then be mapped to two or more discrete classes.
+<h3>Types of Logistic Regression</h3>
+1. Binary Logistic Regression
+
+The categorical response has only two 2 possible outcomes. Example: Spam or Not
+
+2. Multinomial Logistic Regression
+
+Three or more categories without ordering. Example: Predicting which food is preferred
+more (Veg, Non-Veg, Vegan)
+
+3. Ordinal Logistic Regression
+
+Three or more categories with ordering. Example: Movie rating from 1 to 5
+<h3>Decision Boundary</h3>
+To predict which class a data belongs, a threshold can be set. Based upon this threshold, the obtained estimated probability is classified into classes.
+
+</pre>
+
+<h2>Visualization for decision boundary of 2 Classes</h2>
+<div style="display:block;">
+<div style="width:20vw;margin-left:10vh;background-color:#EFEFEF;text-align:left;padding-left:3%;padding-top:3%;padding-bottom:2%;display:inline-block;float:left;" >
+
+  <label for="d">Polynomial Degree:</label><label id="dg"> 3</label><br><br>
+<input type="range" id="d" name="points" min="1" max="11" onchange="update('d','dg');" value=3>
+<div style="height:4vh;"></div>
+
+<label for="r">Lambda (reg):</label><label id="rg"> 0</label><br><br>
+<input type="range" id="r" name="points" min="0" max="20" onchange="update('r','rg');" value=0>
+<div style="height:4vh;"></div>
+
+<label for="r">Learning Rate:(10 power) </label><label id="lg">0</label><br><br>
+<input type="range" id="l" name="points" min="-15" max="1" onchange="update('l','lg');" value=0>
+<div style="height:4vh;"></div>
+
+<label for="data">Dataset:</label>
+<select name="cars" id="data">
+  <option value="moon">Moons</option>
+  <option value="circle">Circles</option>
+  <option value="xor">XOR</option>
+  <option value="gauss">Gauss</option>
+  <option value="spiral">Spiral</option>
+  <option value="all">All</option>
+</select>
+<div style="height:3vh;"></div>
+
+<button id='train' style="background-color:white;">Train</button>
+</div>
+<img src="logreg.jpg" style="height:35vh;width:30vw;"></img>
+<br><br><br><br>
+<div style="float:right;margin-right:3vw;">
+<label for="res">Resol:</label>
+<input id='res' value='50'></input><br><br>
+<label for="epoch">Epoch:</label>
+<input id='epoch' value='100'></input>
+</div>
+</div>
+
+
+<div id="plt" style="font-size:7vh;clear:both;margin-top:15vh;">Plot Area</div>
+<div id="pl" style="height:60vh;width:50vw;margin-left:7vw;margin-top:5vh;"></div>
+<div style="font-size:7vh;clear:both;margin-top:15vh;">Loss Area</div>
+<div id='training' style="width:50vw;height:30vh;margin-left:7vw;"></div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/tensorflow/1.2.7/tf.min.js'></script>
+<script src="script.js" type="module"></script>
+
+</body>
+</html>
