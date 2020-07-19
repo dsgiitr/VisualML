@@ -1,17 +1,11 @@
-import * as tf from '@tensorflow/tfjs';
-import * as numeric from 'numeric';
-import * as Plotly from 'plotly.js/dist/plotly.js';
-
-
 const N = 30;
 const D = 3;
 
 
-function render3DPrediction(ctx, xs, proj = false) {
+function render3DPrediction(ctx, xs, name, proj = false) {
     let xsOriginal = xs.dataSync();
     //console.log(xsOriginal);
-    if (proj) 
-    {
+    if (proj) {
         const dir = xsOriginal.slice(0, 9);
         xsOriginal = xsOriginal.subarray(9);
         const c1dirX = [0, 5 * dir[0]];
@@ -73,13 +67,11 @@ function render3DPrediction(ctx, xs, proj = false) {
     const c2Data = [];
     const c3Data = [];
     for (let i = 0; i < xsOriginal.length; i += 3) {
-        if (i < D*N) {
+        if (i < D * N) {
             c1Data.push({ x: xsOriginal[i], y: xsOriginal[i + 1], z: xsOriginal[i + 2] });
-        }
-        else if (D*N <= i && i < 2*D* N) {
+        } else if (D * N <= i && i < 2 * D * N) {
             c2Data.push({ x: xsOriginal[i], y: xsOriginal[i + 1], z: xsOriginal[i + 2] });
-        }
-        else {
+        } else {
             c3Data.push({ x: xsOriginal[i], y: xsOriginal[i + 1], z: xsOriginal[i + 2] });
         }
     }
@@ -92,7 +84,9 @@ function render3DPrediction(ctx, xs, proj = false) {
         c1Z.push(data1.z);
     }
     var trace1 = {
-        x: c1X, y: c1Y, z: c1Z,
+        x: c1X,
+        y: c1Y,
+        z: c1Z,
         mode: 'markers',
         marker: {
             size: 8,
@@ -114,7 +108,9 @@ function render3DPrediction(ctx, xs, proj = false) {
         c2Z.push(data2.z);
     }
     var trace2 = {
-        x: c2X, y: c2Y, z: c2Z,
+        x: c2X,
+        y: c2Y,
+        z: c2Z,
         mode: 'markers',
         marker: {
             size: 8,
@@ -136,7 +132,9 @@ function render3DPrediction(ctx, xs, proj = false) {
         c3Z.push(data3.z);
     }
     var trace3 = {
-        x: c3X, y: c3Y, z: c3Z,
+        x: c3X,
+        y: c3Y,
+        z: c3Z,
         mode: 'markers',
         marker: {
             size: 8,
@@ -146,21 +144,16 @@ function render3DPrediction(ctx, xs, proj = false) {
             },
             opacity: 1.0
         },
-        text: "Class 3",
+        text: name,
         type: 'scatter3d'
     };
-    
-    if (proj) 
-    {
+
+    if (proj) {
         var data = [trace1, trace2, trace3, c1dir, c2dir, c3dir];
-    } 
-    else 
-    {
+    } else {
         var data = [trace1, trace2, trace3];
     }
     var layout = {
-        width: 600,
-        height: 600,
         margin: {
             l: 0,
             r: 0,
@@ -172,6 +165,7 @@ function render3DPrediction(ctx, xs, proj = false) {
             yaxis: { title: 'Y' },
             zaxis: { title: 'Z' },
         },
+        autosize: true,
         title: "Data"
     };
     Plotly.newPlot(ctx, data, layout);
@@ -180,19 +174,17 @@ function render3DPrediction(ctx, xs, proj = false) {
 
 
 
-function render2DPrediction(ctx, xs) {
+function render2DPrediction(ctx, xs, name) {
     const xsOriginal = xs.dataSync();
     const c1Data = [];
     const c2Data = [];
     const c3Data = [];
     for (let i = 0; i < xsOriginal.length; i += 2) {
-        if (i <2*N) {
+        if (i < 2 * N) {
             c1Data.push({ x: xsOriginal[i], y: xsOriginal[i + 1] });
-        }
-        else if (2*N <= i && i < 4* N) {
+        } else if (2 * N <= i && i < 4 * N) {
             c2Data.push({ x: xsOriginal[i], y: xsOriginal[i + 1] });
-        }
-        else {
+        } else {
             c3Data.push({ x: xsOriginal[i], y: xsOriginal[i + 1] });
         }
     }
@@ -203,7 +195,8 @@ function render2DPrediction(ctx, xs) {
         c1Y.push(data1.y);
     }
     var trace1 = {
-        x: c1X, y: c1Y,
+        x: c1X,
+        y: c1Y,
         mode: 'markers',
         marker: {
             size: 8,
@@ -223,7 +216,8 @@ function render2DPrediction(ctx, xs) {
         c2Y.push(data2.y);
     }
     var trace2 = {
-        x: c2X, y: c2Y,
+        x: c2X,
+        y: c2Y,
         mode: 'markers',
         marker: {
             size: 8,
@@ -243,7 +237,8 @@ function render2DPrediction(ctx, xs) {
         c3Y.push(data3.y);
     }
     var trace3 = {
-        x: c3X, y: c3Y,
+        x: c3X,
+        y: c3Y,
         mode: 'markers',
         marker: {
             size: 8,
@@ -258,8 +253,6 @@ function render2DPrediction(ctx, xs) {
     };
     var data = [trace1, trace2, trace3];
     var layout = {
-        width: 500,
-        height: 500,
         margin: {
             l: 0,
             r: 0,
@@ -270,7 +263,8 @@ function render2DPrediction(ctx, xs) {
             xaxis: { title: 'X' },
             yaxis: { title: 'Y' }
         },
-        title: "Data"
+        autosize: true,
+        title: name
     };
     Plotly.newPlot(ctx, data, layout);
     return ctx;
@@ -278,20 +272,18 @@ function render2DPrediction(ctx, xs) {
 
 
 
-function render1DPrediction(ctx, xs) {
+function render1DPrediction(ctx, xs, name) {
     const xsOriginal = xs.dataSync();
     const c1Data = [];
     const c2Data = [];
     const c3Data = [];
     for (let i = 0; i < xsOriginal.length; i += 1) {
         if (i < N) {
-            c1Data.push({ x: xsOriginal[i] , y: 0});
-        }
-        else if (N <= i && i < 2 * N) {
-            c2Data.push({ x: xsOriginal[i] , y: 0});
-        }
-        else {
-            c3Data.push({ x: xsOriginal[i] , y: 0});
+            c1Data.push({ x: xsOriginal[i], y: 0 });
+        } else if (N <= i && i < 2 * N) {
+            c2Data.push({ x: xsOriginal[i], y: 0 });
+        } else {
+            c3Data.push({ x: xsOriginal[i], y: 0 });
         }
     }
     const c1X = [];
@@ -301,7 +293,8 @@ function render1DPrediction(ctx, xs) {
         c1Y.push(data1.y);
     }
     var trace1 = {
-        x: c1X, y:c1Y,
+        x: c1X,
+        y: c1Y,
         mode: 'markers',
         marker: {
             size: 8,
@@ -321,7 +314,8 @@ function render1DPrediction(ctx, xs) {
         c2Y.push(data2.y);
     }
     var trace2 = {
-        x: c2X, y: c2Y,
+        x: c2X,
+        y: c2Y,
         mode: 'markers',
         marker: {
             size: 8,
@@ -341,7 +335,8 @@ function render1DPrediction(ctx, xs) {
         c3Y.push(data3.y);
     }
     var trace3 = {
-        x: c3X, y: c3Y,
+        x: c3X,
+        y: c3Y,
         mode: 'markers',
         marker: {
             size: 8,
@@ -356,12 +351,11 @@ function render1DPrediction(ctx, xs) {
     };
     var data = [trace1, trace2, trace3];
     var layout = {
-        width: 500,
-        height: 500,
         scene: {
             xaxis: { title: 'X' },
         },
-        title: "Data"
+        autosize: true,
+        title: name
     };
     Plotly.newPlot(ctx, data, layout);
     return ctx;
@@ -371,7 +365,7 @@ async function pca(xs, nComponents) {
     const batch = xs.shape[0];
     const meanValues = xs.mean(0);
     const sub = tf.sub(xs, meanValues);
-    const covariance = tf.matMul(sub.transpose(), sub);//(3,3)
+    const covariance = tf.matMul(sub.transpose(), sub); //(3,3)
     //Numeric does not recognize tensor type of Tensorflow.js,Hence we need to convert
     //the tensor into javascript array
     const covarianceData = tf.util.toNestedArray([D, D], covariance.dataSync());
@@ -413,9 +407,9 @@ async function main(xs) {
 
     const [axes, pcaXs] = await pca(xs, 3);
     xs_new = axes.concat(xs);
-    
+
     const div = document.getElementById('3dplot');
-    render3DPrediction(div, xs_new, proj =true);
+    render3DPrediction(div, xs_new, "Actual Data", proj = true);
     /*
     const ctx1 = document.getElementById('0-1-dim');
     render2DPrediction(ctx1, xs1);
@@ -425,12 +419,12 @@ async function main(xs) {
     render2DPrediction(ctx3, xs3);
     */
     const ctx4 = document.getElementById('0-dim');
-    render1DPrediction(ctx4, xs.gather([0],1));
+    render1DPrediction(ctx4, xs.gather([0], 1), "1st Feature");
     const ctx5 = document.getElementById('1-dim');
-    render1DPrediction(ctx5, xs.gather([1],1));
+    render1DPrediction(ctx5, xs.gather([1], 1), "2nd Feature");
     const ctx6 = document.getElementById('2-dim');
-    render1DPrediction(ctx6, xs.gather([2],1));
-    
+    render1DPrediction(ctx6, xs.gather([2], 1), "3rd Feature");
+
 
 
     const div2 = document.getElementById('3dplot-pca');
@@ -439,21 +433,20 @@ async function main(xs) {
     console.log("Variance of pca");
     variance(pcaXs);
 
-    render3DPrediction(div2, pcaXs);
+    render3DPrediction(div2, pcaXs, "PCA plot");
 
     const ctx7 = document.getElementById('0-dim-pca');
-    render1DPrediction(ctx7, pcaXs.gather([0],1));
+    render1DPrediction(ctx7, pcaXs.gather([0], 1), "1st Principal Component");
 
     const ctx8 = document.getElementById('1-dim-pca');
-    render1DPrediction(ctx8, pcaXs.gather([1],1));
+    render1DPrediction(ctx8, pcaXs.gather([1], 1), "2nd Principal Component");
 
     const ctx9 = document.getElementById('2-dim-pca');
-    render1DPrediction(ctx9, pcaXs.gather([2],1));
+    render1DPrediction(ctx9, pcaXs.gather([2], 1), "3rd Principal Component");
 
     const ctx10 = document.getElementById('0-1-dim-pca');
-    render2DPrediction(ctx10, pcaXs.gather([0,1],1));
+    render2DPrediction(ctx10, pcaXs.gather([0, 1], 1), "2D PCA plot");
 }
-
 
 async function main2(xs) {
     const xs_t = xs.gather([0, 1, 2], 1);
@@ -469,9 +462,9 @@ async function main2(xs) {
 
     const [axes, pcaXs] = await pca(xs, 3);
     xs_new = axes.concat(xs);
-    
+
     const div = document.getElementById('3dplot-out');
-    render3DPrediction(div, xs_new, proj =true);
+    render3DPrediction(div, xs_new, "Actual Data", proj = true);
     /*
     const ctx1 = document.getElementById('0-1-dim-out');
     render2DPrediction(ctx1, xs1);
@@ -481,33 +474,29 @@ async function main2(xs) {
     render2DPrediction(ctx3, xs3);
     */
     const ctx4 = document.getElementById('0-dim-out');
-    render1DPrediction(ctx4, xs.gather([0],1));
+    render1DPrediction(ctx4, xs.gather([0], 1), "1st Feature");
     const ctx5 = document.getElementById('1-dim-out');
-    render1DPrediction(ctx5, xs.gather([1],1));
+    render1DPrediction(ctx5, xs.gather([1], 1), "2nd Feature");
     const ctx6 = document.getElementById('2-dim-out');
-    render1DPrediction(ctx6, xs.gather([2],1));
-    
-
+    render1DPrediction(ctx6, xs.gather([2], 1), "3rd Feature");
 
     const div2 = document.getElementById('3dplot-pca-out');
-
-    //const pcaXs = await pca(xs, 3);
     console.log("Variance of pca");
     variance(pcaXs);
 
-    render3DPrediction(div2, pcaXs);
+    render3DPrediction(div2, pcaXs, "PCA plot");
 
     const ctx7 = document.getElementById('0-dim-pca-out');
-    render1DPrediction(ctx7, pcaXs.gather([0],1));
+    render1DPrediction(ctx7, pcaXs.gather([0], 1), "1st Principal Component");
 
     const ctx8 = document.getElementById('1-dim-pca-out');
-    render1DPrediction(ctx8, pcaXs.gather([1],1));
+    render1DPrediction(ctx8, pcaXs.gather([1], 1), "2nd Principal Component");
 
     const ctx9 = document.getElementById('2-dim-pca-out');
-    render1DPrediction(ctx9, pcaXs.gather([2],1));
+    render1DPrediction(ctx9, pcaXs.gather([2], 1), "3rd Principal Component");
 
     const ctx10 = document.getElementById('0-1-dim-pca-out');
-    render2DPrediction(ctx10, pcaXs.gather([0,1],1));
+    render2DPrediction(ctx10, pcaXs.gather([0, 1], 1), "2D PCA plot");
 }
 
 const c1 = tf.randomNormal([N, D]).add([1.0, 0.0, 0.0]);
@@ -517,19 +506,19 @@ const c3 = tf.randomNormal([N, D]).add([0.0, 1.0, 1.0]);
 
 
 document.getElementById('Show2')
-      .addEventListener('click', async() => {
+    .addEventListener('click', async() => {
         console.clear()
         var vo1 = Number(document.getElementById("f1").value);
         var vo2 = Number(document.getElementById("f2").value);
-        var vo3  = Number(document.getElementById("f3").value);
-        const outlier = tf.tensor2d([vo1,vo2,vo3],[1,3]);
+        var vo3 = Number(document.getElementById("f3").value);
+        const outlier = tf.tensor2d([vo1, vo2, vo3], [1, 3]);
         const xs = c1.concat(c2).concat(c3).concat(outlier);
         main2(xs);
-        });
+    });
 
 document.getElementById('Show1')
-      .addEventListener('click', async() => {
+    .addEventListener('click', async() => {
         console.clear()
         const xs = c1.concat(c2).concat(c3);
         main(xs);
-        });      
+    });

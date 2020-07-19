@@ -1,0 +1,10 @@
+{
+    "dependencies": {
+        "@tensorflow/tfjs": "^2.0.1",
+        "numeric": "^1.2.6",
+        "plotly.js": "^1.54.6"
+    },
+    "browserslist": [
+        "last 1 Chrome versions"
+    ]
+}
