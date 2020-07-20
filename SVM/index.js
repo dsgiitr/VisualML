@@ -16,12 +16,21 @@ var svmC = 10.0;
 var a_value = 1.0;
 
 var SVM = new svm.SVM();
-document.getElementById("kernelImg").appendChild(document.getElementById("linear"));
-document.getElementById("linear").style.display = "block";
 
 var kernelid = 0;
 var c = document.getElementById("NPGcanvas");
 var ctx = c.getContext('2d');
+
+var acc = document.getElementById("acc");
+var covg = document.getElementById("covg");
+var supp = document.getElementById("supp");
+var kern = document.getElementById("kern");
+var cdiv = document.getElementById("c");
+var sig = document.getElementById("sig");
+var a = document.getElementById("a");
+var deg = document.getElementById("deg");
+var alp = document.getElementById("alp");
+var csig = document.getElementById("csig");
 
 data[0] = [-0.4326, 1.1909];
 data[1] = [3.0, 4.0];
@@ -190,15 +199,6 @@ function draw() {
         }
     }
 
-    // draw axes
-    ctx.beginPath();
-    ctx.strokeStyle = 'rgb(50,50,50)';
-    ctx.lineWidth = 1;
-    ctx.moveTo(0, HEIGHT / 2);
-    ctx.lineTo(WIDTH, HEIGHT / 2);
-    ctx.moveTo(WIDTH / 2, 0);
-    ctx.lineTo(WIDTH / 2, HEIGHT);
-    ctx.stroke();
 
     // draw datapoints. Draw support vectors larger
     ctx.strokeStyle = 'rgb(0,0,0)';
@@ -253,29 +253,67 @@ function draw() {
     }
 
     ctx.fillStyle = 'rgb(0,0,0)';
-    ctx.fillText("Converged in " + trainstats.iters + " iterations.", 10, HEIGHT - 30);
+    covg.innerHTML = "Converged in " + trainstats.iters + " iterations";
+
     var numsupp = 0;
-    for (var i = 0; i < N; i++) { if (SVM.alpha[i] > 1e-2) numsupp++; }
-    ctx.fillText("Number of support vectors: " + numsupp + " / " + N, 10, HEIGHT - 50);
+    var misc = 0;
+    for (var i = 0; i < N; i++) { if (SVM.alpha[i] > 1e-2) numsupp++; } { if (SVM.marginOne([(x - WIDTH / 2) / ss, (y - HEIGHT / 2) / ss]) * labels[i] > 0) misc++; }
+    supp.innerHTML = "No. of Support Vectors: " + numsupp;
+    acc.innerHTML = "Accuracy: " + (100 * ((N - misc) / N));
 
-
+    kern.innerHTML = "Using Linear kernel";
+    cdiv.innerHTML = "C = " + svmC.toPrecision(2);
     if (kernelid == 0) {
-        ctx.fillText("Using Linear kernel", 10, HEIGHT - 70);
-        ctx.fillText("C = " + svmC.toPrecision(2), 10, HEIGHT - 90);
+        document.getElementById("linear_info").style.display = "block";
+        document.getElementById("poly_info").style.display = "none";
+        document.getElementById("rbf_info").style.display = "none";
+        document.getElementById("sigmoid_info").style.display = "none";
+        kern.innerHTML = "Using Linear kernel";
+        cdiv.innerHTML = "C = " + svmC.toPrecision(2);
     }
     if (kernelid == 1) {
-        ctx.fillText("Using Gaussian kernel with sigma = " + rbfKernelSigma.toPrecision(2), 10, HEIGHT - 70);
-        ctx.fillText("C = " + svmC.toPrecision(2), 10, HEIGHT - 90);
+        document.getElementById("linear_info").style.display = "none";
+        document.getElementById("poly_info").style.display = "none";
+        document.getElementById("rbf_info").style.display = "block";
+        document.getElementById("sigmoid_info").style.display = "none";
+        kern.innerHTML = "Using Gaussian kernel";
+        cdiv.innerHTML = "C = " + svmC.toPrecision(2);
+        sig.style.display = "list-item";
+        csig.style.display = "none";
+        a.style.display = "none";
+        alp.style.display = "none";
+        deg.style.display = "none";
+        sig.innerHTML = "Gaussian Kernel Sigma: " + rbfKernelSigma.toPrecision(2);
     }
     if (kernelid == 2) {
-        ctx.fillText("Using Polynomial kernel with degree = " + degree_value, 10, HEIGHT - 70);
-        ctx.fillText("Using Polynomial kernel with a = " + a_value.toPrecision(2), 10, HEIGHT - 90);
-        ctx.fillText("C = " + svmC.toPrecision(2), 10, HEIGHT - 110);
+        document.getElementById("linear_info").style.display = "none";
+        document.getElementById("poly_info").style.display = "block";
+        document.getElementById("rbf_info").style.display = "none";
+        document.getElementById("sigmoid_info").style.display = "none";
+        kern.innerHTML = "Using Polynomial kernel";
+        cdiv.innerHTML = "C = " + svmC.toPrecision(2);
+        deg.style.display = "list-item";
+        sig.style.display = "none";
+        alp.style.display = "none";
+        csig.style.display = "none";
+        deg.innerHTML = "Polynomial Kernel Degree: " + degree_value;
+        a.style.display = "list-item";
+        a.innerHTML = "Polynomial Kernel a: " + a_value.toPrecision(2);
     }
     if (kernelid == 3) {
-        ctx.fillText("Using Sigmoid kernel with alpha = " + alpha.toPrecision(2), 10, HEIGHT - 70);
-        ctx.fillText("Using Sigmoid kernel with c = " + c_sig.toPrecision(2), 10, HEIGHT - 90);
-        ctx.fillText("C = " + svmC.toPrecision(2), 10, HEIGHT - 110);
+        document.getElementById("linear_info").style.display = "none";
+        document.getElementById("poly_info").style.display = "none";
+        document.getElementById("rbf_info").style.display = "none";
+        document.getElementById("sigmoid_info").style.display = "block";
+        kern.innerHTML = "Using Sigmoid kernel";
+        cdiv.innerHTML = "C = " + svmC.toPrecision(2);
+        alp.style.display = "list-item";
+        sig.style.display = "none";
+        deg.style.display = "none";
+        a.style.display = "none";
+        alp.innerHTML = "Sigmoid Kernel alpha: " + alpha.toPrecision(2);
+        csig.style.display = "list-item";
+        csig.innerHTML = "Sigmoid Kernel c: " + c_sig.toPrecision(2);
     }
 
 }
@@ -313,47 +351,23 @@ function keyUp(key) {
     if (key == 76) { // 'l'
         // Switch to linear kernel
         kernelid = 0;
-        document.getElementById("linear").style.display = "none";
-        document.getElementById("rbf").style.display = "none";
-        document.getElementById("poly").style.display = "none";
-        document.getElementById("sigmoid").style.display = "none";
-        document.getElementById("kernelImg").appendChild(document.getElementById("linear"));
-        document.getElementById("linear").style.display = "block";
         retrainSVM();
     }
 
     if (key == 82) { // 'r'
         // Switch to rbf kernel
         kernelid = 1;
-        document.getElementById("linear").style.display = "none";
-        document.getElementById("rbf").style.display = "none";
-        document.getElementById("poly").style.display = "none";
-        document.getElementById("sigmoid").style.display = "none";
-        document.getElementById("kernelImg").appendChild(document.getElementById("rbf"));
-        document.getElementById("rbf").style.display = "block";
         retrainSVM();
     }
 
     if (key == 80) { // 'p'
         // Switch to polynomial kernel
         kernelid = 2;
-        document.getElementById("linear").style.display = "none";
-        document.getElementById("rbf").style.display = "none";
-        document.getElementById("poly").style.display = "none";
-        document.getElementById("sigmoid").style.display = "none";
-        document.getElementById("kernelImg").appendChild(document.getElementById("poly"));
-        document.getElementById("poly").style.display = "block";
         retrainSVM();
     }
 
     if (key == 83) { // 's'
         // Switch to sigmoid kernel
-        document.getElementById("linear").style.display = "none";
-        document.getElementById("rbf").style.display = "none";
-        document.getElementById("poly").style.display = "none";
-        document.getElementById("sigmoid").style.display = "none";
-        document.getElementById("kernelImg").appendChild(document.getElementById("sigmoid"));
-        document.getElementById("sigmoid").style.display = "block";
         kernelid = 3;
         retrainSVM();
     }
@@ -537,4 +551,26 @@ $(function() {
     $("#slider5").css('background', 'rgb(192, 247, 188)');
     $("#slider6").css('background', 'rgb(188, 217, 247)');
     $(".ui-slider-handle").css('background', 'rgb(255,255,204)');
+});
+
+$(document).ready(function() {
+
+
+    $("#collapseInfo").click(function() {
+        $(this).toggleClass("active");
+        if ($(this).hasClass("active")) {
+            $(this).text("Show Less..");
+        } else {
+            $(this).text("Show More..");
+        }
+    });
+
+    $("#collapseInst").click(function() {
+        $(this).toggleClass("active");
+        if ($(this).hasClass("active")) {
+            $(this).text("Hide Instructions..");
+        } else {
+            $(this).text("Show Instructions..");
+        }
+    });
 });
