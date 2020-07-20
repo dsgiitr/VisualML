@@ -49,8 +49,8 @@
                     </div><br/>
                     <h3 style="margin: auto; padding-top: 20px;">What are the advantages of Support Vector Machines?</h3>
                     <div style="padding-top: 20px;">
-                        Support Vector Machines provide us with the best decision boundary there is between the two classes. It basically creates the widest street possible in between the classes. As a result, when there is a clear margin of separatio between the classes, SVM
-                        works really well. Also, due to the Kernel Trick, it is highly efficient in higher dimensions. Due to its high efficiency, it reaches the optimum faster, and thus, can be effective in cases where number of dimensions is greater
+                        Support Vector Machines provide us with the best decision boundary there is between the two classes. It basically creates the widest street possible in between the classes. As a result, when there is a clear margin of separation between the classes, SVM
+                        works really well. Also, due to the Kernel Trick, it is highly efficient in higher dimensions. Due to its high efficiency, it reaches the optimum faster, and thus, can be effective in cases where the number of dimensions is greater
                         than the number of samples.
                         <br/>
                     </div>
@@ -69,7 +69,7 @@
                     </div>
                     <div id="SVM">
                         <p>
-                            Support Vector Machine Decision Boundary
+                            Support Vector Machine's Decision Boundary
                         </p>
                     </div>
                 </div>
@@ -95,7 +95,7 @@
                             </ul>
                         </div>
                     </div>
-                    <canvas id="NPGcanvas" width="500" height="500">Browser not supported for Canvas. Get a real browser.</canvas><br /><br />
+                    <canvas id="NPGcanvas" width="500" height="500">Browser not supported for Canvas. Get a real browser madafaqa.</canvas><br /><br />
                     <div id="slider_box">
                         <div id="slider1_box">
                             <div id="slider1"></div>
@@ -145,7 +145,7 @@
                                     <div id="list2" class="collapse">
                                         <div id="linear_info" style="display: block;">
                                             <p style="text-align: left;margin-left: 1em; font-size: large; margin-top: 1em;">You have opted Linear Kernel to find the Decision boundary. A Linear Kernel is not a kernel per se, but the simple SVM. As evident, from the name, it finds a linear decision boundary between the classes, and
-                                                works well when the classes are linearly separable. However since the points here, are not linearly separable, we cannot use it to find the perfect decisiion boundary. What we can do though, is to allow
+                                                works well when the classes are linearly separable. However, since the points here, are not linearly separable, we cannot use it to find the perfect decision boundary. What we can do though, is to allow
                                                 the SVM to perform some misclassifications in order to achieve the best 'possible' decision boundary. Here comes the parameter C. This parameter is a universal parameter for all kernels, allowing them to
                                                 perform a few misclassifications in order to complete the task.
                                             </p>
@@ -174,8 +174,8 @@
                                             <h2 style="text-align: left;margin-left: 1em; font-size: larger; margin-top: 1em;">Kernel Equation: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="font-size:x-large; font-weight: 400;"><i style="font-family:'Times New Roman', Times, serif;">K</i>\((\vec{x_i}, \vec{x_j})\) = \(e^{-\frac{||\vec{x_i} - \vec{x_j}||^2}{2\sigma^{2}}}\)</b></h2>
                                         </div>
                                         <div id="sigmoid_info" style="display: none;">
-                                            <p style="text-align: left;margin-left: 1em; font-size: large; margin-top: 1em;">You have opted for the Sigmoid Kernel to find the Decision boundary. It is interesting to note that a SVM model using a sigmoid kernel function is equivalent to a two-layer, perceptron neural network. This kernel
-                                                is quite popular for support vector machines due to its origin from neural network theory. This Kernel is controlled using two parameters apart from the universal parameter C which is used for allowing misclassifications,
+                                            <p style="text-align: left;margin-left: 1em; font-size: large; margin-top: 1em;">You have opted Sigmoid Kernel to find the Decision boundary. It is interesting to note that a SVM model using a sigmoid kernel function is equivalent to a two-layer, perceptron neural network. This kernel is
+                                                quite popular for support vector machines due to its origin from neural network theory. This Kernel is controlled using two parameters apart from the universal parameter C which is used for allowing misclassifications,
                                                 and for what is called Soft-Margin Classification, that are 'c-sigma' and alpha. c is just a parameter added to the dot product to regulate the sum and doesn't contribute much to the bias-variance tradeoff.
                                                 However, \(\alpha\) on the other hand, is a scaling parameter, and increases the area of influence of each point. It is not as good as the RBF kernel though.
                                             </p>
@@ -186,7 +186,6 @@
                                     <p style="text-align: left;margin-left: 1em; font-size: large; margin-top: 2em; font-weight: 400;">You can see the <a data-toggle="collapse" href="#stats" style="color:  #035aa6;">Training statistics</a> below.</p>
                                     <div id="stats" class="collapse">
                                         <ul>
-                                            <li style="list-style-type:square;text-align: left;margin-left: 1em; font-size: large;" id="acc"></li>
                                             <li style="list-style-type:square;text-align: left;margin-left: 1em; font-size: large;" id="covg"></li>
                                             <li style="list-style-type:square;text-align: left;margin-left: 1em; font-size: large;" id="supp"></li>
                                             <li style="list-style-type:square;text-align: left;margin-left: 1em; font-size: large;" id="kern"></li>
