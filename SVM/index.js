@@ -21,7 +21,6 @@ var kernelid = 0;
 var c = document.getElementById("NPGcanvas");
 var ctx = c.getContext('2d');
 
-var acc = document.getElementById("acc");
 var covg = document.getElementById("covg");
 var supp = document.getElementById("supp");
 var kern = document.getElementById("kern");
@@ -256,10 +255,8 @@ function draw() {
     covg.innerHTML = "Converged in " + trainstats.iters + " iterations";
 
     var numsupp = 0;
-    var misc = 0;
-    for (var i = 0; i < N; i++) { if (SVM.alpha[i] > 1e-2) numsupp++; } { if (SVM.marginOne([(x - WIDTH / 2) / ss, (y - HEIGHT / 2) / ss]) * labels[i] > 0) misc++; }
+    for (var i = 0; i < N; i++) { if (SVM.alpha[i] > 1e-2) numsupp++; }
     supp.innerHTML = "No. of Support Vectors: " + numsupp;
-    acc.innerHTML = "Accuracy: " + (100 * ((N - misc) / N));
 
     kern.innerHTML = "Using Linear kernel";
     cdiv.innerHTML = "C = " + svmC.toPrecision(2);
