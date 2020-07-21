@@ -1,7 +1,6 @@
 import 'babel-polyfill';
 import * as tf from '@tensorflow/tfjs';
 tf.ENV.set('WEBGL_PACK', false);
-import links from './links';
 
 class Main {
     constructor() {
@@ -122,13 +121,6 @@ class Main {
         }
         this.stylized = document.getElementById('stylized');
 
-        // Initialize images
-        this.contentImgSlider = document.getElementById('content-img-size');
-        this.connectImageAndSizeSlider(this.contentImg, this.contentImgSlider);
-        this.styleImgSlider = document.getElementById('style-img-size');
-        this.styleImgSquare = document.getElementById('style-img-square');
-        this.connectImageAndSizeSlider(this.styleImg, this.styleImgSlider, this.styleImgSquare);
-
         this.styleRatio = 1.0
         this.styleRatioSlider = document.getElementById('stylized-img-ratio');
         this.styleRatioSlider.oninput = (net) => {
@@ -141,47 +133,17 @@ class Main {
             this.disableStylizeButtons();
             this.gradualStyler(25, 0)
         };
-        this.randomizeButton = document.getElementById('randomize');
-        this.randomizeButton.onclick = () => {
-            this.styleRatioSlider.value = getRndInteger(0, 100);
-            this.contentImgSlider.value = getRndInteger(256, 400);
-            this.styleImgSlider.value = getRndInteger(100, 400);
-            this.styleRatioSlider.dispatchEvent(new Event("input"));
-            this.contentImgSlider.dispatchEvent(new Event("input"));
-            this.styleImgSlider.dispatchEvent(new Event("input"));
-            if (getRndInteger(0, 1)) {
-                this.styleImgSquare.click();
-            }
-        }
 
         // Initialize selectors
         this.contentSelect = document.getElementById('content-select');
-        this.contentSelect.onchange = (net) => this.setImage(this.contentImg, net.target.value);
+        this.contentSelect.onchange = (net) => this.image_select(this.contentImg, net.target.value);
         this.contentSelect.onclick = () => this.contentSelect.value = '';
         this.styleSelect = document.getElementById('style-select');
-        this.styleSelect.onchange = (net) => this.setImage(this.styleImg, net.target.value);
+        this.styleSelect.onchange = (net) => this.image_select(this.styleImg, net.target.value);
         this.styleSelect.onclick = () => this.styleSelect.value = '';
     }
 
-    connectImageAndSizeSlider(img, slider, square) {
-        slider.oninput = (net) => {
-            img.height = net.target.value;
-            if (img.style.width) {
-                img.style.width = img.height + "px";
-            }
-        }
-        if (square !== undefined) {
-            square.onclick = (net) => {
-                if (net.target.checked) {
-                    img.style.width = img.height + "px";
-                } else {
-                    img.style.width = '';
-                }
-            }
-        }
-    }
-
-    setImage(element, selectedValue) {
+    image_select(element, selectedValue) {
         if (selectedValue === 'file') {
             console.log('file selected');
             this.fileSelect.onchange = (net) => {
@@ -196,9 +158,6 @@ class Main {
             this.fileSelect.click();
         } else if (selectedValue === 'pic') {
             this.openModal(element);
-        } else if (selectedValue === 'random') {
-            const randomNumber = Math.floor(Math.random() * links.length);
-            element.src = links[randomNumber];
         } else {
             element.src = 'images/' + selectedValue + '.jpg';
         }
@@ -299,20 +258,20 @@ class Main {
         const bottleneck = tf.randomNormal([1, 1, 1, 100]);
 
         let styleNet = await this.loadInceptionStyleModel();
-        let time = await this.benchmarkStyle(x, styleNet);
+        let time = await this.style_benchmark(x, styleNet);
         styleNet.dispose();
 
         styleNet = await this.loadMobileNetStyleModel();
-        time = await this.benchmarkStyle(x, styleNet);
+        time = await this.style_benchmark(x, styleNet);
         styleNet.dispose();
 
         let transformNet = await this.loadOriginalTransformerModel();
-        time = await this.benchmarkTransform(
+        time = await this.transform_benchmark(
             x, bottleneck, transformNet);
         transformNet.dispose();
 
         transformNet = await this.loadSeparableTransformerModel();
-        time = await this.benchmarkTransform(
+        time = await this.transform_benchmark(
             x, bottleneck, transformNet);
         transformNet.dispose();
 
@@ -320,7 +279,7 @@ class Main {
         bottleneck.dispose();
     }
 
-    async benchmarkStyle(x, styleNet) {
+    async style_benchmark(x, styleNet) {
         const profile = await tf.profile(() => {
             tf.tidy(() => {
                 const dummyOut = styleNet.predict(x);
@@ -339,7 +298,7 @@ class Main {
         console.log(time);
     }
 
-    async benchmarkTransform(x, bottleneck, transformNet) {
+    async transform_benchmark(x, bottleneck, transformNet) {
         const profile = await tf.profile(() => {
             tf.tidy(() => {
                 const dummyOut = transformNet.predict([x, bottleneck]);
@@ -383,10 +342,6 @@ function download(canvas, filename) {
     } else if (lnk.fireEvent) {
         lnk.fireEvent("onclick");
     }
-}
-
-function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 window.addEventListener('load', () => new Main());
