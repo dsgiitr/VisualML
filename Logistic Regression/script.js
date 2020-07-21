@@ -43,7 +43,7 @@ async function loaddata(){
 
 }
 
-loaddata();
+
 document.getElementById('data').addEventListener('click',loaddata);
 
 async function polynomial_features(x1,x2, degree){
@@ -103,6 +103,7 @@ async function train(features, labels, weights, lr, iters=100,r=0){
 }
 
 async function trainclick(){
+  await loaddata();
   degree=Number(document.getElementById('d').value);
   var lr=tf.pow(tf.tensor(10),Number(document.getElementById('l').value));
   var r=Number(document.getElementById('r').value);
@@ -117,6 +118,7 @@ async function trainclick(){
   await plotdecisionboundary();
 
 }
+trainclick();
 
 document.getElementById('train').addEventListener('click',trainclick);
 
@@ -150,12 +152,14 @@ async function plotdecisionboundary(){
   var series = ['decision boundary','0','1'];
   var data = { values: [xx,a1,a2], series };
   var surface=document.getElementById('pl');
+  surface.style.display='block';
   surface.innerHTML='';
   tfvis.render.scatterplot(surface, data);
 
   series = ['loss'];
   data = { values: [cost_history], series };
   surface=document.getElementById('training');
+  surface.style.display='block';
   surface.innerHTML='';
   tfvis.render.linechart(surface, data);
 }
