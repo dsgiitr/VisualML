@@ -5,191 +5,217 @@
     <title>
         Support Vector Machine
     </title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.0/tween.umd.js"></script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <style>
+        canvas {
+            border: 1px solid #555;
+        }
+    </style>
 </head>
 
-<body>
-    <div style="background-color: #eafdf8;">
-        <div class="tfjs-example-container">
-            <section class="title-area">
-                <h1 id="heading">
+<body style="overflow-x: hidden; width: auto;">
+
+    <div style="background-color: #ffffff;">
+        <section class="title-area">
+            <div class="jumbotron jumbotron-fluid py-4" style="text-align: center; color: rgb(230,230,250); background-color: #512DA8; margin-bottom: 0em;">
+                <h2 style="color: #FFFF99;">
                     Support Vector Machines
-                </h1>
-                <p class="subtitle" id="subtitle">
-                    The Mr. Perfect of Machine Learning Classifiers.
-                </p>
-            </section>
-            <section>
-                <p class="section-head">
-                    Description
-                </p>
-                <p>
-                    A Support Vector Machine is different from other Machine Learning Classifiers because it aims to create the widest possible street between the two types of examples that does not touch or contain any point.
-                </p>
-                <div id="container">
-                    <div id="MLC" style="margin-right: 1em;">
-                        <span id="d01"></span>
-                        <span id="d02"></span>
-                        <span id="d03"></span>
-                        <span id="d04"></span>
-                        <span id="d05"></span>
-                        <span id="d06"></span>
-                        <span id="d07"></span>
-                        <span id="d08"></span>
-                        <span id="d11"></span>
-                        <span id="d12"></span>
-                        <span id="d13"></span>
-                        <span id="d14"></span>
-                        <span id="d15"></span>
-                        <span id="d16"></span>
-                        <span id="d17"></span>
-                        <span id="d18"></span>
-                        <span id="db1"></span>
-                        <span id="db2"></span>
-                        <span id="db3"></span>
-                        <svg height="190" width="500">
-                            <line x1="150" y1="15" x2="150" y2="15" style="stroke:rgb(255,0,0);stroke-width:2">
-                                <animate 
-                                    attributeName="x2" 
-                                    from="150" 
-                                    to="480" 
-                                    dur="4s" 
-                                    repeatCount="5" 
-                                    fill="freeze"
-                                    values="150; 150; 480; 480;"
-                                    keyTimes="0; 0.5; 0.75; 1" />
-                                <animate 
-                                    attributeName="y2" 
-                                    from="15" 
-                                    to="180" 
-                                    dur="4s" 
-                                    repeatCount="5" 
-                                    fill="freeze"
-                                    values="15; 15; 180; 180;"
-                                    keyTimes="0; 0.5; 0.75; 1" />
-                            </line>
-                            <line x1="230" y1="-10" x2="190" y2="-20" style="stroke:rgb(255,0,0);stroke-width:2">
-                                <animate 
-                                    attributeName="x2" 
-                                    from="230" 
-                                    to="400" 
-                                    dur="4s" 
-                                    repeatCount="5" 
-                                    fill="freeze"
-                                    values="230; 230; 400; 400;"
-                                    keyTimes="0; 0.5; 0.75; 1" />
-                                <animate 
-                                    attributeName="y2" 
-                                    from="0" 
-                                    to="240" 
-                                    dur="4s" 
-                                    repeatCount="5" 
-                                    fill="freeze"
-                                    values="0; 0; 240; 240;"
-                                    keyTimes="0; 0.5; 0.75; 1" />
-                            </line>
-                            <line x1="220" y1="0" x2="220" y2="0" style="stroke:rgb(255,0,0);stroke-width:2">
-                                <animate 
-                                    attributeName="x2" 
-                                    from="220" 
-                                    to="470" 
-                                    dur="4s" 
-                                    repeatCount="5" 
-                                    fill="freeze"
-                                    values="220; 220; 470; 470;"
-                                    keyTimes="0; 0.5; 0.75; 1" />
-                                <animate 
-                                    attributeName="y2" 
-                                    from="0" 
-                                    to="200" 
-                                    dur="4s" 
-                                    repeatCount="5" 
-                                    fill="freeze"
-                                    values="0; 0; 200; 200;"
-                                    keyTimes="0; 0.5; 0.75; 1" />
-                            </line>
-                        </svg>
-                        <p style="margin-top: 2em; text-align: center;">Any other Machine Learning Classifier Decision boundary</p>
-                    </div>
-                    <div id="SVM" style="margin-left: 1em;">
-                        <span id="d_01"></span>
-                        <span id="d_02"></span>
-                        <span id="d_03"></span>
-                        <span id="d_04"></span>
-                        <span id="d_05"></span>
-                        <span id="d_06"></span>
-                        <span id="d_07"></span>
-                        <span id="d_08"></span>
-                        <span id="d_11"></span>
-                        <span id="d_12"></span>
-                        <span id="d_13"></span>
-                        <span id="d_14"></span>
-                        <span id="d_15"></span>
-                        <span id="d_16"></span>
-                        <span id="d_17"></span>
-                        <span id="d_18"></span>
-                        <svg height="190" width="500">
-                            <line x1="190" y1="0" x2="190" y2="0" style="stroke:rgb(255,0,0);stroke-width:2">
-                                <animate 
-                                    attributeName="x2" 
-                                    from="190" 
-                                    to="440" 
-                                    dur="4s" 
-                                    repeatCount="5" 
-                                    fill="freeze"
-                                    values="190; 190; 440; 440;"
-                                    keyTimes="0; 0.5; 0.75; 1" />
-                                <animate 
-                                    attributeName="y2" 
-                                    from="0" 
-                                    to="200" 
-                                    dur="4s" 
-                                    repeatCount="5" 
-                                    fill="freeze"
-                                    values="0; 0; 200; 200;"
-                                    keyTimes="0; 0.5; 0.75; 1" />
-                            </line>
-                          </svg>
-                        <p style="margin-top: 2em; text-align: center">SVM Decision boundary</p>
+                </h2>
+                <h6>
+                    The Mr. Perfect of Machine Learning Classifiers
+                </h6>
+            </div>
+        </section>
+        <section>
+            <p class="section-head" style="text-align: center;">
+                Introduction
+            </p>
+            <div class="container" style="width: 100%;">
+                <div class="row" style="margin: auto;">
+                    <h3 style="margin: auto;">What are Support Vector Machines?</h3>
+                    <div style="padding-top: 20px;">
+                        Support Vector Machines (SVM) are a very powerful class of supervised learning models with associated learning algorithms that analyze data used for classification and regression analysis. It presents one of the most robust prediction methods, based on
+                        the statistical learning framework (VC Theory). It is indigenously a non-probabilistic binary linear classifier, but can also perform efficient non-linear classification through the Kernel Trick.
+                    </div><br/>
+                    <h3 style="margin: auto; padding-top: 20px;">What are the advantages of Support Vector Machines?</h3>
+                    <div style="padding-top: 20px;">
+                        Support Vector Machines provide us with the best decision boundary there is between the two classes. It basically creates the widest street possible in between the classes. As a result, when there is a clear margin of separation between the classes, SVM
+                        works really well. Also, due to the Kernel Trick, it is highly efficient in higher dimensions. Due to its high efficiency, it reaches the optimum faster, and thus, can be effective in cases where the number of dimensions is greater
+                        than the number of samples.
+                        <br/>
                     </div>
                 </div>
-            </section>
-            <section>
-                <p class="section-head">
-                    Parameters
-                </p>
-            </section>
-            <section>
-                <p class="section-head">
-                    Learning Curves and Decision Boundaries
-                </p>
-                <p id="status"></p>
-                <p id="message"></p>
-
-                <div id="stats">
-                    <div class="canvases">
-                        <label id="loss-label" style="font-size: large; font-weight: 200;" />
-                        <div id="loss-canvas" style="width: 600px;" />
+            </div>
+            <div id="container" style="margin-bottom: 1em; margin-top: 3em;">
+                <div id="img">
+                    <img src="images/class.png" style=" margin: auto;
+                width: 70%;;">
+                </div>
+                <div id="text">
+                    <div id="MLC">
+                        <p>
+                            Any other Machine Learning Classifier's Decision Boundary
+                        </p>
                     </div>
-                    <div class="canvases">
-                        <label id="accuracy-label" style="font-size: large; font-weight: 200;" />
-                        <div id="accuracy-canvas">
-
+                    <div id="SVM">
+                        <p>
+                            Support Vector Machine's Decision Boundary
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section style="margin-top: 0em; margin-bottom: 3em;">
+            <p class="section-head">
+                Playground
+            </p>
+            <div id="khelobc">
+                <div id="canvas_box">
+                    <div>
+                        <h2 style="margin-left: 4.75em;font-size: x-large; text-align: left;"><a data-toggle="collapse" href="#list1" id="collapseInst">Show Instructions:</a></h2>
+                        <div id="list1" class="collapse">
+                            <ul>
+                                <li style="list-style-type:square;text-align: left;margin-left: 5.5em; font-size: large;">Click for adding a yellow point.</li>
+                                <li style="list-style-type:square;text-align: left;margin-left: 5.5em; font-size: large;">Shift + Click for adding a blue point.</li>
+                                <li style="list-style-type:square;text-align: left;margin-left: 5.5em; font-size: large;">Press c for clearing all the points you added.</li>
+                                <li style="list-style-type:square;text-align: left;margin-left: 5.5em; font-size: large;">Press R to switch to the Gaussian kernel.</li>
+                                <li style="list-style-type:square;text-align: left;margin-left: 5.5em; font-size: large;">Press P to switch to the Polynomial kernel. </li>
+                                <li style="list-style-type:square;text-align: left;margin-left: 5.5em; font-size: large;">Press S to switch to the Sigmoid kernel.</li>
+                                <li style="list-style-type:square;text-align: left;margin-left: 5.5em; font-size: large;">Press L to switch back to the Linear kernel.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <canvas id="NPGcanvas" width="500" height="500">Browser not supported for Canvas. Get a real browser madafaqa.</canvas><br /><br />
+                    <div id="slider_box">
+                        <div id="slider1_box">
+                            <div id="slider1"></div>
+                            <span id="creport">C = 10.0</span>
+                        </div>
+                        <div id="slider2_box">
+                            <div id="rider"></div>
+                            <span id="report"></span>
+                        </div>
+                        <div id="slider3_box">
+                            <div id="provider"></div>
+                            <span id="preport"></span>
+                        </div>
+                        <div>
+                            <div id="slider2" style="display: none;"></div>
+                            <span id="sigreport" style="display: none; text-align: center;">Gaussian Kernel sigma = 1.0</span>
+                        </div>
+                        <div>
+                            <div id="slider3" style="display: none;"></div>
+                            <span id="degreport" style="display: none;text-align: center;">Polynomial Kernel degree = 3</span>
+                        </div>
+                        <div>
+                            <div id="slider4" style="display: none;"></div>
+                            <span id="areport" style="display: none;text-align: center;">Polynomial Kernel a = 1.0</span>
+                        </div>
+                        <div>
+                            <div id="slider5" style="display: none;"></div>
+                            <span id="alpreport" style="display: none;text-align: center;">Sigmoid Kernel alpha = 0.32</span>
+                        </div>
+                        <div>
+                            <div id="slider6" style="display: none;"></div>
+                            <span id="csigreport" style="display: none;text-align: center;">Sigmoid Kernel c = 0.05</span>
                         </div>
                     </div>
                 </div>
-            </section>
-            <section>
-                <p class="section-head">
-                    Testing
-                </p>
-            </section>
+                <div id="optsdiv">
+                    <div class="col-md-11">
+                        <div class="card border-dark">
+                            <div class="card-header" style="background-color: #512DA8; text-align: center; vertical-align: middle;">
+                                <h2 style="color: white;">Information about the Model</h2>
+                            </div>
+                            <div class="card-body">
+                                <div>
+                                    <h2 style="margin-left: 1em;font-size: large; text-align: left;">The SVM algorithm is trying to plot a decision boundary separating the Yellow points from the Blue Points. The SVM tries to create the widest possible decision boundary that can be made between the two classes. The
+                                        SVM implemented here uses the <a href="http://cs229.stanford.edu/materials/smo.pdf" style="color:  #035aa6;">SMO algorithm</a> to find the decision boundary. </br><a data-toggle="collapse" href="#list2" id="collapseInfo"
+                                            style="color:  #035aa6;">Show More..</a></h2>
+                                    <div id="list2" class="collapse">
+                                        <div id="linear_info" style="display: block;">
+                                            <p style="text-align: left;margin-left: 1em; font-size: large; margin-top: 1em;">You have opted Linear Kernel to find the Decision boundary. A Linear Kernel is not a kernel per se, but the simple SVM. As evident, from the name, it finds a linear decision boundary between the classes, and
+                                                works well when the classes are linearly separable. However, since the points here, are not linearly separable, we cannot use it to find the perfect decision boundary. What we can do though, is to allow
+                                                the SVM to perform some misclassifications in order to achieve the best 'possible' decision boundary. Here comes the parameter C. This parameter is a universal parameter for all kernels, allowing them to
+                                                perform a few misclassifications in order to complete the task.
+                                            </p>
+                                            </br>
+                                            <h2 style="text-align: left;margin-left: 1em; font-size: larger; margin-top: 1em;">Kernel Equation: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="font-size:x-large; font-weight: 400;"><i style="font-family:'Times New Roman', Times, serif;">K</i>\((\vec{x_i}, \vec{x_j})\) = \((\vec{x_i} \cdot \vec{x_j})\)</b></h2>
+                                        </div>
+                                        <div id="poly_info" style="display: none;">
+                                            <p style="text-align: left;margin-left: 1em; font-size: large; margin-top: 1em;">You have opted Polynomial Kernel to find the Decision boundary. Polynomial Kernels are used in specific cases, when you know the degree of the decision boundary, because in those cases the polynomial kernel
+                                                exploits its advantage of being finite-dimensioned over the likes of the Gaussian RBF kernel. We use two parameters apart from the universal parameter C which is used for allowing misclassifications, and
+                                                for what is called Soft-Margin Classification, that are 'a' and degree. The degree is used to control the dimension of the space where the kernel computes this dot product. 'a' on the other hand is merely
+                                                a constant to produce a mixture of terms in that space. A higher degree tends to overfit the data, while a higher 'a', doesn't contribute much to the bias-variance tradeoff. Often, the polynomial kernel
+                                                is used with a=1.
+                                            </p>
+                                            </br>
+                                            <h2 style="text-align: left;margin-left: 1em; font-size: larger; margin-top: 1em;">Kernel Equation: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="font-size:x-large; font-weight: 400;"><i style="font-family:'Times New Roman', Times, serif;">K</i>\((\vec{x_i}, \vec{x_j})\) = \((\vec{x_i} \cdot \vec{x_j}+a)^{d}\)</b></h2>
+                                        </div>
+                                        <div id="rbf_info" style="display: none;">
+                                            <p style="text-align: left;margin-left: 1em; font-size: large; margin-top: 1em;">You have opted Gaussian(RBF) Kernel to find the Decision boundary. A Gaussian Kernel is a special case of the RBF kernel. It maps the features into a very high dimensional space, and as a result, can produce
+                                                highly non-linear boundaries. Due to this fact, it is the most popular kernel in use. To control this nature of this kernel, we have two parameters, C and sigma. C is the usual universal parameter for allowing
+                                                misclassifications, and for what is called Soft-Margin Classification. However, sigma is a parameter specific to Gaussian Kernel. It is used to basically control the variance of the higher order projection
+                                                from the original point. That is, if sigma is higher, a point will influence and occupy a larger portion around itself. Thus, increasing sigma makes the decision boundary more flexible and smooth. As a result,
+                                                the SVM does a bit of misclassifications as well. However, this is not a bad thing. Gaussian Kernels, being as powerful as they are, have a very high tendency of overfitting the data. Hence, increasing sigma
+                                                tends to reduce overfitting.
+                                            </p>
+                                            </br>
+                                            <h2 style="text-align: left;margin-left: 1em; font-size: larger; margin-top: 1em;">Kernel Equation: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="font-size:x-large; font-weight: 400;"><i style="font-family:'Times New Roman', Times, serif;">K</i>\((\vec{x_i}, \vec{x_j})\) = \(e^{-\frac{||\vec{x_i} - \vec{x_j}||^2}{2\sigma^{2}}}\)</b></h2>
+                                        </div>
+                                        <div id="sigmoid_info" style="display: none;">
+                                            <p style="text-align: left;margin-left: 1em; font-size: large; margin-top: 1em;">You have opted Sigmoid Kernel to find the Decision boundary. It is interesting to note that a SVM model using a sigmoid kernel function is equivalent to a two-layer, perceptron neural network. This kernel is
+                                                quite popular for support vector machines due to its origin from neural network theory. This Kernel is controlled using two parameters apart from the universal parameter C which is used for allowing misclassifications,
+                                                and for what is called Soft-Margin Classification, that are 'c-sigma' and alpha. c is just a parameter added to the dot product to regulate the sum and doesn't contribute much to the bias-variance tradeoff.
+                                                However, \(\alpha\) on the other hand, is a scaling parameter, and increases the area of influence of each point. It is not as good as the RBF kernel though.
+                                            </p>
+                                            </br>
+                                            <h2 style="text-align: left;margin-left: 1em; font-size: larger; margin-top: 1em;">Kernel Equation: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b style="font-size:x-large; font-weight: 400;"><i style="font-family:'Times New Roman', Times, serif;">K</i>\((\vec{x_i}, \vec{x_j})\) = \(tanh(\alpha\vec{x_i} \cdot \vec{x_j} + c)\)</b></h2>
+                                        </div>
+                                    </div>
+                                    <p style="text-align: left;margin-left: 1em; font-size: large; margin-top: 2em; font-weight: 400;">You can see the <a data-toggle="collapse" href="#stats" style="color:  #035aa6;">Training statistics</a> below.</p>
+                                    <div id="stats" class="collapse">
+                                        <ul>
+                                            <li style="list-style-type:square;text-align: left;margin-left: 1em; font-size: large;" id="covg"></li>
+                                            <li style="list-style-type:square;text-align: left;margin-left: 1em; font-size: large;" id="supp"></li>
+                                            <li style="list-style-type:square;text-align: left;margin-left: 1em; font-size: large;" id="kern"></li>
+                                            <li style="list-style-type:square;text-align: left;margin-left: 1em; font-size: large;" id="c"></li>
+                                            <li style="list-style-type:square;text-align: left;margin-left: 1em; font-size: large; display: none;" id="sig"></li>
+                                            <li style="list-style-type:square;text-align: left;margin-left: 1em; font-size: large;display: none" id="a"></li>
+                                            <li style="list-style-type:square;text-align: left;margin-left: 1em; font-size: large;display: none" id="deg"></li>
+                                            <li style="list-style-type:square;text-align: left;margin-left: 1em; font-size: large;display: none" id="alp"></li>
+                                            <li style="list-style-type:square;text-align: left;margin-left: 1em; font-size: large;display: none" id="csig"></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+        <section>
+            <p class="section-head" style="margin-bottom: 0em; height: 1.5em;"></p>
+        </section>
+        <div class="jumbotron jumbotron-fluid py-4" style="text-align: center; color: rgb(230,230,250); background-color: #512DA8; margin-bottom: 0em;">
+            <h2 style="color: #FFFF99;">
+                DSG IIT-R
+            </h2>
+            <h6>
+                Aaryan Garg | Abhinav Saini | Vivek Kumar
+            </h6>
         </div>
-    </div>
+        </div>
+        <script src="index.js"></script>
 </body>
-<script src="./ui.js"></script>
 
 </html>

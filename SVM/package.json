@@ -1,12 +1,12 @@
 {
-    "name": "tfjs-examples-mnist",
-    "version": "0.1.0",
-    "description": "",
+    "name": "svm.js",
+    "version": "1.0.0",
+    "description": "Browser Implementation of a Support Vector Machine Classifier",
     "main": "index.js",
-    "license": "Apache-2.0",
-    "private": true,
-    "engines": {
-        "node": ">=8.9.0"
+    "author": "Garg-Doppler, Abhinav Saini, Vivek Kumar",
+    "license": "MIT",
+    "dependencies": {
+        "svm": "^0.1.1"
     },
     "scripts": {
         "watch": "cross-env NODE_ENV=development parcel index.html --no-hmr --open",
@@ -14,12 +14,16 @@
         "link-local": "yalc link"
     },
     "devDependencies": {
+        "@babel/cli": "^7.10.4",
         "@babel/core": "^7.0.0-0",
-        "@babel/plugin-transform-runtime": "^7.1.0",
-        "babel-preset-env": "~1.6.1",
+        "@babel/plugin-transform-runtime": "^7.10.4",
+        "@babel/preset-env": "^7.10.4",
+        "babel-preset-env": "^1.7.0",
+        "babelify": "^10.0.0",
+        "browserify": "^16.5.1",
         "clang-format": "~1.2.2",
         "cross-env": "^5.1.6",
-        "parcel-bundler": "~1.10.3",
+        "parcel-bundler": "^1.12.4",
         "yalc": "~1.0.0-pre.22"
     }
 }
