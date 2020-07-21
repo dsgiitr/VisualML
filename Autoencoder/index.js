@@ -229,7 +229,7 @@ function clear(){
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canv.width, canv.height);
     ct.clearRect(0, 0, outcanv.width, outcanv.height);
-    ct.fillStyle = "#EEEEEE";
+    ct.fillStyle = "#DDDDDD";
     ct.fillRect(0, 0, outcanv.width, outcanv.height);
 }
 document.getElementById('clear').addEventListener('click',clear);
