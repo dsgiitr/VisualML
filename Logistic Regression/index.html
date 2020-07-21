@@ -12,6 +12,9 @@
     font-size:3vh;
   }
   button{
+    border-radius: 20px;
+    border-color:#00FFFF;
+    background-color: #CCFFFF;
       font-size:3vh;
   }
   pre {
@@ -30,11 +33,12 @@
   </script>
 </head>
 
-<body style="text-align:center;background-color:#EFEFEF;">
+<body style="text-align:center;background-color:#EFEFEF;margin-top:0%;">
+  <p style="font-size:8vh;color:#DD3333;background-color:#FFEFEFCC;width:100%;position:fixed;margin-top:0%;padding-top:0.6%;">LOGISTIC REGRESSION</p>
 <div id="body" style="text-align:center;width:60%;margin-left:20%;background-color:white;">
 <br>
 
-<span style="font-size:8vh;color:#CC0000;">LOGISTIC REGRESSION</span>
+
 <br><br><br>
 
 <pre style="text-align:left;margin-left:7%; width:86%; font-family:Times; font-size:1.3vw; color:#003333;">
@@ -45,25 +49,25 @@ classes. Unlike linear regression which outputs continuous number values, logist
 transforms its output using the logistic sigmoid function to return a probability value which
 
 can then be mapped to two or more discrete classes.
-<h3>Types of Logistic Regression</h3>
-1. <span style="text-decoration: underline;">Binary Logistic Regression</span>
+<h3 style="background-color:#0000FF11">Types of Logistic Regression</h3>
+1. <span style="text-decoration: underline;color:#FF3333;">Binary Logistic Regression</span>
 
 The categorical response has only two 2 possible outcomes. Example: Spam or Not
 
-2. <span style="text-decoration: underline;">Multinomial Logistic Regression</span>
+2. <span style="text-decoration: underline;color:#FF3333;">Multinomial Logistic Regression</span>
 
 Three or more categories without ordering. Example: Predicting which food is preferred
 more (Veg, Non-Veg, Vegan)
 
-3. <span style="text-decoration: underline;">Ordinal Logistic Regression</span>
+3. <span style="text-decoration: underline;color:#FF3333;">Ordinal Logistic Regression</span>
 
 Three or more categories with ordering. Example: Movie rating from 1 to 5
-<h3>Decision Boundary</h3>
+<h3 style="background-color:#0000FF11">Decision Boundary</h3>
 To predict which class a data belongs, a threshold can be set. Based upon this threshold, the obtained estimated probability is classified into classes.
 
 </pre>
 
-<h2>Visualization for decision boundary of 2 Classes</h2>
+<p style="font-family:fantasy; font-size:2.5vw;color:#334444;background-color:#77FF77">Visualization for decision boundary of 2 Classes</p>
 <div style="display:block;">
 <div style="width:20vw;margin-left:10vh;background-color:#EFEFEF;text-align:left;padding-left:3%;padding-top:3%;padding-bottom:2%;display:inline-block;float:left;" >
 
@@ -90,23 +94,24 @@ To predict which class a data belongs, a threshold can be set. Based upon this t
 </select>
 <div style="height:3vh;"></div>
 
-<button id='train' style="background-color:white;">Train</button>
+<button id='train' >Train</button>
 </div>
-<img src="logreg.jpg" style="height:35vh;width:30vw;"></img>
+<img src="logreg.jpg" style="height:33vh;width:30vw;padding-bottom:3%;border:solid 3px #EFEFEF;"></img>
 <br><br><br><br>
 <div style="float:right;margin-right:3vw;">
 <label for="res">Resol:</label>
-<input id='res' value='50'></input><br><br>
+<input id='res' value='100'></input><br><br>
 <label for="epoch">Epoch:</label>
 <input id='epoch' value='100'></input>
 </div>
 </div>
 
-
-<div id="plt" style="font-size:7vh;clear:both;margin-top:15vh;">Plot Area</div>
-<div id="pl" style="height:60vh;width:50vw;margin-left:7vw;margin-top:5vh;"></div>
-<div style="font-size:7vh;clear:both;margin-top:15vh;">Loss Area</div>
-<div id='training' style="width:50vw;height:30vh;margin-left:7vw;"></div>
+<br>
+<div id="plt" style="clear:both;margin-top:15vh;font-family:fantasy; font-size:2.5vw;color:#334444;background-color:#FFFF00;">Plot Area</div>
+<div id="pl" style="height:60vh;width:50vw;margin-left:7vw;margin-top:5vh;display:none;"></div>
+<div style="font-family:fantasy; font-size:2.5vw;color:#334444;clear:both;margin-top:15vh;background-color:#FFFF00;">Loss Area</div>
+<div id='training' style="width:50vw;height:30vh;margin-left:7vw;display:none"></div>
+<br><br>
 DSG-IITR
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
