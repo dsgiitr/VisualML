@@ -63,20 +63,6 @@
         color: black;
         font-size: 24px;
     }
-    
-    #btndownload {
-        border-radius: 12px;
-        background: #73AD21;
-        padding: 10px;
-        margin-bottom: 40px;
-        width: 180px;
-        height: 50px;
-    }
-    
-    #btndownload:active {
-        background: #ca0707;
-        color: aliceblue;
-    }
 </style>
 
 <body>
@@ -93,45 +79,35 @@
                 <div class="col-lg-5 card border-dark" style="padding: 0;">
                     <h3 class="card-header bg-primary" style="text-align: center; color: azure;"> Choose Content Image </h3>
                     <div class="card-body bg-warning">
-                        <img id="content-img" class="centered" src="images/chicago.jpg" height=256 width=100%></img>
-                        <br>
-                        <label for="content-img-size">Content image size</label>
-                        <input type="range" min="256" max="400" value="256" class="custom-range centered" id="content-img-size">
+                        <img id="content-img" class="centered" src="images/newyork.jpg" height=256 width=100%></img>
                         <br>
                         <select id="content-select" class="centered custom-select">
                         <option value="" disabled>Select content</option>
                         <option value="pic">Take a picture</option>
                         <option value="file">Select from file</option>
-                        <option value="stata">stata</option>
+                        <option value="building">building</option>
                         <option value="diana">diana</option>
-                        <option value="golden_gate">golden_gate</option>
-                        <option value="beach">beach</option>
-                        <option value="chicago" selected="selected">chicago</option>
-                        <option value="statue_of_liberty">statue_of_liberty</option>
+                        <option value="golden_gate">golden gate</option>
+                        <option value="tajmahal">taj mahal</option>
+                        <option value="newyork" selected="selected">new york</option>
                         </select>
                     </div>
-                </div>
+                </div><br/>
                 <div class="col-lg-5 card border-dark" style="padding: 0;">
                     <h3 class="card-header bg-primary" style="text-align: center; color: azure;"> Choose Style Image </h3>
                     <div class="card-body bg-warning">
-                        <img id="style-img" class="centered" crossorigin="anonymous" src="images/seaport.jpg" height=256 width=100%></img>
-                        <br>
-                        <label for="style-img-size">Style image size</label>
-                        <input id="style-img-square" type="checkbox" style="vertical-align: middle; float: right;" data-toggle="tooltip" data-placement="top" title="Force image to square">
-                        <input type="range" min="100" max="400" value="256" class="custom-range centered" id="style-img-size">
+                        <img id="style-img" class="centered" crossorigin="anonymous" src="images/abstract.jpg" height=256 width=100%></img>
                         <br>
                         <select id="style-select" class="centered custom-select">
                         <option value="" disabled>Select a style</option>
                         <option value="file">Select from file</option>
-                        <option value="random">Random image from wikiart.org</option>
                         <option value="udnie">udnie</option>
-                        <option value="stripes">stripes</option>
-                        <option value="bricks">bricks</option>
-                        <option value="clouds">clouds</option>
+                        <option value="abstract" selected="selected">abstract</option>
+                        <option value="swirl">swirl</option>
+                        <option value="van_gogh">van gogh</option>
                         <option value="towers">towers</option>
-                        <option value="sketch">sketch</option>
-                        <option value="seaport" selected="selected">seaport</option>
-                        <option value="red_circles">red_circles</option>
+                        <option value="landscape">landscape</option>
+                        <option value="seaport">seaport</option>
                         <option value="zigzag">zigzag</option>
                         </select>
                     </div>
@@ -146,8 +122,8 @@
                 </div>
                 <div class="col-md-5">
                     <select disabled id="model-select-style" class="centered custom-select">
-                      <option value="mobilenet" selected="selected">[Fast] Distilled MobileNet style model</option>
-                      <option value="inception">[High quality] Original Inception-v3 style model</option>
+                      <option value="mobilenet" selected="selected">Distilled MobileNet style model</option>
+                      <option value="inception">Original Inception-v3 style model</option>
                     </select>
                 </div>
             </div>
@@ -157,8 +133,8 @@
                 </div>
                 <div class="col-md-5">
                     <select disabled id="model-select-transformer" class="centered custom-select">
-                      <option value="separable" selected="selected">[Fast] Separable Conv-2d Transformer</option>
-                      <option value="original">[High quality] Original Transformer model</option>
+                      <option value="separable" selected="selected">Separable Conv-2d Transformer</option>
+                      <option value="original">Original Transformer model</option>
                     </select>
                 </div>
             </div>
@@ -194,7 +170,7 @@
             <div style="text-align: center;"><b><h1>Final Image</h1></b></div>
             <canvas id="stylized" class="centered"></canvas>
             <br>
-            <button id="btndownload" class="centered btn bg-tertiary">Download</button>
+            <button id="btndownload" class="centered btn bg-success">Download</button>
         </div>
 
         <div class="container"><canvas id="hidden-canvas" style="display: none"></canvas></div>
