@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91864013-5"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-91864013-5');
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'UA-91864013-5');
     </script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Arbitrary Style Transfer with TF.js" />
-    <meta name="twitter:description" content="Paint yourself in the style of any painting, right in the browser." />
+    <meta content="summary" />
+    <meta content="Arbitrary Style Transfer with TF.js" />
+    <meta content="Paint yourself in the style of any painting, right in the browser." />
 
     <title>Neural Style Transfer</title>
 
@@ -30,204 +34,203 @@
 </head>
 
 <style>
-  body {
-    overflow-x: hidden;
-    width: 100%;
-  }
-
-  .centered {
-    margin: auto;
-    display: block;
-  }
-
-  #Progress {
-    width: 80%;
-    background-color: transparent;
-    border: 1px solid black;
-  }
-
-  #Bar {
-    width: 0%;
-    height: 30px;
-    background-color: green;
-  }
-
-  #counter {
-    text-align: center;
-    color: black;
-    font-size: 24px;
-  }
-
-  #btndownload {
-    border-radius: 12px;
-    background: #73AD21;
-    padding: 10px; 
-    margin-bottom: 40px;
-    width: 180px;
-    height: 50px;
-  }
-
-  #btndownload:active {
-    background: #ca0707;
-    color: aliceblue;
-  }
+    body {
+        overflow-x: hidden;
+        width: 100%;
+        background: rgb(238, 174, 202);
+        background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
+    }
+    
+    .centered {
+        margin: auto;
+        display: block;
+    }
+    
+    #Progress {
+        width: 80%;
+        background-color: transparent;
+        border: 1px solid black;
+    }
+    
+    #Bar {
+        width: 0%;
+        height: 30px;
+        background-color: green;
+    }
+    
+    #counter {
+        text-align: center;
+        color: black;
+        font-size: 24px;
+    }
+    
+    #btndownload {
+        border-radius: 12px;
+        background: #73AD21;
+        padding: 10px;
+        margin-bottom: 40px;
+        width: 180px;
+        height: 50px;
+    }
+    
+    #btndownload:active {
+        background: #ca0707;
+        color: aliceblue;
+    }
 </style>
 
 <body>
-<input type="file" id="file-select" style="display: none" accept="image/x-png,image/gif,image/jpeg"/>
-<!-- As a heading -->
-<div class="jumbotron jumbotron-fluid py-4" style="text-align: center; color: aliceblue; background-color: #512DA8;">
+    <input type="file" id="file-select" style="display: none" accept="image/x-png,image/gif,image/jpeg" />
+    <!-- As a heading -->
+    <div class="jumbotron jumbotron-fluid py-4" style="text-align: center; color: aliceblue; background-color: #512DA8;">
+        <div class="container">
+            <h2>Neural Style Transfer</h2>
+        </div>
+    </div>
     <div class="container">
-      <h2>Neural Style Transfer</h2>
-    </div>
-</div>
-<div class="container">
-<div id="mobile-warning" hidden class="alert alert-warning" role="alert">
-  This site may have problems functioning on mobile devices. 
-  Don't worry, you can still read the description below!
-</div>
+        <div class="container">
+            <div class="row my-4 justify-content-around">
+                <div class="col-lg-5 card border-dark" style="padding: 0;">
+                    <h3 class="card-header bg-primary" style="text-align: center; color: azure;"> Choose Content Image </h3>
+                    <div class="card-body bg-warning">
+                        <img id="content-img" class="centered" src="images/chicago.jpg" height=256 width=100%></img>
+                        <br>
+                        <label for="content-img-size">Content image size</label>
+                        <input type="range" min="256" max="400" value="256" class="custom-range centered" id="content-img-size">
+                        <br>
+                        <select id="content-select" class="centered custom-select">
+                        <option value="" disabled>Select content</option>
+                        <option value="pic">Take a picture</option>
+                        <option value="file">Select from file</option>
+                        <option value="stata">stata</option>
+                        <option value="diana">diana</option>
+                        <option value="golden_gate">golden_gate</option>
+                        <option value="beach">beach</option>
+                        <option value="chicago" selected="selected">chicago</option>
+                        <option value="statue_of_liberty">statue_of_liberty</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-5 card border-dark" style="padding: 0;">
+                    <h3 class="card-header bg-primary" style="text-align: center; color: azure;"> Choose Style Image </h3>
+                    <div class="card-body bg-warning">
+                        <img id="style-img" class="centered" crossorigin="anonymous" src="images/seaport.jpg" height=256 width=100%></img>
+                        <br>
+                        <label for="style-img-size">Style image size</label>
+                        <input id="style-img-square" type="checkbox" style="vertical-align: middle; float: right;" data-toggle="tooltip" data-placement="top" title="Force image to square">
+                        <input type="range" min="100" max="400" value="256" class="custom-range centered" id="style-img-size">
+                        <br>
+                        <select id="style-select" class="centered custom-select">
+                        <option value="" disabled>Select a style</option>
+                        <option value="file">Select from file</option>
+                        <option value="random">Random image from wikiart.org</option>
+                        <option value="udnie">udnie</option>
+                        <option value="stripes">stripes</option>
+                        <option value="bricks">bricks</option>
+                        <option value="clouds">clouds</option>
+                        <option value="towers">towers</option>
+                        <option value="sketch">sketch</option>
+                        <option value="seaport" selected="selected">seaport</option>
+                        <option value="red_circles">red_circles</option>
+                        <option value="zigzag">zigzag</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<div class="container">
-  <div class="row my-4">
-    <div class="col-lg-5 mx-5 my-4">
-      <h3 style="text-align: center;"> Choose Content Image </h3><br>
-        <img id="content-img" class="centered" src="images/chicago.jpg" height=256 width=100%></img>
+        <div class="container">
+            <div class="row my-4">
+                <div class="col-md-4 offset-md-1">
+                    <h6>Choose the Style Prediction Network</h6>
+                </div>
+                <div class="col-md-5">
+                    <select disabled id="model-select-style" class="centered custom-select">
+                      <option value="mobilenet" selected="selected">[Fast] Distilled MobileNet style model</option>
+                      <option value="inception">[High quality] Original Inception-v3 style model</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row my-4">
+                <div class="col-md-4 offset-md-1">
+                    <h6>Choose the Style Transfer Network</h6>
+                </div>
+                <div class="col-md-5">
+                    <select disabled id="model-select-transformer" class="centered custom-select">
+                      <option value="separable" selected="selected">[Fast] Separable Conv-2d Transformer</option>
+                      <option value="original">[High quality] Original Transformer model</option>
+                    </select>
+                </div>
+            </div>
+        </div>
         <br>
-        <label for="content-img-size">Content image size</label>
-        <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top" 
-        title="A bigger content image results in a more detailed output, but increases the processing time significantly."></i>
-        <input type="range" min="256" max="400" value="256" class="custom-range centered" id="content-img-size" >
-        <br>
-        <select id="content-select" class="centered custom-select">
-          <option value="" disabled>Select content</option>
-          <option value="pic">Take a picture</option>
-          <option value="file">Select from file</option>
-          <option value="stata">stata</option>
-          <option value="diana">diana</option>
-          <option value="golden_gate">golden_gate</option>
-          <option value="beach">beach</option>
-          <option value="chicago" selected="selected">chicago</option>
-          <option value="statue_of_liberty">statue_of_liberty</option>
-        </select>
-    </div>
-    <div class="col-lg-5 mx-4 my-4">
-      <h3 style="text-align: center;"> Choose Style Image </h3><br>
-        <img id="style-img" class="centered" crossorigin="anonymous" src="images/seaport.jpg" height=256 width=100%></img>
-        <br>
-        <label for="style-img-size">Style image size</label>
-        <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top" 
-        title='Changing the size of a style image usually affects the texture "seen" by the network.'></i>
-        <input id="style-img-square" type="checkbox" style="vertical-align: middle; float: right;"
-        data-toggle="tooltip" data-placement="top" 
-        title="Force image to square">
-        <input type="range" min="100" max="400" value="256" class="custom-range centered" id="style-img-size">
-        <br>
-        <select id="style-select" class="centered custom-select">
-          <option value="" disabled>Select a style</option>
-          <option value="file">Select from file</option>
-          <option value="random">Random image from wikiart.org</option>
-          <option value="udnie">udnie</option>
-          <option value="stripes">stripes</option>
-          <option value="bricks">bricks</option>
-          <option value="clouds">clouds</option>
-          <option value="towers">towers</option>
-          <option value="sketch">sketch</option>
-          <option value="seaport" selected="selected">seaport</option>
-          <option value="red_circles">red_circles</option>
-          <option value="zigzag">zigzag</option>
-        </select>
-    </div>
-  </div>
-</div>
-
-<div class="container">
-  <div class="row my-4">
-    <div class="col-md-4 offset-md-1"><h5>Choose the Style Prediction Network</h5></div>
-    <div class="col-md-5">
-        <select disabled id="model-select-style" class="centered custom-select">
-          <option value="mobilenet" selected="selected">[Fast] Distilled MobileNet style model</option>
-          <option value="inception">[High quality] Original Inception-v3 style model</option>
-        </select>
-    </div>
-  </div>
-  <div class="row my-4">
-    <div class="col-md-4 offset-md-1"><h5>Choose the Style Transfer Network</h5></div>
-    <div class="col-md-5">
-        <select disabled id="model-select-transformer" class="centered custom-select">
-          <option value="separable" selected="selected">[Fast] Separable Conv-2d Transformer</option>
-          <option value="original">[High quality] Original Transformer model</option>
-        </select>
-    </div>
-  </div>
-</div>
-<br>
-<div class="container">
-  <div class="row my-4">
-    <div class="centered"><h4>Select the extent of stylization</h4></div>
-    <div class="col-md-8 col-12 offset-md-2">
-      <label for="stylized-img-ratio">Stylization strength</label>
-      <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top" 
-      title="This parameter affects the stylization strength. The further to the right, the stronger the stylization. This is done via interpolation between the style vectors of the content and style images."></i>
-      <input type="range" min="0" max="100" value="100" class="custom-range centered" id="stylized-img-ratio">
-    </div>
-  </div>
-  <br>
-  <div class="row my-4">
-    <div class="col-md-6 offset-md-3">
-        <button disabled id="style-button" type="button" class="btn btn-primary btn-block">Loading stylization model. Please wait..</button>
-    </div>
-    <div class="col-md-1">
-        <button type="button" id="randomize" class="btn btn-light btn-block">
+        <div class="container">
+            <div class="row my-4">
+                <div class="centered">
+                    <h4>Select the extent of stylization</h4>
+                </div>
+                <div class="col-md-8 col-12 offset-md-2">
+                    <input type="range" min="0" max="100" value="100" class="custom-range centered" id="stylized-img-ratio">
+                </div>
+            </div>
+            <br>
+            <div class="row my-4">
+                <div class="col-md-6 offset-md-3">
+                    <button disabled id="style-button" type="button" class="btn btn-primary btn-block">Loading stylization model. Please wait..</button>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" id="randomize" class="btn btn-light btn-block">
           <i class="fas fa-random" data-toggle="tooltip" data-placement="top" 
           title="Randomize parameters"></i>
         </button>
+                </div>
+            </div>
+            <br>
+            <div id="Progress" class="centered">
+                <div id="Bar"></div>
+            </div>
+            <div id="counter" class="centered">Epochs: 0</div>
+            <br>
+            <div style="text-align: center;"><b><h1>Final Image</h1></b></div>
+            <canvas id="stylized" class="centered"></canvas>
+            <br>
+            <button id="btndownload" class="centered btn bg-tertiary">Download</button>
+        </div>
+
+        <div class="container"><canvas id="hidden-canvas" style="display: none"></canvas></div>
+        <div class="modal fade" id="cam-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Take a snapshot!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <video id="webcam-video" class="centered" width="500" height="375"></video>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="snap-button">Snap!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <br>
-  <div id="Progress" class="centered">
-    <div id="Bar"></div>
-  </div>
-  <div id="counter" class="centered">Epochs: 0</div>
-  <br>
-  <div style="text-align: center;"><b><h1>Final Image</h1></b></div>
-  <canvas id="stylized" class="centered"></canvas>
-  <br>
-  <button id="btndownload" class="centered">Download</button>
-</div>
 
-<div class="container"><canvas id="hidden-canvas" style="display: none"></canvas></div>
-<div class="modal fade" id="cam-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Take a snapshot!</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <video id="webcam-video" class="centered" width="500" height="375"></video>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="snap-button">Snap!</button>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
-<!-- JQuery -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<!-- Bootstrap tooltips -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
-<!-- Bootstrap core JavaScript -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
-<script type="text/javascript">
-  $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-  })
-</script>
+    <script type="text/javascript">
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 </body>
+
 </html>
