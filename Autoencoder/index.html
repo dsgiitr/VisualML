@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html >
 <head>
   <title>MNIST in TensorFlow.js Layers API</title>
   <meta charset="utf-8">
@@ -8,6 +8,16 @@
 
 
   <style>
+    html{
+        line-height: 200%;
+        font-family:Georgia;
+    }
+    button{
+      border-radius: 20px;
+      border-color:#00FFFF;
+      background-color: #CCFFFF;
+        font-size:2vh;
+    }
     #train {
       margin-top: 10px;
     }
@@ -15,7 +25,7 @@
 
     label {
       display: inline-block;
-      width: 250px;
+      width: 90%;
       padding: 6px 0 6px 0;
     }
 
@@ -26,7 +36,6 @@
     .prediction-canvas {
       width: 100px;
     }
-
     .pred {
       font-size: 20px;
       line-height: 25px;
@@ -50,36 +59,31 @@
   </style>
 </head>
 
-<body style="text-align:center;background-color:#EEECF2;">
-  <div id="body" style="text-align:center;height:100%;width:60%;margin-left:20%;background-color:white;">
-
-    <section class='title-area'>
-      <h1><br>TensorFlow.js: Digit Recognizer with Layers</h1>
-      <p class='subtitle'><h4>Train a model to autoencode handwritten digits from the MNIST database using the tf.layers
-        api.</h4>
-      </p>
-    </section>
-
-    <section>
-      <p class='section-head'><h4>Description</h4></p>
-      <p>
-        <h4>
+<body style="text-align:center;background-color:white;font-size:3vh;top:0%; font-family:Georgia;margin-top:0%;margin-left:0%;">
+  <p style="background-color:#111111E9;font-size:3vw;top:0%;font-family:Times;margin-top:0%;padding-bottom:1%;padding-top:1%;position:fixed;width:100%;color:#EEEEFF;">TensorFlow.js: MNIST Autoencoder</p>
+    <p style="background-color:#7777AA;font-size:3vw;top:0%;font-family:Times;margin-top:0%;padding-bottom:1%;padding-top:1%;visibility: hidden;width:100%;margin-bottom:0%;">TensorFlow.js: MNIST Autoencoder</p>
+  <div id="body" style="text-align:center;height:100%;width:55%;margin-left:22%;background-color:white;padding-left:1vw;padding-top:1vh;">
+    <br>
+    <section class='title-area' >
+      <p  style="text-align:left;color:#111111;margin-top:0%;">Train a model to autoencode handwritten digits from the MNIST database using the tf.layers
+        api.
+        <br>
         This examples lets you train a MNIST Autoencoder using a Fully Connected Neural Network (also known as a DenseNet).<br><br>
         You can select the structure for the DenseNet and see the performance of the model.
-      </h4>
-      </p>
-      <p><h4>The MNIST dataset is used as training data.<h4></p>
+        <br>The MNIST dataset is used as training data.</p>
     </section>
-
+  <div style="width:100%;height:5px;background-color:#EFEFEF;"></div>
     <section  style="text-align:center;">
-      <p class='section-head'><h1>Training Parameters</h1></p>
+      <p class='section-head' ><h1 style="background-color:#EFEFFF;padding-top:0.5%;padding-bottom:1%;">Training Parameters</h1></p>
 
 
 
 
 
-      <div>
+      <div style="font-family:Times;width:20vw;background-color:#EFEFEF;text-align:left;padding-left:3%;padding-top:3%;padding-bottom:2%;display:inline-block;">
+        <div>
         <label># Batch size:</label>
+
         <input id="batchsize" value="320">
       </div>
 
@@ -118,18 +122,22 @@
       <button id="train">Train Model</button>
       <button id="Create">Create model</button>
     </section>
+    <br>
+<div style="width:100%;height:5px;background-color:#EFEFEF;"></div>
+  </div>
 
 
 
+<br><br>
+<div style="text-align:center;margin-left:10%;font-family:Times;background-color:#EFEFFF66;width:80%;padding-top:1%;font-family:sans-serif;">
 
-
-<div style="text-align:center;"> <br><br><br><h2>This will show the examples of autoencoder ones it its trained</h2>
+<div style="text-align:center; "> <h2>This will show the examples of autoencoder once it its trained</h2>
   <div id="new"  style="text-align:center;"></div>
 </div>
 
 
-
-<div  style="text-align:center;"><br><br><br>
+<br><br><br>
+<div  style="text-align:center;">
 <h2>This is for 2d plot visualization of latent space of autoencoder.<br> If your latent space dimension is set to 2D<br></h2>
 <canvas id="celeba-scene" style="height:400px; width:400px;display:none;"></canvas>
 </div>
@@ -137,13 +145,14 @@
 </div>
 
 
-
-<div  style="text-align:center;"><br><br><br><h2>This is for autoencoding your drawing on the canvas<br></h2>
+<br><br><br>
+<div  style="text-align:center;"><h2>This is for autoencoding your drawing on the canvas<br></h2>
   <canvas id="canv" style="height:400px; width:400px;display:inline;"></canvas>
   <canvas id="outcanv" style="height:400px; width:400px;display:inline;"></canvas>
   <span style="display:block;"></span>
 <button id="save" style="display:inline;">Autoencode</button>
 <button id="clear" style="display:inline;">Clear</button>
+</div>
 </div>
 
 
