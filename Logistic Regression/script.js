@@ -27,6 +27,7 @@ async function loaddata(){
   N=x1.length;
   x1=tf.tensor(x1);
   x2=tf.tensor(x2);
+  y=tf.tensor(y);
 
   x1=x1.sub(x1.mean());
   x1=x1.div(x1.max().sub(x1.min())).mul(4.0);
@@ -34,13 +35,16 @@ async function loaddata(){
   x2=x2.sub(x2.mean());
   x2=x2.div(x2.max().sub(x2.min())).mul(4.0);
   //x2=x2.add(1.0);
+  y=y.sub(y.min());
+  y=y.div(y.max().sub(y.min()));
+
   n2=await x2.max().data();
   n1=await x2.min().data();
   m2=await x1.max().data();
   m1=await x1.min().data();
   x1=x1.dataSync();
   x2=x2.dataSync();
-
+  y=y.dataSync();
 }
 
 
@@ -75,13 +79,10 @@ async function update_weights(features, labels, weights, lr,r){
 async function cost_function(features, labels, weights,r){
     var z = tf.dot(features,weights);
     var h = sigmoid(z);
-    var term1 = labels.mul(tf.log(h));
-    var term2= (labels.mul(-1).add(1)).mul(tf.log(h.mul(-1).add(1)));
-    var J = term1.add(term2).div(-N).dataSync();
-    var sum=Number(0.00000);
-    for(var i=0;i<J.length;i++){
-      sum=Number(sum)+Number(J[i]);
-    }
+    var term1 = labels.mul(tf.log(h.add(0.0001)));
+    var term2= (labels.mul(-1).add(1)).mul(tf.log(h.mul(-1).add(1).add(0.0001)));
+    var J = term1.add(term2).div(-N);
+    var sum=Number(await J.sum().data());
     var res=await weights.dataSync();
     for(var i=0;i<res.length;i++){
       sum+=(Number(r)*res[i]*res[i])/res.length;
@@ -154,12 +155,12 @@ async function plotdecisionboundary(){
   var surface=document.getElementById('pl');
   surface.style.display='block';
   surface.innerHTML='';
-  tfvis.render.scatterplot(surface, data);
+  tfvis.render.scatterplot(surface, data,{xLabel:'X1',yLabel:'X2',fontSize:15});
 
   series = ['loss'];
   data = { values: [cost_history], series };
   surface=document.getElementById('training');
   surface.style.display='block';
   surface.innerHTML='';
-  tfvis.render.linechart(surface, data);
+  tfvis.render.linechart(surface, data,{xLabel:'Epochs',yLabel:'Loss',fontSize:15});
 }
