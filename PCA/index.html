@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <title>PCA</title>
+</head>
+
+<body style="overflow-x: hidden; width: auto;">
+    <div class="jumbotron jumbotron-fluid py-4" style="text-align: center; color: aliceblue; background-color: #512DA8;">
+        <div class="container">
+            <h2>Principal Components Analysis</h2>
+        </div>
+    </div>
+    <div class="container" style="width: 100%;">
+        <div class="row" style="margin: auto;">
+            <h3 style="margin: auto;">What is Principal Components Analysis ?</h3>
+            <div style="padding-top: 20px;">
+                Principal component analysis (PCA) is one of a family of techniques for taking high-dimensional data and using the dependencies between the variables to represent it in a more tractable, lower-dimensional form, without losing too much information. It
+                is one of the simplest and most robust ways of achieving dimensionality reduction.
+            </div><br/>
+            <h3 style="margin: auto; padding-top: 20px;">Why is Principal Components Analysis required ?</h3>
+            <div style="padding-top: 20px;">
+                If we keep on increasing the number of features in the data, A phenomenon known as the Curse Of Dimensionality begins to occur. So the idea is that the more features that we have, the more complicated our numerical computations become. This means that
+                the performance of the machine learning algorithms, which are mathematical computations on the data, will be affected. Each added variable results in an exponential decrease in predictive power.<br/>
+                <div style="text-align: center; padding-bottom: 10px;"><img src="cod.png"></div>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="text-align: center; padding-top: 20px; padding-bottom: 30px;">
+        <div class="row justify-content-around">
+            <div class="col-md-6">
+                <div class="card border-dark">
+                    <div class="card-header bg-primary">
+                        <h2 style="color: azure;">Random Data</h2>
+                    </div>
+                    <div class="card-body">
+                        <div style="text-align: left;">Consider a random dataset consisting of 3 different classes of 30 sample points each where each sample point has 3 features. So, the dataset consists of 90 points with 3 features each. The points have been randomly chosen. When
+                            you run the PCA, you’ll see the first component points in the direction that accounts for the most variation in the n variable space. The second component finds the next direction, perpendicular to the first, that has the second
+                            most variation and so on.
+                        </div><br/>
+                        <div>
+                            <button id="Show1" onclick="show_no_outlier()" class="btn btn-success">Show plots without outlier</button>
+                        </div><br/>
+                        <div id="non_outlier" style="display: none;">
+                            <div>
+                                <h2>Using Original AXES</h2>
+                            </div><br>
+                            <div>
+                                <div id="3dplot"></div>
+                                <div id='0-dim'></div>
+                                <div id='1-dim'></div>
+                                <div id='2-dim'></div>
+                            </div><br>
+                            <div>
+                                <h2>Using PRINCIPAL COMPONENTS</h2>
+                            </div><br>
+                            <div>
+                                <div id="3dplot-pca"></div>
+                                <div id='0-1-dim-pca'></div>
+                                <div id='0-dim-pca'></div>
+                                <div id='1-dim-pca'></div>
+                                <div id='2-dim-pca'></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-dark">
+                    <div class="card-header bg-primary">
+                        <h2 style="color: azure;">Adding an Outlier</h2>
+                    </div>
+                    <div class="card-body">
+                        <div style="text-align: left;">Because the PCA minimizes the L2 norms (i.e. quadratic norms) it has the same issues that least-squares or fitting a Gaussian has by being sensitive to outliers. Because of the squaring of the large deviations from the outliers,
+                            they will dominate the total norm and therefore will drive the PCA components.
+                        </div>
+                        <div>
+                            <div class="input-div">
+                                <label class="input-label"><h6>Feature values of Outlier</h6></label><br/>
+                                <input id="f1" type="number" value="6" style="width: 15%;"></input>
+                                <input id="f2" type="number" value="6" style="width: 15%;"></input>
+                                <input id="f3" type="number" value="6" style="width: 15%;"></input>
+                            </div><br>
+                            <button id="Show2" onclick="show_outlier()" class="btn btn-success">Show plots with outlier</button>
+                        </div><br>
+                        <div id="outlier" style="display: none;">
+                            <div>
+                                <h2>Using Original AXES</h2>
+                            </div><br>
+                            <div>
+                                <div id="3dplot-out"></div>
+                                <div id='0-dim-out'></div>
+                                <div id='1-dim-out'></div>
+                                <div id='2-dim-out'></div>
+                            </div><br>
+                            <div>
+                                <h2>Using PRINCIPAL COMPONENTS</h2>
+                            </div><br>
+                            <div>
+                                <div id="3dplot-pca-out"></div>
+                                <div id='0-1-dim-pca-out'></div>
+                                <div id='0-dim-pca-out'></div>
+                                <div id='1-dim-pca-out'></div>
+                                <div id='2-dim-pca-out'></div>
+                            </div><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><br>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card border-dark">
+                    <div class="card-header bg-primary">
+                        <h2 style="color: azure;">Using MOON dataset</h2>
+                    </div>
+                    <div class="card-body">
+                        <div style="text-align: left;">The “classic” PCA approach described above is a linear projection technique that works well if the data is linearly separable. However, in the case of linearly inseparable data, a nonlinear technique is required if the task is
+                            to reduce the dimensionality of a dataset. The basic idea to deal with linearly inseparable data is to project it onto a higher dimensional space where it becomes linearly separable. Here we apply a Gaussian/RBF kernel to separate
+                            the data. where γ=1/2σ<sup>2</sup> is a free parameter that is to be optimized.
+                        </div>
+                        <br/>
+                        <div class="input-div">
+                            <label class="input-label">Gamma</label>
+                            <input id="gamma" type="number" value="15"></input>
+                        </div><br>
+                        <div>
+                            <button id="Show4" onclick="show_moon()" class="btn btn-success">Show plots using Moon-data</button>
+                        </div>
+                        <div id="moon_set" style="display: none;">
+                            <div>
+                                <h2>Using Original AXES</h2>
+                            </div><br>
+                            <div>
+                                <div id='2dplot-m'></div>
+                                <div id='0-dim-m'></div>
+                                <div id='1-dim-m'></div>
+                            </div><br>
+                            <div>
+                                <h2>Using Linear PCA</h2>
+                            </div><br>
+                            <div>
+                                <div id='0-1-dim-pca-m'></div>
+                                <div id='0-dim-pca-m'></div>
+                                <div id='1-dim-pca-m'></div>
+                            </div><br>
+                            <div>
+                                <h2>Using Kernel PCA</h2>
+                            </div><br>
+                            <div>
+                                <div id='kpca'></div>
+                                <div id='kpca-0'></div>
+                                <div id='kpca-1'></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-dark">
+                    <div class="card-header bg-primary">
+                        <h2 style="color: azure;">Using IRIS dataset</h2>
+                    </div>
+                    <div class="card-body">
+                        <div style="text-align: left;">
+                            The Iris dataset is a multivariate dataset consisting of 50 samples from each of the 3 species of Iris.<br/>
+                            <ul>
+                                <li>Iris setosa</li>
+                                <li>Iris virginica</li>
+                                <li>Iris versicolor</li>
+                            </ul> For the purpose of identifying features that would help to separate and classify them, four features were measured for each sample.They were <br/>
+                            <ol>
+                                <li>Sepal length</li>
+                                <li>Sepal width</li>
+                                <li>Petal length</li>
+                                <li>Petal width</li>
+                            </ol>
+                        </div>
+                        <div>
+                            <button id="Show3" onclick="show_iris()" class="btn btn-success">Show plots using IRIS</button>
+                        </div>
+                        <div id="iris_set" style="display: none;">
+                            <div>
+                                <h2>Using Original AXES</h2>
+                            </div><br>
+                            <div>
+                                <div id='0-dim-iris'></div>
+                                <div id='1-dim-iris'></div>
+                                <div id='2-dim-iris'></div>
+                                <div id='3-dim-iris'></div>
+                            </div><br>
+                            <div>
+                                <h2>Using PRINCIPAL COMPONENTS</h2>
+                            </div><br>
+                            <div>
+                                <div id="var-pca"></div>
+                                <div id="3dplot-pca-iris"></div>>
+                                <div id='0-1-dim-pca-iris'></div>
+                                <div id='0-dim-pca-iris'></div>
+                                <div id='1-dim-pca-iris'></div>
+                                <div id='2-dim-pca-iris'></div>
+                                <div id='3-dim-pca-iris'></div>
+                            </div><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="pca.js" defer></script>
+    <script src="iris.js" defer></script>
+    <script src="moon.js" defer></script>
+    <script>
+        function show_no_outlier() {
+            document.getElementById("non_outlier").style.display = "block";
+        }
+
+        function show_outlier() {
+            document.getElementById("outlier").style.display = "block";
+        }
+
+        function show_iris() {
+            document.getElementById("iris_set").style.display = "block";
+        }
+
+        function show_moon() {
+            document.getElementById("moon_set").style.display = "block";
+        }
+    </script>
+
+</body>
+
+</html>
