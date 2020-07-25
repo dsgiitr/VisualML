@@ -12,7 +12,7 @@ Datasets - Moons, Circles, Spiral, Gauss, XOR
 
 - `Power of Polynomial can be selected`
 
-## Installation
+## Installation and execution
 
 - `Download the project folder and run index.html in your browser`
 ###### Contributors:
