@@ -76,7 +76,7 @@ Some examples may require web-gl enabled browsers and viewers may experience lag
     <td>Browser</td>
   </tr>
   <tr>
-    <td><a href="./neural_style_transfer">Neural Style Trasfer</a></td>
+    <td><a href="./neural_style_transfer">Neural Style Transfer</a></td>
     <td><a href="https://dsgiitr.github.io/neural-style-transfer-tfjs">🔗</a></td>
     <td>Image Data</td>
     <td>Visualising Style Transfer using MobileNet</td>
