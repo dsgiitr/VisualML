@@ -1,3 +1,9 @@
+
+<p align="center">
+  <img width="60%" src="/img/visualml.png" />
+</p>
+
+-----------------------------------------------------------------------------------------------------------
 # Visual Machine Learning
 
 Visual Machine Learning contains a set of Machine Learning and Deep Learning visualisation and intuition developing tools developed using [TensorFlow.js](https://js.tensorflow.org) that can be executed directly in your browser. This project is an extension of existing ML examples from [tfjs-examples](https://github.com/tensorflow/tfjs-examples). Effort has been made to add additional features and tools to the existing ones along with newer ones. 
