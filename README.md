@@ -79,7 +79,7 @@ Some examples may require web-gl enabled browsers and viewers may experience lag
     <td>Browser</td>
   </tr>
   <tr>
-    <td><a href="./vanishing-gradients">Vanishing Gradients</a></td>
+    <td><a href="./vanishing_gradients">Vanishing Gradients</a></td>
     <td><a href="https://dsgiitr.github.io/vanishing-gradients-demo">🔗</a></td>
     <td>Iris Dataset</td>
     <td>Developing Intuition how Relu Fixes Vanishing Gradients</td>
