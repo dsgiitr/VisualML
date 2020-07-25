@@ -13,11 +13,14 @@
 
 - `Autoencode your digit drawing`
 
+## Installation
+
+- `Download the project folder and run index.html in your browser`
+
 ###### Contributors:
 - [Rohan Mallick](https://github.com/r7rohan)
 - [Shashank Gupta](https://github.com/gupta1912) 
 - [Abhinav Saini](https://github.com/abhinavsaini9)
 - [Ankit Aharwal](https://github.com/ankitaharwal)
 
-Sample website:
-https://r7ohan.000webhostapp.com/Others/proj2/index.html
+###### Sample website: https://r7ohan.000webhostapp.com/Others/proj2/index.html
