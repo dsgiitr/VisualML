@@ -42,6 +42,51 @@ Some examples may require web-gl enabled browsers and viewers may experience lag
     <td>Browser</td>
     <td>Browser</td>
   </tr>
+  <tr>
+    <td><a href="./MNIST-CNN">MNIST-CNN</a></td>
+    <td><a href="https://dsgiitr.github.io/mnist-cnn-demo">🔗</a></td>
+    <td>MNIST</td>
+    <td>Visualising Activations</td>
+    <td>CNN</td>
+    <td>Browser</td>
+    <td>Browser</td>
+  </tr>
+  <tr>
+    <td><a href="./PCA">PCA</a></td>
+    <td><a href="https://dsgiitr.github.io/pca-demo">🔗</a></td>
+    <td>Various</td>
+    <td>Visualising Principal Components & projected dimensions</td>
+    <td>PCA</td>
+    <td>Browser</td>
+    <td>Browser</td>
+  </tr>
+  <tr>
+    <td><a href="./SVM">SVM</a></td>
+    <td><a href="https://dsgiitr.github.io/svm-demo">🔗</a></td>
+    <td>2D Dataset</td>
+    <td>Visualising Support Vectors and Kernels</td>
+    <td>SMO</td>
+    <td>Browser</td>
+    <td>Browser</td>
+  </tr>
+  <tr>
+    <td><a href="./neural_style_transfer">Neural Style Trasfer</a></td>
+    <td><a href="https://dsgiitr.github.io/neural-style-transfer-tfjs">🔗</a></td>
+    <td>Image Data</td>
+    <td>Visualising Style Transfer using MobileNet</td>
+    <td>Style Transder</td>
+    <td>Browser</td>
+    <td>Browser</td>
+  </tr>
+  <tr>
+    <td><a href="./vanishing-gradients">Vanishing Gradients</a></td>
+    <td><a href="https://dsgiitr.github.io/vanishing-gradients-demo">🔗</a></td>
+    <td>Iris Dataset</td>
+    <td>Developing Intuition how Relu Fixes Vanishing Gradients</td>
+    <td>Neural Networds</td>
+    <td>Browser</td>
+    <td>Browser</td>
+  </tr>
 </table>
 
 # Dependencies
