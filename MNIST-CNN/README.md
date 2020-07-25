@@ -1,4 +1,4 @@
-# Handwritten Digit Recognition using a Convoluted Neural Network.
+# Handwritten Digit Recognition using a Convolutional Neural Network.
 This repository contains a **CNN** implemented in **TensorFlow.js**.
 
 ## Features
