@@ -6,9 +6,9 @@
 -----------------------------------------------------------------------------------------------------------
 # Visual Machine Learning
 
-Visual Machine Learning contains a set of Machine Learning and Deep Learning visualisation and intuition developing tools developed using [TensorFlow.js](https://js.tensorflow.org) that can be executed directly in your browser. This project is an extension of existing ML examples from [tfjs-examples](https://github.com/tensorflow/tfjs-examples). Effort has been made to add additional features and tools to the existing ones along with newer ones. 
+Visual Machine Learning contains a set of Machine Learning and Deep Learning interactive visualisation demos for developing intuition. These demos are developed using [TensorFlow.js](https://js.tensorflow.org) and can be executed directly in your browser. This project is an extension of ML examples from [tfjs-examples](https://github.com/tensorflow/tfjs-examples). We implement new demos, as well as, add additional features into the ones that already existed in TFJS. 
 
-Some examples may require web-gl enabled browsers and viewers may experience lag during executing the demos. 
+Some examples may require web-gl enabled browsers and viewers may experience latency during executing the demos based on the device. 
 
 # Overview of Demos
 
@@ -100,9 +100,9 @@ Some examples may require web-gl enabled browsers and viewers may experience lag
 All the examples require the following dependencies to be installed.
 
  - Node.js version 8.9 or higher
- - [NPM cli](https://docs.npmjs.com/cli/npm) OR [Yarn](https://yarnpkg.com/en/)
+ - [NPM CLI](https://docs.npmjs.com/cli/npm) OR [Yarn](https://yarnpkg.com/en/)
 
-## How to build an example
+## How to build?
 `cd` into the directory
 
 If you are using `yarn`:
@@ -124,15 +124,17 @@ npm run watch
 
 The convention is that each example contains two scripts:
 
-- `yarn watch` or `npm run watch`: starts a local development HTTP server which watches the
-filesystem for changes so you can edit the code (JS or HTML) and see changes when you refresh the page immediately.
+- `yarn watch` or `npm run watch`: This starts and generates a local development HTML server tracking filesystem for changes, supporting hot-reloading.
 
-- `yarn build` or `npm run build`: generates a `dist/` folder which contains the build artifacts and
-can be used for deployment.
+- `yarn build` or `npm run build`: generates a `dist/` folder which contains the build artifacts and can be used for deployment.
 
 ## Contributing
 
-If you want to contribute an example, please reach out to us on
+If you want to contribute a demo, please reach out to us on
 [Github issues](https://github.com/dsgiitr/VisualML/issues)
 before sending us a pull request as we are trying to keep this set of examples
 small and highly curated.
+
+## Acknowledgements
+
+* [tfjs-examples](https://github.com/tensorflow/tfjs-examples)
