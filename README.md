@@ -80,7 +80,7 @@ Some examples may require web-gl enabled browsers and viewers may experience lat
     <td><a href="https://dsgiitr.github.io/neural-style-transfer-tfjs">🔗</a></td>
     <td>Image Data</td>
     <td>Visualising Style Transfer using MobileNet</td>
-    <td>Style Transder</td>
+    <td>Style Transfer</td>
     <td>Browser</td>
     <td>Browser</td>
   </tr>
@@ -89,7 +89,7 @@ Some examples may require web-gl enabled browsers and viewers may experience lat
     <td><a href="https://dsgiitr.github.io/vanishing-gradients-demo">🔗</a></td>
     <td>Iris Dataset</td>
     <td>Developing Intuition how Relu Fixes Vanishing Gradients</td>
-    <td>Neural Networds</td>
+    <td>Neural Networks</td>
     <td>Browser</td>
     <td>Browser</td>
   </tr>
