@@ -37,3 +37,7 @@ The package contains two scripts:
 ### Contributors
 
 * [Sahil Goyal](https://github.com/sahilg06)
+
+### References
+
+* [Activation functions](https://github.com/Polarisation/tfjs-activation-functions)
