@@ -27,6 +27,6 @@ The package contains two scripts:
 
 ### Contributors
 
+* [Vipul Bansal](https://github.com/vipul2001)
+* [Yash Vardhan Sharma](https://github.com/Yash-Vardhan-Sharma)
 * [Aaryan Garg](https://github.com/Garg-Doppler)
-* [Vipul Bansal] (https://github.com/vipul2001)
-* [Yash Vardhan Sharma] (https://github.com/Yash-Vardhan-Sharma)
