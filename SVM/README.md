@@ -1,4 +1,4 @@
-# SVM
+# Support Vector Machines
 Simple Browser Implementation of Support Vector Machine. This is a website where one can train and visualise different aspects of the support Vector Classifier.
 
 ## Features
