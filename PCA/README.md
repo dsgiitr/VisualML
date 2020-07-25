@@ -1,16 +1,13 @@
 ## Principal Components Analysis
-This is an implementation of an principal components analysis algorithm
-running purely in the browser using TensorFlow.js. In this project, we have 
-presented different visualizations regarding how applying PCA algorithm to
-higher dimensional data can allow us to view them in lower dimensional space.
+This is an implementation of principal component analysis algorithm for dimensionality reduction, running purely in the browser using TensorFlow.js. In this project, we apply PCA to higher dimensional data and present multiple visualizations to generate intuition while viewing the data in lower dimensional space.
 
 ## Features
 * It has been shown how adding an outlier can have significant
 effect on the principal components generated.
 * Kernel PCA has been demonstrated using RBF kernel on the
 moon dataset.
-* Results on applying PCA to iris dataset has been demonstrated.
-* Overall, It lets user visualize the different aspects of PCA.
+* Demonstrate results on applying PCA to iris dataset.
+* Overall, It lets a user visualize the different aspects of PCA.
 
 ## Running locally for development
 
