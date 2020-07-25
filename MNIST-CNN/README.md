@@ -1,6 +1,14 @@
 # MNIST_CNN-tf.js
 This repository contains a **CNN** implemented in **TensorFlow.js**.
 
+## Features
+
+* Train the CNN using custom parameters.
+* Visualise Training and Loss curves.
+* Test the model using custom digits drawn by user on a canvas
+* Visualise layer activations.
+* Play around with a 3D model of the CNN.
+
 ## Dependencies
 These dependencies are required to be installed.
 
