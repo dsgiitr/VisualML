@@ -38,6 +38,6 @@ The package contains two scripts:
 * [Aaryan Garg](https://github.com/Garg-Doppler)
 * [Abhinav Saini](https://github.com/abhinavsaini9)
 * [Vivek Kumar](https://github.com/vivekkumar7089)
-
+* [Vipul Bansal](https://github.com/vipul2001)
 
 
