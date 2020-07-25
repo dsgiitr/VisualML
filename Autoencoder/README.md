@@ -13,9 +13,9 @@
 
 - `Autoencode your digit drawing`
 
-## Installation
+## Installation and execution
 
-- `Download the project folder and run index.html in your browser`
+- `Download the project folder on your server and run index.html from your browser`
 
 ###### Contributors:
 - [Rohan Mallick](https://github.com/r7rohan)
