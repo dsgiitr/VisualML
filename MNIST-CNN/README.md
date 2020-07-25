@@ -1,4 +1,4 @@
-# MNIST_CNN-tf.js
+# Handwritten Digit Recognition using a Convoluted Neural Network.
 This repository contains a **CNN** implemented in **TensorFlow.js**.
 
 ## Features
