@@ -24,3 +24,9 @@ The package contains two scripts:
 ```yarn watch```: starts a local development HTTP server which watches the filesystem for changes so you can edit the code (JS or HTML) and see changes when you refresh the page immediately.
 
 ```yarn build```: generates a dist/ folder which contains the build artifacts and can be used for deployment.
+
+### Contributors
+
+* [Aaryan Garg](https://github.com/Garg-Doppler)
+* [Vipul Bansal] (https://github.com/vipul2001)
+* [Yash Vardhan Sharma] (https://github.com/Yash-Vardhan-Sharma)
