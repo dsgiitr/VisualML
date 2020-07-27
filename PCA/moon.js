@@ -1,6 +1,17 @@
 const D2 = 2;
 const N2 = 50;
 
+var load = document.getElementById("loader");
+load.style.fontSize = "30px";
+load.style.color = "black";
+load.style.fontFamily = "monospace";
+load.style.backgroundColor = "greenyellow";
+
+
+var callback1  =    function ()
+     {
+      load.innerHTML = "Processing....";
+     } 
 
 function render2DPrediction2(ctx, xs, name) {
     const xsOriginal = xs.dataSync();
@@ -316,47 +327,58 @@ const moon_data = [
 
 const data = tf.tensor2d(moon_data, [100, 2]);
 
-async function main4(xs) {
+function main4(xs) {
 
-    const [axes, pcaXs] = await pca3(xs, 2);
-    xs_new = axes.concat(xs);
+    return async function()
+    {
+        const [axes, pcaXs] = await pca3(xs, 2);
+        xs_new = axes.concat(xs);
 
-    const ctx3 = document.getElementById('2dplot-m');
-    render2DPrediction2(ctx3, xs, "Original data");
-    const ctx4 = document.getElementById('0-dim-m');
-    render1DPrediction2(ctx4, xs.gather([0], 1), "1st Feature");
-    const ctx5 = document.getElementById('1-dim-m');
-    render1DPrediction2(ctx5, xs.gather([1], 1), "2nd Feature");
+        const ctx3 = document.getElementById('2dplot-m');
+        render2DPrediction2(ctx3, xs, "Original data");
+        const ctx4 = document.getElementById('0-dim-m');
+        render1DPrediction2(ctx4, xs.gather([0], 1), "1st Feature");
+        const ctx5 = document.getElementById('1-dim-m');
+        render1DPrediction2(ctx5, xs.gather([1], 1), "2nd Feature");
 
-    const ctx7 = document.getElementById('0-dim-pca-m');
-    render1DPrediction2(ctx7, pcaXs.gather([0], 1), "1st Principal Component");
+        const ctx7 = document.getElementById('0-dim-pca-m');
+        render1DPrediction2(ctx7, pcaXs.gather([0], 1), "1st Principal Component");
 
-    const ctx8 = document.getElementById('1-dim-pca-m');
-    render1DPrediction2(ctx8, pcaXs.gather([1], 1), "2nd Principal Component");
+        const ctx8 = document.getElementById('1-dim-pca-m');
+        render1DPrediction2(ctx8, pcaXs.gather([1], 1), "2nd Principal Component");
 
 
-    const ctx10 = document.getElementById('0-1-dim-pca-m');
-    render2DPrediction2(ctx10, pcaXs.gather([0, 1], 1), "2D PCA plot");
+        const ctx10 = document.getElementById('0-1-dim-pca-m');
+        render2DPrediction2(ctx10, pcaXs.gather([0, 1], 1), "2D PCA plot");
+    }
 
 }
 
-async function main5(xs, gamma) {
+function main5 (xs, gamma) {
 
-    const kpcaXs = await kpca(xs, gamma);
-    const ctx11 = document.getElementById('kpca');
-    render2DPrediction2(ctx11, kpcaXs, "2D PCA plot");
+    return async function()
+    {
+        const kpcaXs = await kpca(xs, gamma);
+        const ctx11 = document.getElementById('kpca');
+        render2DPrediction2(ctx11, kpcaXs, "2D PCA plot");
 
-    const ctx12 = document.getElementById('kpca-0');
-    render1DPrediction2(ctx12, kpcaXs.gather([0], 1), "1st Principal Component");
+        const ctx12 = document.getElementById('kpca-0');
+        render1DPrediction2(ctx12, kpcaXs.gather([0], 1), "1st Principal Component");
 
-    const ctx13 = document.getElementById('kpca-1');
-    render1DPrediction2(ctx13, kpcaXs.gather([1], 1), "2nd Principal Component");
+        const ctx13 = document.getElementById('kpca-1');
+        render1DPrediction2(ctx13, kpcaXs.gather([1], 1), "2nd Principal Component");
+
+        load.innerHTML = "Here are your plots"+String.fromCharCode(0xD83D, 0xDE04);
+    }
 }
 
 document.getElementById('Show4')
     .addEventListener('click', async() => {
         console.clear();
-        main4(data);
+        setTimeout(callback1,0);
+        setTimeout(main4(data),29000);
+        //main4(data);
         var g = Number(document.getElementById("gamma").value);
-        main5(data, g);
+        setTimeout(main5(data, g),2000);
+        //main5(data, g);
     });
