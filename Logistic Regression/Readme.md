@@ -21,4 +21,4 @@ Datasets - Moons, Circles, Spiral, Gauss, XOR
 - [Akshit Mittal](https://github.com/akshitmittal1)
 
 
-###### Sample website: https://r7ohan.000webhostapp.com/Others/proj1/index.html
+###### Sample website: https://r7rohan.github.io/LogisticR-VML/
