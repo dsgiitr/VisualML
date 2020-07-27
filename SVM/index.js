@@ -347,25 +347,37 @@ function keyUp(key) {
 
     if (key == 76) { // 'l'
         // Switch to linear kernel
+
         kernelid = 0;
         retrainSVM();
     }
 
     if (key == 82) { // 'r'
         // Switch to rbf kernel
+
         kernelid = 1;
         retrainSVM();
     }
 
     if (key == 80) { // 'p'
         // Switch to polynomial kernel
+
         kernelid = 2;
         retrainSVM();
     }
 
     if (key == 83) { // 's'
         // Switch to sigmoid kernel
+
         kernelid = 3;
+        retrainSVM();
+    }
+
+    if (key == 85) { // 'u'
+        // Undo
+        data = data.splice(0, N - 1);
+        labels = labels.splice(0, N - 1);
+        N = N - 1;
         retrainSVM();
     }
 }
@@ -571,3 +583,31 @@ $(document).ready(function() {
         }
     });
 });
+
+var prevKernel;
+var prevData;
+var prevLabel;
+
+function getPrevKernel() {
+    return prevKernel;
+}
+
+function getPrevData() {
+    return prevData;
+}
+
+function getPrevLabel() {
+    return prevLabel;
+}
+
+function setPrevKernel(kid) {
+    prevKernel = kid;
+}
+
+function setPrevData(x) {
+    prevData = x;
+}
+
+function setPrevLabel(y) {
+    prevLabel = y;
+}

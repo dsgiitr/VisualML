@@ -40,4 +40,8 @@ The package contains two scripts:
 * [Vivek Kumar](https://github.com/vivekkumar7089)
 * [Vipul Bansal](https://github.com/vipul2001)
 
+### References
+
+* [karpathy/svm-js](https://github.com/karpathy/svmjs)
+
 

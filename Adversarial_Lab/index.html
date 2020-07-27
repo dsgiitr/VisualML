@@ -1,105 +1,109 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    
-    <title>Adversarial Attack</title>
-  </head>
+
+    <title>VisualML | Adversarial Attack</title>
+</head>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <!-- Brand/logo -->
-  <a class="navbar-brand" href="#">Generate Advesarial Examples</a>
-  
-  <!-- Links -->
-  <!-- <ul class="navbar-nav">
+    <!-- Brand/logo -->
+    <a class="navbar-brand" href="#">Generate Adversarial Examples</a>
+
+    <!-- Links -->
+    <!-- <ul class="navbar-nav">
     <li class="nav-item">
       <a class="nav-link" href="#">Link 1</a>
     </li>
   </ul> -->
-  <!-- <div class="dropdown-header">Dropdown header 1</div> -->
-  <div class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+    <!-- <div class="dropdown-header">Dropdown header 1</div> -->
+    <div class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
         Attack
       </a>
-      <div class="dropdown-menu">
-        <div class="dropdown-header">Untargeted</div>
-        <a class="dropdown-item" href="/fgsm_untargeted">FGSM</a>
-        <a class="dropdown-item" href="/basic_iterative">Basic Iterative</a>
-        <a class="dropdown-item" href="/iterative_ll_class">Iterative Least Likely Class</a>
-        <a class="dropdown-item" href="/deep_fool">Deep Fool</a>
-        <div class="dropdown-header">Targeted</div>
-        <a class="dropdown-item" href="/fgsm_targeted">FGSM Targeted</a>
-        <a class="dropdown-item" href="/lbfgs">LBFGS</a>
-      </div>
+        <div class="dropdown-menu">
+            <div class="dropdown-header">Untargeted</div>
+            <a class="dropdown-item" href="/fgsm_untargeted">FGSM</a>
+            <a class="dropdown-item" href="/basic_iterative">Basic Iterative</a>
+            <a class="dropdown-item" href="/iterative_ll_class">Iterative Least Likely Class</a>
+            <a class="dropdown-item" href="/deep_fool">Deep Fool</a>
+            <div class="dropdown-header">Targeted</div>
+            <a class="dropdown-item" href="/fgsm_targeted">FGSM Targeted</a>
+            <a class="dropdown-item" href="/lbfgs">LBFGS</a>
+        </div>
     </div>
-  <!-- <a class="navbar-brand" href="index.html">
+    <!-- <a class="navbar-brand" href="index.html">
     <img src="/logo.png" alt="Logo" style="width:30px;">
   </a> -->
 </nav>
-<div class ="container-fluid">
-<div class="row">
-  <div class="col-md-9">
-  <div class="container-fluid p-4 bg-dark text-white">
-    <div class="row text-white p-2" ><h4>Fast Gradient Sign Method (Untargeted)</h4> </div>
+<div class="container-fluid">
     <div class="row">
-      <div class="col-sm" style="border-style: solid;border-width:1px;" ><img src="./images/blank_image.png" style="width:100%;height: auto;" id="or_image"></img>Original Image
-        <div id='or_label'>
-          
-        </div></div>
-      <div class="col-sm" style="border-style: solid;border-width:1px;"  ><img src="./images/blank_image.png" style="width:100%;height: auto;" id="perturb"></img>Perturbation
-        <div id='del_label'></div>
-      </div>
-      <div class="col-sm" style="border-style: solid;border-width:1px;" ><img src="./images/blank_image.png" style="width:100%;height: auto;" id="perturbed"></img>Perturbed Image
-        <div id='per_label'>
-          
-        </div></div>
-    </div>
-  </div>
-  </div>
-  <div class="col-md-3">
-    <form  id="upload-file">
-  <div class="container-fluid p-4 my-0 bg-dark text-white">
-    <fieldset class="form-group">
-    <label for="Image">Upload Image</label>
-    <input type="file" class="form-control-file" name="file" >
-  </fieldset>
-  <fieldset class="form-group">
-    <label for="eps" >Epsilon:</label>
-    <input type="text" class="form-control" name="eps" value="0.1">
-  </fieldset>
- <fieldset class="form-group">
-  <label for="model">Select Model:</label>
-  <select class="form-control" id="model" name="model">
+        <div class="col-md-9">
+            <div class="container-fluid p-4 bg-dark text-white">
+                <div class="row text-white p-2">
+                    <h4>Fast Gradient Sign Method (Untargeted)</h4>
+                </div>
+                <div class="row">
+                    <div class="col-sm" style="border-style: solid;border-width:1px;"><img src="./images/blank_image.png" style="width:100%;height: auto;" id="or_image"></img>Original Image
+                        <div id='or_label'>
+
+                        </div>
+                    </div>
+                    <div class="col-sm" style="border-style: solid;border-width:1px;"><img src="./images/blank_image.png" style="width:100%;height: auto;" id="perturb"></img>Perturbation
+                        <div id='del_label'></div>
+                    </div>
+                    <div class="col-sm" style="border-style: solid;border-width:1px;"><img src="./images/blank_image.png" style="width:100%;height: auto;" id="perturbed"></img>Perturbed Image
+                        <div id='per_label'>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <form id="upload-file">
+                <div class="container-fluid p-4 my-0 bg-dark text-white">
+                    <fieldset class="form-group">
+                        <label for="Image">Upload Image</label>
+                        <input type="file" class="form-control-file" name="file">
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label for="eps">Epsilon:</label>
+                        <input type="text" class="form-control" name="eps" value="0.1">
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label for="model">Select Model:</label>
+                        <select class="form-control" id="model" name="model">
     <option>alexnet</option>
     <option>resnet18</option>
     <option>vgg16</option>
     <option>googlenet</option>
     <option>mobilenet_v2</option>
   </select>
-</fieldset>
+                    </fieldset>
 
-  <fieldset>
-  <button id="upload-file-btn" type="button" class="btn btn-primary">Generate</button>
-</fieldset>
-</div>
-</form>
-</div>
-</div>
+                    <fieldset>
+                        <button id="upload-file-btn" type="button" class="btn btn-primary">Generate</button>
+                    </fieldset>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 <!-- <div class="jumbotron">
   <h1>Bootstrap Tutorial</h1>
   <p>Bootstrap is the most popular HTML, CSS...</p>
 </div> -->
-    <!-- Optional JavaScript -->
+<!-- Optional JavaScript -->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-    <script src="index.js"></script>
-  </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<script src="index.js"></script>
+</body>
+
 </html>
-
-
