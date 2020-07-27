@@ -1,47 +1,53 @@
 <html>
+
 <head>
-  <title>Logistic Regression Visualizer</title>
-  <style>
-  label{
-    font-size:3vh;
-  }
-  input{
-    font-size:3vh;
-  }
-  select{
-    font-size:3vh;
-  }
-  button{
-    border-radius: 20px;
-    border-color:#00FFFF;
-    background-color: #CCFFFF;
-      font-size:3vh;
-  }
-  pre {
+    <title>VisualML | Logistic Regression</title>
+    <link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon">
+    <style>
+        label {
+            font-size: 3vh;
+        }
+        
+        input {
+            font-size: 3vh;
+        }
+        
+        select {
+            font-size: 3vh;
+        }
+        
+        button {
+            border-radius: 20px;
+            border-color: #00FFFF;
+            background-color: #CCFFFF;
+            font-size: 3vh;
+        }
+        
+        pre {
             overflow-x: auto;
             white-space: pre-wrap;
             white-space: -moz-pre-wrap;
             white-space: -pre-wrap;
             white-space: -o-pre-wrap;
             word-wrap: break-word;
-         }
-  </style>
-  <script>
-  function update(d,c){
-    document.getElementById(c).innerHTML=Number(document.getElementById(d).value);
-  }
-  </script>
+        }
+    </style>
+    <script>
+        function update(d, c) {
+            document.getElementById(c).innerHTML = Number(document.getElementById(d).value);
+        }
+    </script>
 </head>
 
 <body style="text-align:center;background-color:#EFEFEF;margin-top:0%;">
-  <p style="font-size:8vh;color:#DD3333;background-color:#FFEFEFCC;width:100%;position:fixed;margin-top:0%;padding-top:0.6%;">LOGISTIC REGRESSION</p>
-<div id="body" style="text-align:center;width:60%;margin-left:20%;background-color:white;">
-<br>
+    <p style="font-size:8vh;color:#DD3333;background-color:#FFEFEFCC;width:100%;position:fixed;margin-top:0%;padding-top:0.6%;">LOGISTIC REGRESSION</p>
+    <div id="body" style="text-align:center;width:60%;margin-left:20%;background-color:white;">
+        <br>
 
 
-<br><br><br>
+        <br><br><br>
 
-<pre style="text-align:left;margin-left:7%; width:86%; font-family:Times; font-size:1.3vw; color:#003333;">
+        <pre style="text-align:left;margin-left:7%; width:86%; font-family:Times; font-size:1.3vw; color:#003333;">
 Logistic regression is a classification algorithm used to assign observations to a discrete set of
 
 classes. Unlike linear regression which outputs continuous number values, logistic regression
@@ -67,24 +73,24 @@ To predict which class a data belongs, a threshold can be set. Based upon this t
 
 </pre>
 
-<p style="font-family:fantasy; font-size:2.5vw;color:#334444;background-color:#77FF77">Visualization for decision boundary of 2 Classes</p>
-<div style="display:block;">
-<div style="width:20vw;margin-left:10vh;background-color:#EFEFEF;text-align:left;padding-left:3%;padding-top:3%;padding-bottom:2%;display:inline-block;float:left;" >
+        <p style="font-family:fantasy; font-size:2.5vw;color:#334444;background-color:#77FF77">Visualization for decision boundary of 2 Classes</p>
+        <div style="display:block;">
+            <div style="width:20vw;margin-left:10vh;background-color:#EFEFEF;text-align:left;padding-left:3%;padding-top:3%;padding-bottom:2%;display:inline-block;float:left;">
 
-  <label for="d">Polynomial Degree:</label><label id="dg"> 3</label><br><br>
-<input type="range" id="d" name="points" min="1" max="11" onchange="update('d','dg');" value=3>
-<div style="height:4vh;"></div>
+                <label for="d">Polynomial Degree:</label><label id="dg"> 3</label><br><br>
+                <input type="range" id="d" name="points" min="1" max="11" onchange="update('d','dg');" value=3>
+                <div style="height:4vh;"></div>
 
-<label for="r">Lambda (reg):</label><label id="rg"> 0</label><br><br>
-<input type="range" id="r" name="points" min="0" max="20" onchange="update('r','rg');" value=0>
-<div style="height:4vh;"></div>
+                <label for="r">Lambda (reg):</label><label id="rg"> 0</label><br><br>
+                <input type="range" id="r" name="points" min="0" max="20" onchange="update('r','rg');" value=0>
+                <div style="height:4vh;"></div>
 
-<label for="r">Learning Rate:(10 power) </label><label id="lg">0</label><br><br>
-<input type="range" id="l" name="points" min="-15" max="1" onchange="update('l','lg');" value=0>
-<div style="height:4vh;"></div>
+                <label for="r">Learning Rate:(10 power) </label><label id="lg">0</label><br><br>
+                <input type="range" id="l" name="points" min="-15" max="1" onchange="update('l','lg');" value=0>
+                <div style="height:4vh;"></div>
 
-<label for="data">Dataset:</label>
-<select name="cars" id="data">
+                <label for="data">Dataset:</label>
+                <select name="cars" id="data">
   <option value="moon">Moons</option>
   <option value="circle">Circles</option>
   <option value="xor">XOR</option>
@@ -92,31 +98,31 @@ To predict which class a data belongs, a threshold can be set. Based upon this t
   <option value="spiral">Spiral</option>
   <option value="all">All</option>
 </select>
-<div style="height:3vh;"></div>
+                <div style="height:3vh;"></div>
 
-<button id='train' >Train</button>
-</div>
-<img src="logreg.jpg" style="height:33vh;width:30vw;padding-bottom:3%;border:solid 3px #EFEFEF;"></img>
-<br><br><br><br>
-<div style="float:right;margin-right:3vw;">
-<label for="res">Resol:</label>
-<input id='res' value='100'></input><br><br>
-<label for="epoch">Epoch:</label>
-<input id='epoch' value='100'></input>
-</div>
-</div>
+                <button id='train'>Train</button>
+            </div>
+            <img src="logreg.jpg" style="height:33vh;width:30vw;padding-bottom:3%;border:solid 3px #EFEFEF;"></img>
+            <br><br><br><br>
+            <div style="float:right;margin-right:3vw;">
+                <label for="res">Resol:</label>
+                <input id='res' value='100'></input><br><br>
+                <label for="epoch">Epoch:</label>
+                <input id='epoch' value='100'></input>
+            </div>
+        </div>
 
-<br>
-<div id="plt" style="clear:both;margin-top:15vh;font-family:fantasy; font-size:2.5vw;color:#334444;background-color:#FFFF00;">Plot Area</div>
-<div id="pl" style="height:60vh;width:50vw;margin-left:7vw;margin-top:5vh;display:none;"></div>
-<div style="font-family:fantasy; font-size:2.5vw;color:#334444;clear:both;margin-top:15vh;background-color:#FFFF00;">Loss Area</div>
-<div id='training' style="width:50vw;height:30vh;margin-left:7vw;display:none"></div>
-<br><br>
-DSG-IITR
-</div>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/tensorflow/1.2.7/tf.min.js'></script>
-<script src="script.js" type="module"></script>
+        <br>
+        <div id="plt" style="clear:both;margin-top:15vh;font-family:fantasy; font-size:2.5vw;color:#334444;background-color:#FFFF00;">Plot Area</div>
+        <div id="pl" style="height:60vh;width:50vw;margin-left:7vw;margin-top:5vh;display:none;"></div>
+        <div style="font-family:fantasy; font-size:2.5vw;color:#334444;clear:both;margin-top:15vh;background-color:#FFFF00;">Loss Area</div>
+        <div id='training' style="width:50vw;height:30vh;margin-left:7vw;display:none"></div>
+        <br><br> DSG-IITR
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/tensorflow/1.2.7/tf.min.js'></script>
+    <script src="script.js" type="module"></script>
 
 </body>
+
 </html>

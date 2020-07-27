@@ -18,285 +18,298 @@ limitations under the License.
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="./tfjs-examples.css" />
-  <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
-  <style>
-    
-    #wrapper{position:relative; width:300px; height:150px;}
-    #tip{background-color:white; border:1px solid blue; position:absolute; left:-200px; top:100px;}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./tfjs-examples.css" />
+    <title>VisualML | ANN</title>
+    <link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon">
+    <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+    <style>
+        #wrapper {
+            position: relative;
+            width: 300px;
+            height: 150px;
+        }
+        
+        #tip {
+            background-color: white;
+            border: 1px solid blue;
+            position: absolute;
+            left: -200px;
+            top: 100px;
+        }
+    </style>
 </head>
 
 <body>
 
-  <style>
+    <style>
+        input {
+            width: 75px;
+        }
+        
+        .input-div {
+            padding: 5px;
+            font-family: monospace;
+            font-size: 16px;
+        }
+        
+        .input-label {
+            display: inline-block;
+            width: 160px;
+        }
+        
+        td {
+            padding-left: 5px;
+            padding-right: 5px;
+            padding-bottom: 5px;
+        }
+        
+        #predict-header {
+            font-weight: bold;
+        }
+        
+        .output-div {
+            padding: 5px;
+            padding-top: 20px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+        
+        #evaluate-table {
+            display: inline-block;
+        }
+        
+        #evaluate-table td,
+        #evaluate-table th {
+            font-family: monospace;
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        
+        #evaluate-table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .region {
+            border-left: 1px dashed #ccc;
+            margin-bottom: 5px;
+            padding-left: 24px;
+            margin-left: -24px;
+        }
+        
+        .load-save-section {
+            padding-top: 3px;
+            padding-bottom: 3px;
+        }
+        
+        .logit-span {
+            padding-right: 1em;
+        }
+        
+        .correct-prediction {
+            background-color: greenyellow
+        }
+        
+        .wrong-prediction {
+            background-color: red;
+        }
+        
+        .button2 {
+            background-color: #008CBA;
+        }
+        /* Blue */
+    </style>
 
-    input {
-      width: 75px;
-    }
+    <body>
+        <div class='tfjs-example-container'>
+            <section class='title-area'>
+                <h1>TensorFlow.js Layers: Iris Demo</h1>
+                <p class='subtitle'>Classify structured (tabular) data with a neural network.</p>
+            </section>
 
-    .input-div {
-      padding: 5px;
-      font-family: monospace;
-      font-size: 16px;
-    }
+            <section>
+                <p class='section-head'>Description</p>
+                <p>
+                    This example uses a neural network to classify tabular data representing different flowers. The data used for each flower are the petal length and width as well as the sepal length and width. The goal is to predict what kind of flower it is based on those
+                    features of each data point. The data comes from the famous <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set">Iris flower</a> data set.
+                </p>
+            </section>
 
-    .input-label {
-      display: inline-block;
-      width: 160px;
-    }
+            <section>
+                <p class='section-head'>Instructions</p>
+                <p>
 
-    td {
-      padding-left: 5px;
-      padding-right: 5px;
-      padding-bottom: 5px;
-    }
+                </p>
+                <p>
+                    Change the hyperparameters as you would like them to be.
+                </p>
+                <p>
+                    Add the number of neurons for the the number of layers you want to have in the required neural network.
+                </p>
+                <p>
+                    Train the model.<br><br>A Model Summery Tab will appear you can maximise it or hide it.
+                </p>
+                <p>
+                    You can visualize the architecture by clicking on the NN Structure button.<br><br> If you want to visualize the coloured edges(coloured according to their weight sign),you can click on the checkbox and click on NN Structure again,
+                    the edges will appear coloured and varied in width and color intensity on the basis of the weight magnitude.
+                </p>
+                <p>
+                    You can edit the properties in first row of "Test Examples" to generate a prediction for those data points.
+                </p>
+            </section>
+            <section>
+                <p class='section-head'>Data Visualization</p>
 
-    #predict-header {
-      font-weight: bold;
-    }
+            </section>
+            <section>
+                <p class='section-head'>Controls</p>
 
-    .output-div {
-      padding: 5px;
-      padding-top: 20px;
-      font-family: monospace;
-      font-weight: bold;
-    }
-
-    #evaluate-table {
-      display: inline-block;
-    }
-
-    #evaluate-table td, #evaluate-table th {
-      font-family: monospace;
-      border: 1px solid #ddd;
-      padding: 8px;
-    }
-    #evaluate-table th {
-      padding-top: 12px;
-      padding-bottom: 12px;
-      text-align: left;
-      background-color: #4CAF50;
-      color: white;
-    }
-
-    .region {
-      border-left: 1px dashed #ccc;
-      margin-bottom: 5px;
-      padding-left: 24px;
-      margin-left: -24px;
-    }
-
-    .load-save-section {
-      padding-top: 3px;
-      padding-bottom: 3px;
-    }
-
-    .logit-span {
-      padding-right: 1em;
-    }
-    .correct-prediction {
-      background-color: greenyellow
-    }
-    .wrong-prediction {
-      background-color: red;
-    }
-    .button2 {background-color: #008CBA;} /* Blue */
-  </style>
-
-  <body>
-    <div class='tfjs-example-container'>
-      <section class='title-area'>
-        <h1>TensorFlow.js Layers: Iris Demo</h1>
-        <p class='subtitle'>Classify structured (tabular) data with a neural network.</p>
-      </section>
-
-      <section>
-        <p class='section-head'>Description</p>
-        <p>
-          This example uses a neural network to classify tabular data representing different flowers. The data used for
-          each flower are the petal length and width as well as the sepal length and width. The goal
-          is to predict what kind of flower it is based on those features of each data point. The
-          data comes from the famous <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set">Iris flower</a> data
-          set.
-        </p>
-      </section>
-
-      <section>
-        <p class='section-head'>Instructions</p>
-        <p>
-          
-        </p>
-        <p>
-          Change the hyperparameters as you would like them to be.
-        </p>
-        <p>
-          Add the number of neurons for the the number of layers you want to have in the required neural network.
-        </p>
-        <p>
-          Train the model.<br><br>A Model Summery Tab will appear you can maximise it or hide it.
-        </p>
-        <p>
-          You can visualize the architecture by clicking on the NN Structure button.<br><br>
-          If you want to visualize the coloured edges(coloured according to their weight sign),you can click on the 
-          checkbox and click on NN Structure again, the edges will appear coloured and varied in width and color 
-          intensity on the basis of the weight magnitude. 
-        </p>
-        <p>
-          You can edit the properties in first row of "Test Examples" to generate
-          a prediction for those data points.
-        </p>
-      </section>
-      <section>
-        <p class='section-head'>Data Visualization</p>
-
-      </section>
-      <section>
-        <p class='section-head'>Controls</p>
-
-        <div class="region">
-          <h3>Train Model</h3>
-          <div class="create-model">
-            <div class="input-div">
-              <label class="input-label">Train Epochs:</label>
-              <input id="train-epochs" type="number" value="10"></input>
-            </div>
-            <div class="input-div">
-              <label class="input-label">Optimizer:</label>
-              <select id="optimizer">
+                <div class="region">
+                    <h3>Train Model</h3>
+                    <div class="create-model">
+                        <div class="input-div">
+                            <label class="input-label">Train Epochs:</label>
+                            <input id="train-epochs" type="number" value="10"></input>
+                        </div>
+                        <div class="input-div">
+                            <label class="input-label">Optimizer:</label>
+                            <select id="optimizer">
                 <option>Adam</option>
                 <option>RMSprop</option>
                 <option>SGD</option>
               </select>
+                        </div>
+                        <div class="input-div">
+                            <span class="input-label">Learning Rate:</span>
+                            <input id="learning-rate" type="number" value="0.01"></input>
+                        </div>
+                        <div class="input-div">
+                            <span class="input-label">Batch Size:</span>
+                            <input id="batch-size" type="number" value="32"></input>
+                        </div>
+
+                        <div class="input-div">
+
+                            <span class="input-label">Hidden layer no.:</span>
+                            <input id="pos" type="number" value="1"></input>
+                            <span class="input-label">Number of neurons:</span>
+                            <input id="#ofneuron" type="number" value="0"></input>
+                            <button id="button1">Add</button>
+                        </div>
+
+                        <button id="train-from-scratch">Train model </button>
+
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <p class='section-head'>Status</p>
+                <div>
+                    <span id="demo-status">Standing by.</span>
+                </div>
+            </section>
+
+            <section>
+                <p class='section-head'>Training Progress</p>
+                <div class='with-cols'>
+                    <div>
+                        <h4>Loss</h4>
+                        <div class="canvases" id="lossCanvas"></div>
+                    </div>
+                    <div>
+                        <h4>Accuracy</h4>
+                        <div class="canvases" id="accuracyCanvas"></div>
+                    </div>
+                    <div>
+                        <h4>Confusion Matrix (on validation set)</h4>
+                        <div id="confusion-matrix"></div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <p class='section-head'>Visualization of Neural Network</p>
+
+                <div>
+                    <button id="structure">NN Structure</button>
+                </div>
+                <div>
+                    <label class="input-label">Coloured Edges:</label>
+                    <input type="checkbox" id="myCheck">
+                </div>
+                <div>
+                    <canvas id="graph" width=0 height=0></canvas>
+                    <canvas id="tip" width=200 height=80></canvas>
+                </div>
+            </section>
+            <section>
+                <p class='section-head'>Test Examples</p>
+
+                <div id="evaluate">
+                    <table id="evaluate-table">
+                        <tr>
+                            <th>Petal length</th>
+                            <th>Petal width</th>
+                            <th>Sepal length</th>
+                            <th>Sepal width</th>
+                            <th>True class</th>
+                            <th>Predicted class</th>
+                            <th>Class Probabilities</th>
+                        </tr>
+                        <tbody id="evaluate-tbody">
+                            <tr>
+                                <td>
+                                    <input id="petal-length" value="5.1"></input>
+                                    <button id="petal-length-inc">+</button>
+                                    <button id="petal-length-dec">-</button>
+                                </td>
+                                <td>
+                                    <input id="petal-width" value="3.5"></input>
+                                    <button id="petal-width-inc">+</button>
+                                    <button id="petal-width-dec">-</button>
+                                </td>
+                                <td>
+                                    <input id="sepal-length" value="1.4"></input>
+                                    <button id="sepal-length-inc">+</button>
+                                    <button id="sepal-length-dec">-</button>
+                                </td>
+                                <td>
+                                    <input id="sepal-width" value="0.2"></input>
+                                    <button id="sepal-width-inc">+</button>
+                                    <button id="sepal-width-dec">-</button>
+                                </td>
+                                <td></td>
+                                <td id="winner"></td>
+                                <td id="logits"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+
+            <div>
+                <div class="horizontal-section">
+
+
+
+                    <div id="horizontal-section">
+
+                    </div>
+
+
+                </div>
             </div>
-            <div class="input-div">
-              <span class="input-label">Learning Rate:</span>
-              <input id="learning-rate" type="number" value="0.01"></input>
-            </div>
-            <div class="input-div">
-              <span class="input-label">Batch Size:</span>
-              <input id="batch-size" type="number" value="32"></input>
-            </div>
-           
-            <div class="input-div">
-              
-              <span class="input-label">Hidden layer no.:</span>
-              <input id="pos" type="number" value="1"></input>
-              <span class="input-label">Number of neurons:</span>
-              <input id="#ofneuron" type="number" value="0"></input>
-              <button  id="button1"  >Add</button>
-            </div>
-            
-            <button id="train-from-scratch">Train model </button>
-            
-          </div>
         </div>
-      </section>
 
-      <section>
-        <p class='section-head'>Status</p>
-        <div>
-          <span id="demo-status">Standing by.</span>
-        </div>
-      </section>
+        <script src="index.js"></script>
 
-      <section>
-        <p class='section-head'>Training Progress</p>
-        <div class='with-cols'>
-          <div>
-            <h4>Loss</h4>
-            <div class="canvases" id="lossCanvas"></div>
-          </div>
-          <div>
-            <h4>Accuracy</h4>
-            <div class="canvases" id="accuracyCanvas"></div>
-          </div>
-          <div>
-            <h4>Confusion Matrix (on validation set)</h4>
-            <div id="confusion-matrix"></div>
-          </div>
-        </div>
-      </section>
-      <section>
-        <p class='section-head'>Visualization of Neural Network</p>
-        
-      <div>
-        <button id="structure">NN Structure</button>
-      </div>
-      <div>
-        <label class="input-label">Coloured Edges:</label>
-      <input type="checkbox" id="myCheck">
-      </div>
-      <div >
-      <canvas id="graph" width=0 height=0 ></canvas>
-      <canvas id="tip" width=200 height=80></canvas>
-      </div>
-      </section>
-      <section>
-        <p class='section-head'>Test Examples</p>
-
-        <div id="evaluate">
-          <table id="evaluate-table">
-            <tr>
-              <th>Petal length</th>
-              <th>Petal width</th>
-              <th>Sepal length</th>
-              <th>Sepal width</th>
-              <th>True class</th>
-              <th>Predicted class</th>
-              <th>Class Probabilities</th>
-            </tr>
-            <tbody id="evaluate-tbody">
-              <tr>
-                <td>
-                  <input id="petal-length" value="5.1"></input>
-                  <button id="petal-length-inc">+</button>
-                  <button id="petal-length-dec">-</button>
-                </td>
-                <td>
-                  <input id="petal-width" value="3.5"></input>
-                  <button id="petal-width-inc">+</button>
-                  <button id="petal-width-dec">-</button>
-                </td>
-                <td>
-                  <input id="sepal-length" value="1.4"></input>
-                  <button id="sepal-length-inc">+</button>
-                  <button id="sepal-length-dec">-</button>
-                </td>
-                <td>
-                  <input id="sepal-width" value="0.2"></input>
-                  <button id="sepal-width-inc">+</button>
-                  <button id="sepal-width-dec">-</button>
-                </td>
-                <td></td>
-                <td id="winner"></td>
-                <td id="logits"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-
-
-      <div>
-        <div class="horizontal-section">
-
-
-
-          <div id="horizontal-section">
-
-          </div>
-
-
-        </div>
-      </div>
-    </div>
-
-    <script src="index.js"></script>
-    
-  </body>
+    </body>
 
 </html>

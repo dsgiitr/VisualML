@@ -38,3 +38,7 @@ The package contains two scripts:
 * [Vipul Bansal](https://github.com/vipul2001)
 * [Yash Vardhan Sharma](https://github.com/Yash-Vardhan-Sharma)
 * [Aaryan Garg](https://github.com/Garg-Doppler)
+
+### References
+
+* [tfjs-examples](https://github.com/tensorflow/tfjs-examples)

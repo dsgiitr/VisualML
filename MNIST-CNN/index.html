@@ -1,10 +1,11 @@
 <html>
 
 <head>
-    <title>MNIST in TensorFlow.js Layers API</title>
+    <title>VisualML | CNN</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="tfjs-examples.css" />
+    <link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
     <style>
@@ -221,58 +222,42 @@
                 <div>
                     <p id="log" marginTop="1em"></p>
                 </div>
-                <button id="visualise-layer0" class="btn btn-dark" marginTop="1em" marginBottom="1em">
-            Visualise Layer-1
-          </button>
+
                 <p style="padding-top: 0.5em;">
                     Layer-1 is a conv2D layer with 8 filters.
                 </p>
                 <div id="Layer0"></div>
-                <button id="visualise-layer1" class="btn btn-dark" marginTop="1em" marginBottom="1em">
-            Visualise Layer-2
-          </button>
+
                 <p style="padding-top: 0.5em;">
                     Layer-2 is a downsampling layer that downsamples the input by a factor of 2 in both dimensions.
                 </p>
                 <div id="Layer1"></div>
-                <button id="visualise-layer2" class="btn btn-dark" marginTop="1em" marginBottom="1em">
-            Visualise Layer-3
-          </button>
+
                 <p style="padding-top: 0.5em;">
                     Layer-3 is a conv2D layer with 16 filters.
                 </p>
                 <div id="Layer2"></div>
-                <button id="visualise-layer3" class="btn btn-dark" marginTop="1em" marginBottom="1em">
-            Visualise Layer-4
-          </button>
+
                 <p style="padding-top: 0.5em;">
                     Layer-4 is a downsampling layer that downsamples the input by a factor of 2 in both dimensions.
                 </p>
                 <div id="Layer3"></div>
-                <button id="visualise-layer4" class="btn btn-dark" marginTop="1em" marginBottom="1em">
-            Visualise Layer-5
-          </button>
+
                 <p style="padding-top: 0.5em;">
                     Layer-5 is a conv2D layer with 32 filters.
                 </p>
                 <div id="Layer4"></div>
-                <button id="visualise-layer5" class="btn btn-dark" marginTop="1em" marginBottom="1em">
-            Visualise Layer-6
-          </button>
+
                 <p style="padding-top: 0.5em;">Layer-6 is a flattening layer</p>
                 <div id="Layer5"></div>
                 <div id="Spacing1" marginTop="1em"></div>
-                <button id="visualise-layer6" class="btn btn-dark" marginTop="1em" marginBottom="1em">
-            Visualise Layer-7
-          </button>
+
                 <p style="padding-top: 0.5em;">
                     Layer-7 is a dense layer with 10 units.
                 </p>
                 <div id="Layer6"></div>
                 <div id="Spacing" marginTop="1em"></div>
-                <button id="visualise-layer7" class="btn btn-dark" marginTop="1em" marginBottom="1em">
-            Visualise Layer-8
-          </button>
+
                 <p style="padding-top: 0.5em;">
                     Layer-8 is also a dense layer, but it has 10 units. One for each type of output.
                 </p>

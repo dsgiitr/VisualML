@@ -267,31 +267,7 @@ ui.setTrainButtonCallback(async() => {
     weights = model.getWeights();
 });
 
-ui.setVisualiseButton0Callback(async() => {
-    await visualiseLayer0();
-});
 
-ui.setVisualiseButton1Callback(async() => {
-    await visualiseLayer1();
-});
-ui.setVisualiseButton2Callback(async() => {
-    await visualiseLayer2();
-});
-ui.setVisualiseButton3Callback(async() => {
-    await visualiseLayer3();
-});
-ui.setVisualiseButton4Callback(async() => {
-    await visualiseLayer4();
-});
-ui.setVisualiseButton5Callback(async() => {
-    await visualiseLayer5();
-});
-ui.setVisualiseButton6Callback(async() => {
-    await visualiseLayer6();
-});
-ui.setVisualiseButton7Callback(async() => {
-    await visualiseLayer7();
-});
 
 console.log("Yes");
 let model;
@@ -457,6 +433,14 @@ $("#clear-button").click(async function() {
     clickD = new Array();
     $(".prediction-text").empty();
     $("#result_box").addClass("d-none");
+    visualiseLayer0();
+    visualiseLayer1();
+    visualiseLayer2();
+    visualiseLayer3();
+    visualiseLayer4();
+    visualiseLayer5();
+    visualiseLayer6();
+    visualiseLayer7();
 });
 
 function preprocessCanvas(image) {
@@ -550,6 +534,14 @@ $("#predict-button").click(async function() {
     // $("#result_box").removeClass("d-none");
     // displayChart(results);
     // displayLabel(results);
+    visualiseLayer0();
+    visualiseLayer1();
+    visualiseLayer2();
+    visualiseLayer3();
+    visualiseLayer4();
+    visualiseLayer5();
+    visualiseLayer6();
+    visualiseLayer7();
 });
 //------------------------------
 // Chart to display predictions
@@ -641,6 +633,7 @@ async function visualiseLayer0() {
     await cla();
     ui.showLayer(output[0], document.getElementById("Layer0"));
 }
+
 async function visualiseLayer1() {
     await cla();
     ui.showLayer(output[1], document.getElementById("Layer1"));
