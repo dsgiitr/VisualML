@@ -1,26 +1,9 @@
  
 
-/**
- * @license
- * Copyright 2018 Google LLC. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================================
- */
 import * as tf from '@tensorflow/tfjs';
 import * as tfvis from '@tensorflow/tfjs-vis';
 import Plotly from 'plotly.js-dist';
-
- import * as data from './data';
+import * as data from './data';
 
 
 
@@ -44,8 +27,19 @@ import Plotly from 'plotly.js-dist';
   var xte_a=Array();
   var yte_a=Array();
 
-document.getElementById('show-nn-architecture')
-      .addEventListener('click', async() => {
+
+  var load = document.getElementById("loader");
+  load.style.fontSize = "30px";
+  load.style.color = "black";
+  load.style.fontFamily = "monospace";
+  load.style.backgroundColor = "greenyellow";
+  var callback1  =    function ()
+     {
+      load.innerHTML = "Training......";
+     } 
+
+  var callback2 = function()    
+      {
         xl=[];yl=[];
         xtr_a=[];ytr_a=[];
         xte_a=[];yte_a=[];
@@ -175,7 +169,6 @@ for(var e=0;e<iter;e++)
        var {value, grads} = tf.variableGrads(f);
       total_loss+=value.arraySync();
        
-      
       
 
 
@@ -576,6 +569,20 @@ tea.beginPath();
 tea.font="25px Arial";
 tea.fillText("Test accuracy(30 egs) vs epoch => ",5,20);
 
-} );
+
+
+load.innerHTML = "Model Trained"+String.fromCharCode(0xD83D, 0xDE04);
+
+} 
+
+
+document.getElementById('show-nn-architecture')
+      .addEventListener('click',show);
+
+      function show()
+      {
+        setTimeout(callback1, 1000);
+        setTimeout(callback2, 2000);
+      }
 
 

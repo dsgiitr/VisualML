@@ -1,19 +1,4 @@
-<!--
-Copyright 2018 Google LLC. All Rights Reserved.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-==============================================================================
--->
 
 <html>
 
@@ -191,7 +176,6 @@ limitations under the License.
     input {
       width: 75px;
     }
-
     .input-div {
       padding: 5px;
       font-family: monospace;
@@ -419,7 +403,7 @@ limitations under the License.
         <p class='section-head'>Description</p>
         <p class="content">
           This example explains the problem of vanishing gradients (which you may encounter when training a deep neural
-          network) and also use some activation function to prevent it. It describes the situation where a deep 
+          network) and also use some activation functions to prevent it. It describes the situation where a deep 
           multilayer feed-forward network or a recurrent neural network is unable to propagate useful gradient information
           from the output end of the model back to the layers near the input end of the model.
         </p>
@@ -542,6 +526,7 @@ limitations under the License.
             <li><p>It is strictly  advised to keep batch size greater than 1, otherwise you may encounter exploding gradients
               problem showing  black colour links all over in architecture.</p></li>
             <li><p>Wait for some time after clicking the button.</p></li>
+            <li><p>Change the custom parameters and again press the button to train the changed neural network.</p></li>
           </ol>
         </p>
       </section>
@@ -597,6 +582,7 @@ limitations under the License.
             <canvas id="tea" height="25" width="500"></canvas>
             <div id="graph3"></div><br>
             </div>
+            <div id="loader"></div><br><br>
             <button id="show-nn-architecture">Train and Show NN-architecture</button>
             </div><br>
             <body>
