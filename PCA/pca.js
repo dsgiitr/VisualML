@@ -1,6 +1,28 @@
 const N = 30;
 const D = 3;
 
+var load3 = document.getElementById("loader3");
+load3.style.fontSize = "30px";
+load3.style.color = "black";
+load3.style.fontFamily = "monospace";
+load3.style.backgroundColor = "greenyellow";
+
+var callback3 =    function ()
+     {
+      load3.innerHTML = "Processing....";
+     }
+
+
+var load4 = document.getElementById("loader4");
+load4.style.fontSize = "30px";
+load4.style.color = "black";
+load4.style.fontFamily = "monospace";
+load4.style.backgroundColor = "greenyellow";
+
+var callback4 =    function ()
+     {
+      load4.innerHTML = "Processing....";
+     }
 
 function render3DPrediction(ctx, xs, name, proj = false) {
     let xsOriginal = xs.dataSync();
@@ -393,110 +415,122 @@ function variance(xs) {
 
 
 
-async function main(xs) {
-    const xs_t = xs.gather([0, 1, 2], 1);
-    const xs1 = xs.gather([0, 1], 1);
-    console.log("Variance of xs1");
-    variance(xs1);
-    const xs2 = xs.gather([0, 2], 1);
-    console.log("Variance of xs2");
-    variance(xs2);
-    const xs3 = xs.gather([1, 2], 1);
-    console.log("Variance of xs3");
-    variance(xs3);
+function main(xs) {
 
-    const [axes, pcaXs] = await pca(xs, 3);
-    xs_new = axes.concat(xs);
+    return async function()
+    {
+        const xs_t = xs.gather([0, 1, 2], 1);
+        const xs1 = xs.gather([0, 1], 1);
+        console.log("Variance of xs1");
+        variance(xs1);
+        const xs2 = xs.gather([0, 2], 1);
+        console.log("Variance of xs2");
+        variance(xs2);
+        const xs3 = xs.gather([1, 2], 1);
+        console.log("Variance of xs3");
+        variance(xs3);
 
-    const div = document.getElementById('3dplot');
-    render3DPrediction(div, xs_new, "Actual Data", proj = true);
-    /*
-    const ctx1 = document.getElementById('0-1-dim');
-    render2DPrediction(ctx1, xs1);
-    const ctx2 = document.getElementById('0-2-dim');
-    render2DPrediction(ctx2, xs2);
-    const ctx3 = document.getElementById('1-2-dim');
-    render2DPrediction(ctx3, xs3);
-    */
-    const ctx4 = document.getElementById('0-dim');
-    render1DPrediction(ctx4, xs.gather([0], 1), "1st Feature");
-    const ctx5 = document.getElementById('1-dim');
-    render1DPrediction(ctx5, xs.gather([1], 1), "2nd Feature");
-    const ctx6 = document.getElementById('2-dim');
-    render1DPrediction(ctx6, xs.gather([2], 1), "3rd Feature");
+        const [axes, pcaXs] = await pca(xs, 3);
+        xs_new = axes.concat(xs);
+
+        const div = document.getElementById('3dplot');
+        render3DPrediction(div, xs_new, "Actual Data", proj = true);
+        /*
+        const ctx1 = document.getElementById('0-1-dim');
+        render2DPrediction(ctx1, xs1);
+        const ctx2 = document.getElementById('0-2-dim');
+        render2DPrediction(ctx2, xs2);
+        const ctx3 = document.getElementById('1-2-dim');
+        render2DPrediction(ctx3, xs3);
+        */
+        const ctx4 = document.getElementById('0-dim');
+        render1DPrediction(ctx4, xs.gather([0], 1), "1st Feature");
+        const ctx5 = document.getElementById('1-dim');
+        render1DPrediction(ctx5, xs.gather([1], 1), "2nd Feature");
+        const ctx6 = document.getElementById('2-dim');
+        render1DPrediction(ctx6, xs.gather([2], 1), "3rd Feature");
 
 
 
-    const div2 = document.getElementById('3dplot-pca');
+        const div2 = document.getElementById('3dplot-pca');
 
-    //const pcaXs = await pca(xs, 3);
-    console.log("Variance of pca");
-    variance(pcaXs);
+        //const pcaXs = await pca(xs, 3);
+        console.log("Variance of pca");
+        variance(pcaXs);
 
-    render3DPrediction(div2, pcaXs, "PCA plot");
+        render3DPrediction(div2, pcaXs, "PCA plot");
 
-    const ctx7 = document.getElementById('0-dim-pca');
-    render1DPrediction(ctx7, pcaXs.gather([0], 1), "1st Principal Component");
+        const ctx7 = document.getElementById('0-dim-pca');
+        render1DPrediction(ctx7, pcaXs.gather([0], 1), "1st Principal Component");
 
-    const ctx8 = document.getElementById('1-dim-pca');
-    render1DPrediction(ctx8, pcaXs.gather([1], 1), "2nd Principal Component");
+        const ctx8 = document.getElementById('1-dim-pca');
+        render1DPrediction(ctx8, pcaXs.gather([1], 1), "2nd Principal Component");
 
-    const ctx9 = document.getElementById('2-dim-pca');
-    render1DPrediction(ctx9, pcaXs.gather([2], 1), "3rd Principal Component");
+        const ctx9 = document.getElementById('2-dim-pca');
+        render1DPrediction(ctx9, pcaXs.gather([2], 1), "3rd Principal Component");
 
-    const ctx10 = document.getElementById('0-1-dim-pca');
-    render2DPrediction(ctx10, pcaXs.gather([0, 1], 1), "2D PCA plot");
+        const ctx10 = document.getElementById('0-1-dim-pca');
+        render2DPrediction(ctx10, pcaXs.gather([0, 1], 1), "2D PCA plot");
+
+        load3.innerHTML = "Here are your plots"+String.fromCharCode(0xD83D, 0xDE04);
+    }   
 }
 
-async function main2(xs) {
-    const xs_t = xs.gather([0, 1, 2], 1);
-    const xs1 = xs.gather([0, 1], 1);
-    console.log("Variance of xs1");
-    variance(xs1);
-    const xs2 = xs.gather([0, 2], 1);
-    console.log("Variance of xs2");
-    variance(xs2);
-    const xs3 = xs.gather([1, 2], 1);
-    console.log("Variance of xs3");
-    variance(xs3);
+function main2(xs) {
 
-    const [axes, pcaXs] = await pca(xs, 3);
-    xs_new = axes.concat(xs);
+    return async function()
+    {
+        const xs_t = xs.gather([0, 1, 2], 1);
+        const xs1 = xs.gather([0, 1], 1);
+        console.log("Variance of xs1");
+        variance(xs1);
+        const xs2 = xs.gather([0, 2], 1);
+        console.log("Variance of xs2");
+        variance(xs2);
+        const xs3 = xs.gather([1, 2], 1);
+        console.log("Variance of xs3");
+        variance(xs3);
 
-    const div = document.getElementById('3dplot-out');
-    render3DPrediction(div, xs_new, "Actual Data", proj = true);
-    /*
-    const ctx1 = document.getElementById('0-1-dim-out');
-    render2DPrediction(ctx1, xs1);
-    const ctx2 = document.getElementById('0-2-dim-out');
-    render2DPrediction(ctx2, xs2);
-    const ctx3 = document.getElementById('1-2-dim-out');
-    render2DPrediction(ctx3, xs3);
-    */
-    const ctx4 = document.getElementById('0-dim-out');
-    render1DPrediction(ctx4, xs.gather([0], 1), "1st Feature");
-    const ctx5 = document.getElementById('1-dim-out');
-    render1DPrediction(ctx5, xs.gather([1], 1), "2nd Feature");
-    const ctx6 = document.getElementById('2-dim-out');
-    render1DPrediction(ctx6, xs.gather([2], 1), "3rd Feature");
+        const [axes, pcaXs] = await pca(xs, 3);
+        xs_new = axes.concat(xs);
 
-    const div2 = document.getElementById('3dplot-pca-out');
-    console.log("Variance of pca");
-    variance(pcaXs);
+        const div = document.getElementById('3dplot-out');
+        render3DPrediction(div, xs_new, "Actual Data", proj = true);
+        /*
+        const ctx1 = document.getElementById('0-1-dim-out');
+        render2DPrediction(ctx1, xs1);
+        const ctx2 = document.getElementById('0-2-dim-out');
+        render2DPrediction(ctx2, xs2);
+        const ctx3 = document.getElementById('1-2-dim-out');
+        render2DPrediction(ctx3, xs3);
+        */
+        const ctx4 = document.getElementById('0-dim-out');
+        render1DPrediction(ctx4, xs.gather([0], 1), "1st Feature");
+        const ctx5 = document.getElementById('1-dim-out');
+        render1DPrediction(ctx5, xs.gather([1], 1), "2nd Feature");
+        const ctx6 = document.getElementById('2-dim-out');
+        render1DPrediction(ctx6, xs.gather([2], 1), "3rd Feature");
 
-    render3DPrediction(div2, pcaXs, "PCA plot");
+        const div2 = document.getElementById('3dplot-pca-out');
+        console.log("Variance of pca");
+        variance(pcaXs);
 
-    const ctx7 = document.getElementById('0-dim-pca-out');
-    render1DPrediction(ctx7, pcaXs.gather([0], 1), "1st Principal Component");
+        render3DPrediction(div2, pcaXs, "PCA plot");
 
-    const ctx8 = document.getElementById('1-dim-pca-out');
-    render1DPrediction(ctx8, pcaXs.gather([1], 1), "2nd Principal Component");
+        const ctx7 = document.getElementById('0-dim-pca-out');
+        render1DPrediction(ctx7, pcaXs.gather([0], 1), "1st Principal Component");
 
-    const ctx9 = document.getElementById('2-dim-pca-out');
-    render1DPrediction(ctx9, pcaXs.gather([2], 1), "3rd Principal Component");
+        const ctx8 = document.getElementById('1-dim-pca-out');
+        render1DPrediction(ctx8, pcaXs.gather([1], 1), "2nd Principal Component");
 
-    const ctx10 = document.getElementById('0-1-dim-pca-out');
-    render2DPrediction(ctx10, pcaXs.gather([0, 1], 1), "2D PCA plot");
+        const ctx9 = document.getElementById('2-dim-pca-out');
+        render1DPrediction(ctx9, pcaXs.gather([2], 1), "3rd Principal Component");
+
+        const ctx10 = document.getElementById('0-1-dim-pca-out');
+        render2DPrediction(ctx10, pcaXs.gather([0, 1], 1), "2D PCA plot");
+
+        load4.innerHTML = "Here are your plots"+String.fromCharCode(0xD83D, 0xDE04);
+    }    
 }
 
 const c1 = tf.randomNormal([N, D]).add([1.0, 0.0, 0.0]);
@@ -513,12 +547,16 @@ document.getElementById('Show2')
         var vo3 = Number(document.getElementById("f3").value);
         const outlier = tf.tensor2d([vo1, vo2, vo3], [1, 3]);
         const xs = c1.concat(c2).concat(c3).concat(outlier);
-        main2(xs);
+        setTimeout(callback4,0);
+        setTimeout(main2(xs),2000);
+        //main2(xs);
     });
 
 document.getElementById('Show1')
     .addEventListener('click', async() => {
         console.clear()
         const xs = c1.concat(c2).concat(c3);
-        main(xs);
+        setTimeout(callback3,0);
+        setTimeout(main(xs),2000);
+        //main(xs);
     });
