@@ -91,7 +91,11 @@ async function cost_function(features, labels, weights,r){
 }
 async function train(features, labels, weights, lr, iters=100,r=0){
     cost_history =new Array();
+    var bar=document.getElementById('bar');
     for(var i=0;i<iters;i++){
+        bar.style.width=Math.ceil(i*100/(iters-1))+'%';
+        bar.innerHTML=Math.ceil(i*100/(iters-1))+'%';
+
         weights = await update_weights(features, labels, weights, lr,r);
         var cost = await cost_function(features, labels, weights,r);
         cost_history.push({x:i,y:Number(cost)});
@@ -104,6 +108,8 @@ async function train(features, labels, weights, lr, iters=100,r=0){
 }
 
 async function trainclick(){
+  var ele=document.getElementById('barc');
+  ele.style.display="block";
   await loaddata();
   degree=Number(document.getElementById('d').value);
   var lr=tf.pow(tf.tensor(10),Number(document.getElementById('l').value));
@@ -117,9 +123,12 @@ async function trainclick(){
   var res=await train(X, y , initial_weight,lr,epoch,r);
   weights_calculated =res[0]; cost_history=res[1];
   await plotdecisionboundary();
-
+  ele.style.display="none";
+  var bar=document.getElementById('bar');
+  bar.style.width='0%';
+  bar.innerHTML='';
 }
-trainclick();
+document.addEventListener('DOMContentLoaded',trainclick());
 
 document.getElementById('train').addEventListener('click',trainclick);
 
