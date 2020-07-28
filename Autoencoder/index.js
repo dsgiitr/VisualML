@@ -8,51 +8,62 @@
 // for arbitrary data though. It's worth a look :)
 import {IMAGE_H, IMAGE_W, MnistData} from './datas.js';
 
-// This is a helper class for drawing loss graphs and MNIST images to the
-// window. For the purposes of understanding the machine learning bits, you can
-// largely ignore it
 import * as ui from './ui.js';
 
 
-function createConvModel(n_layers,n_units,hidden) {
-
+function createConvModel(n_layers,n_units,hidden) {                            //resnet-densenet-batchnorm
   this.latent_dim =  Number(hidden);                                         //final dimension of hidden layer
   this.n_layers = Number(n_layers);                                           //how many hidden layers in encoder and decoder
   this.n_units =  Number(n_units);                                         //output dimension of each layer
   this.img_shape = [28,28];
   this.img_units = this.img_shape[0] * this.img_shape[1];
   // build the encoder
+
   var i = tf.input({shape: this.img_shape});
   var h = tf.layers.flatten().apply(i);
-
-  for (var j=0; j<this.n_layers; j++) {
+  h=tf.layers.batchNormalization(-1).apply(h);
+  h = tf.layers.dense({units: this.n_units, activation:'relu'}).apply(h);
+  for (var j=0; j<this.n_layers-1; j++) {
+    var tm=h;
+    const addLayer = tf.layers.add();
     var h = tf.layers.dense({units: this.n_units, activation:'relu'}).apply(h);           //n hidden
+    h=addLayer.apply([tm,h]);
+    h=tf.layers.batchNormalization(0).apply(h);
   }
 
-  var o = tf.layers.dense({units: this.latent_dim}).apply(h);                               //1 final
+  var o = tf.layers.dense({units: this.latent_dim}).apply(h);
+                                                                    //1 final
   this.encoder = tf.model({inputs: i, outputs: o});
 
   // build the decoder
   var i = h = tf.input({shape: this.latent_dim});
-  for (var j=0; j<this.n_layers; j++) {                                                     //n hidden
+  h = tf.layers.dense({units: this.n_units, activation:'relu'}).apply(h);
+  for (var j=0; j<this.n_layers-1; j++) {
+    var tm=h;
+    const addLayer = tf.layers.add();                                                  //n hidden
     var h = tf.layers.dense({units: this.n_units, activation:'relu'}).apply(h);
+    h=addLayer.apply([tm,h]);
   }
-  var o = tf.layers.dense({units: this.img_units}).apply(h)   ;                              //1 final
+
+  var o = tf.layers.dense({units: this.img_units}).apply(h);                              //1 final
   var o = tf.layers.reshape({targetShape: this.img_shape}).apply(o);
   this.decoder = tf.model({inputs: i, outputs: o});
 
   // stack the autoencoder
   var i = tf.input({shape: this.img_shape});
   var z = this.encoder.apply(i);                                                          //z is hidden code
-
   var o = this.decoder.apply(z);
   this.auto = tf.model({inputs: i, outputs: o});
 
 }
+
+
 let epochs=0,trainEpochs,batch;
 var trainData;
 var testData;
 var b;var model;
+
+
 
 async function train(model) {
 
@@ -84,8 +95,6 @@ await showPredictions(model,epochs);                                      //Triv
 
 }
 
-
-
 async function showPredictions(model,epochs) {                              //Trivial Samples of autoencoder
   const testExamples = 10;
   const examples = data.getTestData(testExamples);
@@ -106,6 +115,7 @@ async function run(){
   testData = data.getTestData();
 }
 
+document.getElementById('vis').oninput=function(){vis=Number(document.getElementById('vis').value);console.log(vis);};
 
 async function load() {
   var ele=document.getElementById('barc');
@@ -113,7 +123,7 @@ async function load() {
   const n_units=document.getElementById('n_units').value;
   const n_layers=document.getElementById('n_layers').value;
   const hidden=document.getElementById('hidden').value;
-  model = new createConvModel(n_layers,n_units,hidden);
+  model = new createConvModel(n_layers,n_units,hidden);                                 //load model
   const elem=document.getElementById('new')
   elem.innerHTML="Model Created!!!"
   epochs=0;
@@ -122,13 +132,15 @@ async function load() {
 
 load();
 
+
+
 async function runtrain(){
   var ele=document.getElementById('barc');
   ele.style.display="block";
   var elem=document.getElementById('new');
   elem.innerHTML="";
   b=0;
-  await train(model);
+  await train(model);                                                                 //start training
   vis=Number(document.getElementById('vis').value);
 }
 
@@ -151,7 +163,7 @@ function normaltensor(prediction){
     prediction= prediction.sub(inputMin).div(inputMax.sub(inputMin));
     return prediction;}
 function normal(prediction){
-  const inputMax = prediction.max();
+  const inputMax = prediction.max();                                                            //normailization
   const inputMin = prediction.min();
   prediction= prediction.sub(inputMin).div(inputMax.sub(inputMin));
   return prediction;
@@ -163,22 +175,27 @@ const canvas=document.getElementById('celeba-scene');
 const mot=document.getElementById('mot');
 var cont=mot.getContext('2d');
 
+
+
+
+
+
+
+
+
+
 function sample(obj) {                                    //plotting
   obj.x = (obj.x) * vis;
   obj.y = (obj.y) * vis;
   // convert 10, 50 into a vector
   var y = tf.tensor2d([[obj.x, obj.y]]);
-  // sample from region 10, 50 in latent space
 
   var prediction = model.decoder.predict(y).dataSync();
-
-                         //scaling
+                   //scaling
   prediction=normaltensor(prediction);
   prediction=prediction.reshape([28,28]);
 
-  prediction=prediction.mul(255).toInt();
-
-
+  prediction=prediction.mul(255).toInt();                                        //for2dplot
   // log the prediction to the browser console
   tf.browser.toPixels(prediction, canvas);
 }
@@ -190,7 +207,7 @@ cont.fillRect(0,0,mot.width,mot.height);
 mot.addEventListener('mousemove', function(e) {
     mouse.x = (e.pageX - this.offsetLeft)*3.43;
     mouse.y = (e.pageY - this.offsetTop)*1.9;
-}, false);
+}, false);                                                                        //mouse movement for 2dplot
 
 mot.addEventListener('mousedown', function(e) {
     mot.addEventListener('mousemove', on, false);
@@ -207,11 +224,6 @@ var on= function() {
     cont.fillRect(mouse.x-10,mouse.y-10, 40, 20);
     sample(mouse);
 };
-
-
-
-
-
 
 
 function plot2d(){
@@ -241,6 +253,12 @@ document.addEventListener('DOMContentLoaded',plot2d);                           
 
 
 
+
+
+
+
+
+
 const canv=document.getElementById('canv');
 const outcanv=document.getElementById('outcanv');
 var ct = outcanv.getContext('2d');
@@ -250,7 +268,7 @@ var ctx = canv.getContext('2d');
 function clear(){
     ctx.clearRect(0, 0, canv.width, canv.height);
     ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canv.width, canv.height);
+    ctx.fillRect(0, 0, canv.width, canv.height);                                                                    //for canvas autoencoding
     ct.clearRect(0, 0, outcanv.width, outcanv.height);
     ct.fillStyle = "#DDDDDD";
     ct.fillRect(0, 0, outcanv.width, outcanv.height);
