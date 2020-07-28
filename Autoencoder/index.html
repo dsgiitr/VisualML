@@ -49,25 +49,28 @@
          }
       </style>
    </head>
-    
+
    <body style="text-align:center;background-color:white;font-size:3vh;top:0%; font-family:Georgia;margin-top:0%;margin-left:0%;">
       <p style="background-color:#111111E9;font-size:3vw;top:0%;font-family:Times;margin-top:0%;padding-bottom:1%;padding-top:1%;position:fixed;width:100%;color:#EEEEFF;">TensorFlow.js: MNIST Autoencoder</p>
       <p style="background-color:#7777AA;font-size:3vw;top:0%;font-family:Times;margin-top:0%;padding-bottom:1%;padding-top:1%;visibility: hidden;width:100%;margin-bottom:0%;">TensorFlow.js: MNIST Autoencoder</p>
       <div id="body" style="text-align:center;height:100%;width:55%;margin-left:22%;background-color:white;padding-left:1vw;padding-top:1vh;">
          <br>
-          
-          
+
+
          <section class='title-area' >
-            <p  style="text-align:left;color:#111111;margin-top:0%;">Train a model to autoencode handwritten digits from the MNIST database using the tf.layers
-               api.
-               <br>
-               This examples lets you train a MNIST Autoencoder using a Fully Connected Neural Network (also known as a DenseNet).<br><br>
+            <p  style="text-align:left;color:#111111;margin-top:0%;">
+               This examples lets you train a MNIST Autoencoder using a Fully Connected Neural Network (also known as a DenseNet) in written in Tfjs<br><br>
                You can select the structure for the DenseNet and see the performance of the model.
                <br>The MNIST dataset is used as training data.
+               <br>
+               <br>
+               Set latent space dimension to 2 for 2d Exploration of the latent space. Otherwise set it high for accurate autoencoding
+               <br>
+               Visualization scale determines the scale of 2d pane
             </p>
          </section>
-          
-          
+
+
          <div style="width:100%;height:5px;background-color:#EFEFEF;"></div>
          <section  style="text-align:center;">
             <p class='section-head' >
@@ -76,7 +79,7 @@
             <div style="font-family:Times;width:20vw;background-color:#EFEFEF;text-align:left;padding-left:3%;padding-top:3%;padding-bottom:2%;display:inline-block;">
                <div>
                   <label>N hidden layers in encoder and decoder</label>
-                  <input id="n_layers" value="2">
+                  <input id="n_layers" value="3">
                </div>
                <div>
                   <label>Output dimension of each layer</label>
@@ -88,7 +91,7 @@
                </div>
                <button id="Create">Create model</button>
             </div>
-          
+
             <div style="font-family:Times;width:20vw;background-color:#EFEFEF;text-align:left;padding-left:3%;padding-top:1.3%;padding-bottom:2%;display:inline-block;">
                <div>
                   <label># Batch size:</label>
@@ -96,7 +99,7 @@
                </div>
                <div>
                   <label># LearnRate:</label>
-                  <input id="lr" value="0.3">
+                  <input id="lr" value="0.1">
                </div>
                <div>
                   <label># Training epochs:</label>
@@ -104,13 +107,13 @@
                </div>
                <div>
                   <label># Visualization scale</label>
-                  <input id="vis" value="50">
+                  <input id="vis" value="0.1">
                </div>
                <button id="train">Train Model</button>
             </div>
          </section>
-       
-       
+
+
          <br>
          <div style="width:100%;height:5px;background-color:#EFEFEF;"></div>
       </div>
@@ -124,11 +127,11 @@
             </div>
          </div>
          <br><br><br>
-          
-          
+
+
          <div style="width:100%;background-color:white;height:15px;"></div>
          <div  style="text-align:center;">
-            <h2>This is for 2d plot visualization of latent space of autoencoder.<br> If your latent space dimension is set to 2D<br></h2>
+            <h2>This is for 2d plot visualization of latent space of autoencoder.<br> Drag in the 2d Pane below slowly<br></h2>
             <div id="cn" style="display:none;margin-left:35%;text-align:center;">
                <canvas id="mot" style="height:80px;width:80px;display:block;margin-left:20%;border:solid 3px black;"></canvas>
                <br>
@@ -146,8 +149,8 @@
             <button id="clear" style="display:inline;">Clear</button>
          </div>
       </div>
-      
-    
+
+
       <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
       <script src='https://cdnjs.cloudflare.com/ajax/libs/tensorflow/1.2.7/tf.min.js'></script>
