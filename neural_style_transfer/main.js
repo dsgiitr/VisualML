@@ -95,12 +95,15 @@ class Main {
             if (i < n) {
                 var j = i + 1;
                 var progressBar = document.getElementById("Bar");
+                var percent = document.getElementById("percent");
                 document.getElementById("counter").innerHTML = "Epochs: " + j * 40;
                 var width = 100 * (j / n);
                 if (width >= 102) {
                     progressBar.style.width = 0;
+                    percent.innerHTML = "0%"
                 } else {
                     progressBar.style.width = width + "%";
+                    percent.innerHTML = width + "%";
                 }
                 this.gradualStyler(n, i + 1);
             } else {
@@ -119,6 +122,7 @@ class Main {
         this.styleImg.onerror = () => {
             alert("Error loading " + this.styleImg.src + ".");
         }
+        this.dispImg = document.getElementById('img_lower');
         this.stylized = document.getElementById('stylized');
 
         this.styleRatio = 1.0
@@ -130,13 +134,20 @@ class Main {
         // Initialize buttons
         this.styleButton = document.getElementById('style-button');
         this.styleButton.onclick = () => {
+            var cover = document.getElementsByClassName('img-container')[0];
+            cover.style.display = "none";
             this.disableStylizeButtons();
-            this.gradualStyler(25, 0)
+            this.gradualStyler(25, 0);
+            var results = document.getElementById('result');
+            results.style.display = "block";
         };
 
         // Initialize selectors
         this.contentSelect = document.getElementById('content-select');
-        this.contentSelect.onchange = (net) => this.image_select(this.contentImg, net.target.value);
+        this.contentSelect.onchange = (net) => {
+            this.image_select(this.contentImg, net.target.value),
+                this.image_select(this.dispImg, net.target.value)
+        };
         this.contentSelect.onclick = () => this.contentSelect.value = '';
         this.styleSelect = document.getElementById('style-select');
         this.styleSelect.onchange = (net) => this.image_select(this.styleImg, net.target.value);
@@ -321,9 +332,19 @@ class Main {
 window.onload = function() {
     var dwn = document.getElementById('btndownload'),
         canvas = document.getElementById('stylized'),
-        context = canvas.getContext('2d');
+        context = canvas.getContext('2d'),
+        show = document.getElementById('btnshow');
     dwn.onclick = function() {
         download(canvas, 'design.png');
+    }
+    show.onclick = function() {
+        var link = document.getElementById('stylized').toDataURL("image/png;base64");
+        var box = document.getElementById('img_over');
+        var cover = document.getElementsByClassName('img-container')[0];
+        box.src = link;
+        cover.style.display = "block";
+        new BeerSlider(document.getElementById('slider'));
+        console.log("done");
     }
 }
 

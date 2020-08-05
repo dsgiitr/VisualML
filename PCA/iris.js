@@ -1,6 +1,16 @@
 const D1 = 4;
 const N1 = 50;
 
+var load2 = document.getElementById("loader2");
+load2.style.fontSize = "30px";
+load2.style.color = "black";
+load2.style.fontFamily = "monospace";
+load2.style.backgroundColor = "greenyellow";
+
+var callback2 =    function ()
+     {
+      load2.innerHTML = "Processing....";
+     }
 
 function render3DPrediction1(ctx, xs, name, proj = false) {
     let xsOriginal = xs.dataSync();
@@ -571,83 +581,91 @@ const tensor_dataset = tf.tensor2d(iris_data, [numExamples, 5]);
 
 
 
-async function main3(xs) {
-    const xs_t = xs.gather([0, 1, 2, 3], 1);
+function main3(xs) {
+
+    return async function()
+    {
+        const xs_t = xs.gather([0, 1, 2, 3], 1);
 
 
-    const [axes, pcaXs] = await pca2(xs, 4);
-    xs_new = axes.concat(xs);
+        const [axes, pcaXs] = await pca2(xs, 4);
+        xs_new = axes.concat(xs);
 
-    //const div = document.getElementById('3dplot');
-    //render3DPrediction(div, xs_new, proj =true);
+        //const div = document.getElementById('3dplot');
+        //render3DPrediction(div, xs_new, proj =true);
 
-    const ctx4 = document.getElementById('0-dim-iris');
-    render1DPrediction1(ctx4, xs.gather([0], 1), "1st Feature");
-    const ctx5 = document.getElementById('1-dim-iris');
-    render1DPrediction1(ctx5, xs.gather([1], 1), "2nd Feature");
-    const ctx6 = document.getElementById('2-dim-iris');
-    render1DPrediction1(ctx6, xs.gather([2], 1), "3rd Feature");
-    const ctx11 = document.getElementById('3-dim-iris');
-    render1DPrediction1(ctx11, xs.gather([3], 1), "4th Feature");
+        const ctx4 = document.getElementById('0-dim-iris');
+        render1DPrediction1(ctx4, xs.gather([0], 1), "1st Feature");
+        const ctx5 = document.getElementById('1-dim-iris');
+        render1DPrediction1(ctx5, xs.gather([1], 1), "2nd Feature");
+        const ctx6 = document.getElementById('2-dim-iris');
+        render1DPrediction1(ctx6, xs.gather([2], 1), "3rd Feature");
+        const ctx11 = document.getElementById('3-dim-iris');
+        render1DPrediction1(ctx11, xs.gather([3], 1), "4th Feature");
 
-    console.log("Variance of pca");
-    variance(pcaXs);
-
-
-    yl.push(0);
+        console.log("Variance of pca");
+        variance(pcaXs);
 
 
+        yl.push(0);
 
-    Plotly.newPlot('var-pca', [{
-        x: xl,
-        y: yl,
-        line: { simplify: false },
-    }], {}, { showSendToCloud: true });
 
-    function plot() {
-        Plotly.animate(
-            "var-pca", {
-                data: [{ y: yl }],
-                traces: [0],
-                layout: {
-                    autosize: true,
-                    title: "Explained Variance",
-                },
-            }, {
-                transition: {
-                    duration: 500,
-                    easing: "cubic-in-out",
-                },
-                frame: {
-                    duration: 500,
-                },
-            }
-        );
-    }
-    plot();
 
-    const div2 = document.getElementById('3dplot-pca-iris');
-    render3DPrediction1(div2, pcaXs.gather([0, 1, 2], 1), "3D PCA plot");
+        Plotly.newPlot('var-pca', [{
+            x: xl,
+            y: yl,
+            line: { simplify: false },
+        }], {}, { showSendToCloud: true });
 
-    const ctx7 = document.getElementById('0-dim-pca-iris');
-    render1DPrediction1(ctx7, pcaXs.gather([0], 1), "1st Principal Component");
+        function plot() {
+            Plotly.animate(
+                "var-pca", {
+                    data: [{ y: yl }],
+                    traces: [0],
+                    layout: {
+                        autosize: true,
+                        title: "Explained Variance",
+                    },
+                }, {
+                    transition: {
+                        duration: 500,
+                        easing: "cubic-in-out",
+                    },
+                    frame: {
+                        duration: 500,
+                    },
+                }
+            );
+        }
+        plot();
 
-    const ctx8 = document.getElementById('1-dim-pca-iris');
-    render1DPrediction1(ctx8, pcaXs.gather([1], 1), "2nd Principal Component");
+        const div2 = document.getElementById('3dplot-pca-iris');
+        render3DPrediction1(div2, pcaXs.gather([0, 1, 2], 1), "3D PCA plot");
 
-    const ctx9 = document.getElementById('2-dim-pca-iris');
-    render1DPrediction1(ctx9, pcaXs.gather([2], 1), "3rd Principal Component");
+        const ctx7 = document.getElementById('0-dim-pca-iris');
+        render1DPrediction1(ctx7, pcaXs.gather([0], 1), "1st Principal Component");
 
-    const ctx12 = document.getElementById('3-dim-pca-iris');
-    render1DPrediction1(ctx12, pcaXs.gather([3], 1), "4th Principal Component");
+        const ctx8 = document.getElementById('1-dim-pca-iris');
+        render1DPrediction1(ctx8, pcaXs.gather([1], 1), "2nd Principal Component");
 
-    const ctx10 = document.getElementById('0-1-dim-pca-iris');
-    render2DPrediction1(ctx10, pcaXs.gather([0, 1], 1), "2D PCA plot");
+        const ctx9 = document.getElementById('2-dim-pca-iris');
+        render1DPrediction1(ctx9, pcaXs.gather([2], 1), "3rd Principal Component");
+
+        const ctx12 = document.getElementById('3-dim-pca-iris');
+        render1DPrediction1(ctx12, pcaXs.gather([3], 1), "4th Principal Component");
+
+        const ctx10 = document.getElementById('0-1-dim-pca-iris');
+        render2DPrediction1(ctx10, pcaXs.gather([0, 1], 1), "2D PCA plot");
+
+        load2.innerHTML = "Here are your plots"+String.fromCharCode(0xD83D, 0xDE04);
+    }    
 }
 
 document.getElementById('Show3')
     .addEventListener('click', async() => {
         console.clear()
         const xs1 = tensor_dataset.gather([0, 1, 2, 3], 1);
-        main3(xs1);
+        setTimeout(callback2,0);
+        setTimeout(main3(xs1),2000);
+        //main3(xs1);
     });

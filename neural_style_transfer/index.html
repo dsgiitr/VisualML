@@ -22,11 +22,12 @@
     <meta content="Arbitrary Style Transfer with TF.js" />
     <meta content="Paint yourself in the style of any painting, right in the browser." />
 
-    <title>VisualML | Style Transfer</title>
-    <link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon">
+    <title>Neural Style Transfer</title>
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/beerslider/dist/BeerSlider.css">
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
@@ -39,6 +40,7 @@
         width: 100%;
         background: rgb(238, 174, 202);
         background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
+        font-family: Bodoni MT, Didot, Didot LT STD, Hoefler Text, Garamond, Times New Roman, serif;
     }
     
     .centered {
@@ -46,22 +48,84 @@
         display: block;
     }
     
-    #Progress {
-        width: 80%;
-        background-color: transparent;
-        border: 1px solid black;
-    }
-    
-    #Bar {
-        width: 0%;
-        height: 30px;
-        background-color: green;
-    }
-    
     #counter {
         text-align: center;
         color: black;
         font-size: 24px;
+    }
+    
+    .progress-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #000;
+        letter-spacing: 2px;
+        margin: 0 0 15px;
+    }
+    
+    .progress {
+        height: 26px;
+        width: 60%;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 0;
+        box-shadow: none;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 40px;
+        overflow: visible;
+        position: relative;
+    }
+    
+    .progress .progress-bar {
+        box-shadow: none;
+        border-radius: 0;
+        position: relative;
+        -webkit-animation: 2s linear 0s normal none infinite running progress-bar-stripes, animate-positive 1s;
+        animation: 2s linear 0s normal none infinite running progress-bar-stripes, animate-positive 1s;
+    }
+    
+    .progress-bar .progress-value {
+        width: 50px;
+        height: 100%;
+        background: #000;
+        font-size: 15px;
+        font-weight: 600;
+        color: #fff;
+        position: absolute;
+        line-height: 27px;
+        top: 0;
+        left: 0;
+    }
+    
+    .progress:after,
+    .progress .progress-bar:after,
+    .progress .progress-value:after {
+        content: "";
+        border-left: 13px solid rgba(0, 0, 0, 0.1);
+        border-top: 13px solid transparent;
+        border-bottom: 13px solid transparent;
+        position: absolute;
+        top: 0;
+        right: -13px;
+    }
+    
+    .progress .progress-value:after {
+        border-left: 13px solid #000;
+    }
+    
+    .progress.progress-green .progress-bar:after {
+        border-left-color: #5cb85c;
+    }
+    
+    @-webkit-keyframes animate-positive {
+        0% {
+            width: 0;
+        }
+    }
+    
+    @keyframes animate-positive {
+        0% {
+            width: 0;
+        }
     }
 </style>
 
@@ -76,9 +140,9 @@
     <div class="container">
         <div class="container">
             <div class="row my-4 justify-content-around">
-                <div class="col-lg-5 card border-dark" style="padding: 0;">
-                    <h3 class="card-header bg-primary" style="text-align: center; color: azure;"> Choose Content Image </h3>
-                    <div class="card-body bg-warning">
+                <div class="col-lg-5 card border-dark" style="padding: 0; background-color: transparent;">
+                    <h3 class="card-header bg-primary" style="text-align: center; color: azure; opacity: 0.6;"> Choose Content Image </h3>
+                    <div class="card-body">
                         <img id="content-img" class="centered" src="images/newyork.jpg" height=256 width=100%></img>
                         <br>
                         <select id="content-select" class="centered custom-select">
@@ -93,9 +157,9 @@
                         </select>
                     </div>
                 </div><br/>
-                <div class="col-lg-5 card border-dark" style="padding: 0;">
-                    <h3 class="card-header bg-primary" style="text-align: center; color: azure;"> Choose Style Image </h3>
-                    <div class="card-body bg-warning">
+                <div class="col-lg-5 card border-dark" style="padding: 0; background-color: transparent;">
+                    <h3 class="card-header bg-primary" style="text-align: center; color: azure; opacity: 0.6;"> Choose Style Image </h3>
+                    <div class="card-body">
                         <img id="style-img" class="centered" crossorigin="anonymous" src="images/abstract.jpg" height=256 width=100%></img>
                         <br>
                         <select id="style-select" class="centered custom-select">
@@ -116,26 +180,32 @@
         </div>
 
         <div class="container">
-            <div class="row my-4">
-                <div class="col-md-4 offset-md-1">
-                    <h6>Choose the Style Prediction Network</h6>
+            <div class="row my-4 justify-content-around">
+                <div class="col-md-5 card border-dark" style="padding: 0; background-color: transparent;">
+                    <h6 class="card-header bg-primary" style="text-align: center; color: azure; opacity: 0.6;">Choose the Style Prediction Network</h6>
+                    <div class="card-body" style="color: rgba(24, 25, 31, 0.8);">
+                        <div>
+                            The Style Prediction Network is the model which is able to apply any number of styles, even styles for which it was not trained. This network produces a vector of normalization parameters that represents the detected Style present in the Style Image and
+                            applies them to the Style Transfer network to generate the Artwork.
+                        </div><br/>
+                        <select disabled id="model-select-style" class="centered custom-select">
+                            <option value="mobilenet" selected="selected">Distilled MobileNet style model</option>
+                            <option value="inception">Original Inception-v3 style model</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col-md-5">
-                    <select disabled id="model-select-style" class="centered custom-select">
-                      <option value="mobilenet" selected="selected">Distilled MobileNet style model</option>
-                      <option value="inception">Original Inception-v3 style model</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row my-4">
-                <div class="col-md-4 offset-md-1">
-                    <h6>Choose the Style Transfer Network</h6>
-                </div>
-                <div class="col-md-5">
-                    <select disabled id="model-select-transformer" class="centered custom-select">
-                      <option value="separable" selected="selected">Separable Conv-2d Transformer</option>
-                      <option value="original">Original Transformer model</option>
-                    </select>
+                <div class="col-md-5 card border-dark" style="padding: 0; background-color: transparent;">
+                    <h6 class="card-header bg-primary" style="text-align: center; color: azure; opacity: 0.6;">Choose the Style Transfer Network</h6>
+                    <div class="card-body" style="color: rgba(24, 25, 31, 0.8);">
+                        <div>
+                            An optimizable Style Transfer Network, that takes the Original Image and generates the new Artistic Image, following the Encoder-Decoder design. An Image is first reduced to a set of high-level features that then can be expanded to recreate the image,
+                            but in this case, with an artistic style applied.
+                        </div><br/>
+                        <select disabled id="model-select-transformer" class="centered custom-select">
+                          <option value="separable" selected="selected">Separable Conv-2d Transformer</option>
+                          <option value="original">Original Transformer model</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -156,21 +226,33 @@
                 </div>
                 <div class="col-md-1">
                     <button type="button" id="randomize" class="btn btn-light btn-block">
-          <i class="fas fa-random" data-toggle="tooltip" data-placement="top" 
-          title="Randomize parameters"></i>
-        </button>
+                        <i class="fas fa-random" data-toggle="tooltip" data-placement="top" title="Randomize parameters"></i>
+                    </button>
                 </div>
             </div>
             <br>
-            <div id="Progress" class="centered">
-                <div id="Bar"></div>
+            <div id="result" style="display: none;">
+                <div class="progress progress-green">
+                    <div id="Bar" class="progress-bar bg-success progress-bar-striped active">
+                        <div id="percent" class="progress-value">0%</div>
+                    </div>
+                </div>
+                <div id="counter" class="centered">Epochs: 0</div>
+                <br>
+                <div style="text-align: center;"><b><h1>Final Image</h1></b></div>
+                <canvas id="stylized" class="centered"></canvas>
+                <br>
+                <button id="btndownload" class="centered btn bg-success">Download</button><br>
+                <button id="btnshow" class="centered btn bg-success">Compare Images</button><br>
             </div>
-            <div id="counter" class="centered">Epochs: 0</div>
-            <br>
-            <div style="text-align: center;"><b><h1>Final Image</h1></b></div>
-            <canvas id="stylized" class="centered"></canvas>
-            <br>
-            <button id="btndownload" class="centered btn bg-success">Download</button>
+            <div class="img-container col-md-6 offset-md-3 col-12" style="display: none; padding-bottom: 20px;">
+                <div id="slider" class="beer-slider" data-beer-label="after">
+                    <img id="img_over" src="" style="height: 320px; width: 450px;">
+                    <div class="beer-reveal" data-beer-label="before">
+                        <img id="img_lower" src="images/newyork.jpg" style="height: 320px; width: 450px;">
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="container"><canvas id="hidden-canvas" style="display: none"></canvas></div>
@@ -201,6 +283,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
     <!-- Bootstrap core JavaScript -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/beerslider/dist/BeerSlider.js"></script>
 
     <script type="text/javascript">
         $(function() {

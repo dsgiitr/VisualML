@@ -5,13 +5,15 @@
 
 ## Features
 
+- `Autoencoder is densenet layered with batchnorm layers and multiple skip connections` 
+
 - `Select the structure for the DenseNet and see the performance of the model. `
 
 - `Sample autoencoded MNIST Digits can be seen`
 
 - `2D Visualize the encoded space of the autoencoder, see the decoded digit for the corresponding latent point`  
 
-- `Autoencode your digit drawing`
+- `Autoencode your own digit drawing`
 
 ## Installation and execution
 
@@ -22,3 +24,5 @@
 - [Shashank Gupta](https://github.com/gupta1912) 
 - [Abhinav Saini](https://github.com/abhinavsaini9)
 - [Ankit Aharwal](https://github.com/ankitaharwal)
+
+###### Sample website:https://r7rohan.github.io/autoencoder-VML/
