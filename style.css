@@ -1,0 +1,581 @@
+html,
+body {
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+}
+
+#navitems {
+    margin-left: 800px;
+}
+
+#container1 {
+    display: flex;
+    flex-direction: row;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#heading1 {
+    color: white;
+}
+
+#heading2 {
+    color: white;
+}
+
+.box {
+    position: relative;
+    width: 100%;
+}
+
+.image {
+    opacity: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: .5s ease;
+    backface-visibility: hidden;
+}
+
+.middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 47%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.box:hover .image {
+    opacity: 0.3;
+}
+
+.box:hover .middle {
+    opacity: 1;
+}
+
+.butn {
+    font-family: 'Exo', sans-serif;
+    border: 2px solid black;
+    background-color: transparent;
+    color: black;
+    padding: 10px 28px;
+    margin: 5px 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 105px;
+}
+
+.demo:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.github:hover {
+    background: #000000;
+    color: white;
+}
+
+.me {
+    border-radius: 200px;
+    width: 400px;
+    background-color: white;
+    opacity: 95%;
+}
+
+.nav-text-home {
+    font-family: 'Exo', sans-serif;
+}
+
+.nav-text-about {
+    font-family: 'Exo', sans-serif;
+}
+
+.nav-link {
+    color: white;
+    font-family: 'Exo', sans-serif;
+}
+
+.nav-pills>li>a:hover {
+    background-color: white;
+    color: black;
+}
+
+.nav-pills>li>a:active {
+    background-color: white;
+    color: black;
+}
+
+.depend {
+    border-radius: 50%;
+    width: 200px;
+    margin-left: 3.5%;
+    border-style: solid;
+    opacity: 95%;
+}
+
+
+/*
+Phones: iPhone SE
+*/
+
+@media(max-width: 415px) and (orientation: portrait) {
+    .navbar-brand {
+        height: 70px;
+    }
+    .nav-text-home {
+        font-size: 3em;
+        color: floralwhite;
+        text-align: center;
+        margin-left: 2%;
+    }
+    .nav-text-about {
+        font-size: 0.5em;
+        color: floralwhite;
+        text-align: center;
+        margin-left: 2%;
+    }
+    .nav-link {
+        text-align: center;
+    }
+}
+
+@media(max-width: 569px) and (orientation: landscape) {
+    .navbar-brand {
+        height: 70px;
+    }
+    .nav-text-home {
+        font-size: 3em;
+        color: floralwhite;
+        text-align: center;
+    }
+    .me {
+        border-radius: 200px;
+        width: 400px;
+        margin-left: 3.5%;
+        background-color: white;
+        opacity: 95%;
+    }
+    .nav-text-about {
+        font-size: 1em;
+        color: floralwhite;
+        text-align: center;
+    }
+}
+
+@media(max-width: 569px) and (orientation: portrait) {
+    .navbar-brand {
+        height: 70px;
+    }
+    .nav-text-home {
+        font-size: 3em;
+        color: floralwhite;
+        text-align: center;
+    }
+    .me {
+        border-radius: 200px;
+        width: 400px;
+        margin-left: 3.5%;
+        background-color: white;
+        opacity: 95%;
+    }
+    .nav-text-about {
+        font-size: 1em;
+        color: floralwhite;
+        text-align: center;
+    }
+}
+
+@media(min-width: 570px) and (max-width: 700px) and (orientation: landscape) {
+    .navbar-brand {
+        height: 70px;
+    }
+    .nav-text-home {
+        font-size: 3em;
+        color: floralwhite;
+        text-align: center;
+        margin-left: -1%;
+    }
+    .me {
+        border-radius: 200px;
+        width: 400px;
+        margin-left: 10%;
+        background-color: white;
+        opacity: 95%;
+    }
+    .nav-text-about {
+        font-size: 1em;
+        color: floralwhite;
+        text-align: center;
+        margin-left: -1%;
+    }
+}
+
+@media(min-width: 570px) and (max-width: 700px) and (orientation: portrait) {
+    .navbar-brand {
+        height: 70px;
+    }
+    .nav-text-home {
+        font-size: 3em;
+        color: floralwhite;
+        text-align: center;
+        margin-left: -1%;
+    }
+    .me {
+        border-radius: 200px;
+        width: 400px;
+        margin-left: 10%;
+        background-color: white;
+        opacity: 95%;
+    }
+    .nav-text-about {
+        font-size: 1em;
+        color: floralwhite;
+        text-align: center;
+        margin-left: -1%;
+    }
+}
+
+@media(min-width: 701px) and (max-width: 1000px) and (orientation: landscape) {
+    .navbar-brand {
+        height: 70px;
+    }
+    .nav-text-home {
+        font-size: 3em;
+        color: floralwhite;
+        text-align: center;
+        margin-left: 2.5%;
+    }
+    .me {
+        border-radius: 200px;
+        width: 400px;
+        margin-left: 15%;
+        background-color: white;
+        opacity: 95%;
+    }
+    .nav-text-about {
+        font-size: 1em;
+        color: floralwhite;
+        text-align: center;
+        margin-left: 2.5%;
+    }
+}
+
+@media(min-width: 701px) and (max-width: 1000px) and (min-height: 550px) and (orientation: landscape) {
+    .navbar-brand {
+        height: 70px;
+    }
+    .nav-text-home {
+        font-size: 3em;
+        color: floralwhite;
+        text-align: center;
+        width: 350px;
+        margin-top: -20%;
+        margin-left: 2.5%;
+    }
+    .me {
+        border-radius: 200px;
+        width: 400px;
+        margin-left: 15%;
+        background-color: white;
+        opacity: 95%;
+    }
+    .nav-text-about {
+        font-size: 0.5em;
+        color: floralwhite;
+        text-align: center;
+        width: 400px;
+        margin-left: 2.5%;
+    }
+}
+
+@media(min-width: 701px) and (max-width: 1000px) and (orientation: portrait) {
+    .navbar-brand {
+        height: 70px;
+    }
+    .nav-text-home {
+        font-size: 3em;
+        color: floralwhite;
+        text-align: center;
+        margin-left: 2.5%;
+    }
+    .me {
+        border-radius: 200px;
+        width: 400px;
+        margin-left: 15%;
+        background-color: white;
+        opacity: 95%;
+    }
+    .nav-text-about {
+        font-size: 1em;
+        color: floralwhite;
+        text-align: center;
+        margin-left: 2.5%;
+    }
+}
+
+@media(min-width: 801px) and (max-width: 1000px) and (min-height: 1000px) and (orientation: portrait) {
+    .navbar-brand {
+        height: 70px;
+    }
+    .nav-text-home {
+        font-size: 3em;
+        color: floralwhite;
+        text-align: center;
+        margin-left: 2.5%;
+        width: 400px;
+    }
+    .me {
+        border-radius: 200px;
+        width: 400px;
+        margin-left: 15%;
+        margin-top: -10%;
+        background-color: white;
+        opacity: 95%;
+    }
+    .nav-text-about {
+        font-size: 0.5em;
+        color: floralwhite;
+        text-align: center;
+        margin-left: 0%;
+        width: 400px;
+    }
+}
+
+@media(min-width: 1000px) and (max-width: 1030px) and (min-height: 1350px) and (orientation: portrait) {
+    .navbar-brand {
+        height: 70px;
+    }
+    .navbar-nav {
+        margin-left: 50%;
+    }
+    .nav-text-home {
+        font-size: 3em;
+        color: floralwhite;
+        text-align: center;
+        margin-left: 2.5%;
+        width: 400px;
+    }
+    .me {
+        border-radius: 200px;
+        width: 400px;
+        margin-left: 15%;
+        margin-top: -10%;
+        background-color: white;
+        opacity: 95%;
+    }
+    .nav-text-about {
+        font-size: 0.5em;
+        color: floralwhite;
+        text-align: center;
+        margin-left: 0%;
+        width: 500px;
+    }
+}
+
+
+/*
+Tablet1: landscape
+*/
+
+@media(min-width: 1001px) and (max-width: 1025px) and (orientation: landscape) {
+    .navbar-brand {
+        position: absolute;
+        width: 7%;
+        left: 5%;
+        top: 20%;
+        margin: auto;
+    }
+    .navbar-nav {
+        margin-left: 40%;
+    }
+    .nav-item {
+        margin-right: 10%;
+    }
+    .nav-text-home {
+        font-size: 3em;
+        color: floralwhite;
+        text-align: center;
+        width: 300px;
+        margin-left: 30%;
+    }
+    .nav-text-about {
+        font-size: 1em;
+        color: floralwhite;
+        text-align: center;
+        width: 600px;
+        margin-left: -35%;
+    }
+}
+
+
+/*
+Tablet2: landscape
+*/
+
+@media(min-width: 1026px) and (max-width: 1123px) and (orientation: landscape) {
+    .navbar-brand {
+        position: absolute;
+        width: 7%;
+        left: 5%;
+        top: 20%;
+        margin: auto;
+    }
+    .navbar-nav {
+        margin-left: 45%;
+    }
+    .nav-item {
+        margin-right: 10%;
+    }
+    .nav-text-home {
+        font-size: 3em;
+        color: floralwhite;
+        text-align: center;
+        width: 300px;
+        margin-left: 50%;
+        margin-top: 10%;
+    }
+    .nav-text-about {
+        font-size: 1em;
+        color: floralwhite;
+        text-align: center;
+        width: 600px;
+        margin-left: -20%;
+        margin-top: 10%;
+    }
+}
+
+
+/*
+Tablet3: landscape
+*/
+
+@media(min-width: 1124px) and (max-width: 1441px) and (orientation: landscape) {
+    .navbar-brand {
+        position: absolute;
+        width: 7%;
+        left: 5%;
+        top: 20%;
+        margin: auto;
+    }
+    .navbar-nav {
+        margin-left: 50%;
+    }
+    .nav-item {
+        margin-right: 10%;
+    }
+    .nav-text-home {
+        font-size: 4em;
+        color: floralwhite;
+        text-align: center;
+        width: 400px;
+        margin-left: 50%;
+        margin-top: 5%;
+    }
+    .nav-text-about {
+        font-size: 2em;
+        color: floralwhite;
+        text-align: center;
+        width: 800px;
+        margin-left: -30%;
+        margin-top: 5%;
+    }
+}
+
+@media(min-width: 1442px) and (max-width: 1921px) and (orientation: landscape) {
+    .navbar-brand {
+        position: absolute;
+        width: 7%;
+        left: 5%;
+        top: 20%;
+        margin: auto;
+    }
+    .navbar-nav {
+        margin-left: 70%;
+    }
+    .nav-item {
+        margin-right: 10%;
+    }
+    .nav-text-home {
+        font-size: 5em;
+        color: floralwhite;
+        text-align: center;
+        width: 500px;
+        margin-left: 65%;
+        margin-top: 5%;
+    }
+    .nav-text-about {
+        font-size: 3em;
+        color: floralwhite;
+        text-align: center;
+        width: 1000px;
+        margin-left: 0%;
+        margin-top: 5%;
+    }
+}
+
+@media(min-width: 1060px)and (orientation: portrait) {
+    .navbar-brand {
+        position: absolute;
+        width: 7%;
+        left: 5%;
+        top: 20%;
+        margin: auto;
+    }
+    .navbar-nav {
+        margin-left: 45%;
+    }
+    .nav-item {
+        margin-right: 10%;
+    }
+    .nav-text-home {
+        font-size: 5em;
+        color: floralwhite;
+        text-align: center;
+        width: 600px;
+        margin-left: -30%;
+        margin-top: 5%;
+    }
+    .nav-text-about {
+        font-size: 0.5em;
+        color: floralwhite;
+        text-align: center;
+        width: 600px;
+        margin-left: -30%;
+        margin-top: 5%;
+    }
+}
+
+.demo {
+    border-color: #4CAF50;
+    color: green;
+    margin-left: 15%;
+}
+
+.github {
+    border-color: #000000;
+    color: #000000;
+    margin-left: 15%;
+}
+
+.depend_info {
+    text-align: center;
+    font-family: 'Exo', sans-serif;
+    font-size: 1.2em;
+    color: white;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
