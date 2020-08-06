@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html id="top">
+
+<head>
+    <title>VisualML</title>
+    <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Exo&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="animate.css">
+</head>
+
+<body>
+    <div class="container-fluid" style="background-image: url(img/back.jpg); background-size:cover">
+        <nav class="navbar navbar-expand-lg" style="background-color: transparent; position: relative;">
+            <div class="container">
+                <a class="navbar-brand" href="https://dsgiitr.com">
+                    <img src="img/dsg_logo.png" alt="DSG">
+                </a>
+                <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav nav-pills">
+                        <li class="nav-item" id="home">
+                            <a class="nav-link active" id="home_a" href="#top">Home</a>
+                        </li>
+                        <li class="nav-item" id="about">
+                            <a class="nav-link" id="about_a" href="#top">About</a>
+                        </li>
+                        <li class="nav-item" id="tools">
+                            <a class="nav-link" id="tools_a" href="#top">Tools</a>
+                        </li>
+                        <li class="nav-item" id="demo">
+                            <a class="nav-link" id="demo_a" href="#demos_e">Demos</a>
+                        </li>
+                        <li class="nav-item" id="github">
+                            <a class="nav-link" id="github_a" href="https://github.com/dsgiitr/VisualML">Github</a>
+                        </li>
+                        <li class="nav-item" id="dsg_link">
+                            <a class="nav-link" id="dsg_a" href="https://dsgiitr.com">DSG</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container-fluid" style="padding: 20px 0 0 0; margin: 0;">
+            <div class="row">
+                <div class="col-10 col-md-3 offset-1" style="margin-bottom: 50px; margin-top: 50px;">
+                    <a href="https://github.com/dsgiitr/VisualML">
+                        <img class='me' src="img/visualml.png" alt="Aaryan Garg" id="logo">
+                    </a>
+                </div>
+                <div class="col-10 col-md-3 offset-1 block wow fadeIn" style="margin-bottom: 50px; margin-top: 50px;" id="info_div">
+                    <p class="nav-text-home" id="info">Machine Learning in the Browser</p>
+                </div>
+                <div id="dependencies" class="col-10 col-md-7 offset-1 mt-auto" style="margin-bottom: 50px; margin-top: 50px; text-align: center;">
+                    <p class="depend_info" style="margin-bottom: 1em; font-size: 3em;">These libraries were extensively used to build the demos.</p>
+                    <div class="row justify-content-around">
+                        <div class="col-md-4">
+                            <img src="img/tfjs.png" class="center" style="width: 65%; margin-bottom: 1em;">
+                            <p class="depend_info">Used to implement the main source code for most of the projects</p>
+                        </div>
+                        <div class="col-md-3">
+                            <img src="img/chart.png" class="center" style="margin-bottom: 1em;">
+                            <p class="depend_info">Used for most of the standard plots.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <img src="img/plotly.png" class="center" style="margin-bottom: 1em; margin-top: 0.5em;">
+                            <p class="depend_info">Used for interactive visualisations and scatter plots.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="width: 100%;" id="demos_e"></div>
+    <div class="container-fluid-fluid" style="padding: 0; margin: auto;">
+        <div class="row justify-content-center" style="margin-top: 50px; margin-bottom: 0px;">
+            <h1 style="font-family: 'Exo', sans-serif; text-align: center;">Demos</h1>
+        </div>
+        <div class="row justify-content-around">
+            <div class="col-md-4 col-12">
+                <div class="card block wow fadeInLeft" style="margin-top: 40px; padding: 0;">
+                    <div class="card-header box">
+                        <img src="img/cnn.gif" style="width:500px;" class="img-fluid image" alt="this is a title">
+                        <div class="middle">
+                            <a href="https://github.com/dsgiitr/VisualML/MNIST-CNN">
+                                <button type="button" class="butn github">Code</button>
+                            </a>
+                            <a href="https://dsgiitr.github.io/mnist-cnn-demo">
+                                <button type="button" class="butn demo">Demo</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4 style="font-family: 'Exo', sans-serif; text-align: center;">
+                            <a>
+                            Convolutional Neural Network
+                        </a>
+                        </h4>
+                        <p style="font-family: 'Exo', sans-serif; text-align: center;">
+                            Train and Test a CNN and visualise its layers in 3D.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-12">
+                <div class="card block wow fadeInLeft" data-wow-delay="0.5s" style="margin-top: 40px; padding: 0;">
+                    <div class="card-header box">
+                        <img src="img/nst.gif" style="width:500px;" class="img-fluid image" alt="this is a title">
+                        <div class="middle">
+                            <a href="https://github.com/dsgiitr/VisualML/neural_style_transfer">
+                                <button type="button" class="butn github">Code</button>
+                            </a>
+                            <a href="https://dsgiitr.github.io/neural-style-transfer-tfjs">
+                                <button type="button" class="butn demo">Demo</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4 style="font-family: 'Exo', sans-serif; text-align: center;">
+                            <a>
+                            Neural Style Transfer
+                        </a>
+                        </h4>
+                        <p style="font-family: 'Exo', sans-serif; text-align: center;">
+                            Perform Neural Style Transfer on a variety of images.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-12">
+                <div class="card block wow fadeInLeft" data-wow-delay="1.0s" style="margin-top: 40px; padding: 0;">
+                    <div class="card-header box">
+                        <img src="img/ann.gif" style="width:500px;" class="img-fluid image" alt="this is a title">
+                        <div class="middle">
+                            <a href="https://github.com/dsgiitr/VisualML/ANN">
+                                <button type="button" class="butn github">Code</button>
+                            </a>
+                            <a href="https://dsgiitr.github.io/ann-demo">
+                                <button type="button" class="butn demo">Demo</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4 style="font-family: 'Exo', sans-serif; text-align: center;">
+                            <a>
+                            Artificial Neural Network
+                        </a>
+                        </h4>
+                        <p style="font-family: 'Exo', sans-serif; text-align: center;">
+                            Train and Test an ANN and visualise its structure.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-around">
+            <div class="col-md-4 col-12">
+                <div class="card block wow fadeInLeft" style="margin-top: 40px; padding: 0;">
+                    <div class="card-header box">
+                        <img src="img/atn.gif" style="width:500px;" class="img-fluid image" alt="this is a title">
+                        <div class="middle">
+                            <a href="https://github.com/dsgiitr/VisualML/Autoencoder">
+                                <button type="button" class="butn github">Code</button>
+                            </a>
+                            <a href="https://dsgiitr.github.io/autoencoder-demo">
+                                <button type="button" class="butn demo">Demo</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4 style="font-family: 'Exo', sans-serif; text-align: center;">
+                            <a>
+                            Autoencoder
+                        </a>
+                        </h4>
+                        <p style="font-family: 'Exo', sans-serif; text-align: center;">
+                            Train an Autoencoder and visualise its 2D Latent Space.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-12">
+                <div class="card block wow fadeInLeft" data-wow-delay="0.5s" style="margin-top: 40px; padding: 0;">
+                    <div class="card-header box">
+                        <img src="img/vg.gif" style="width:500px;" class="img-fluid image" alt="this is a title">
+                        <div class="middle">
+                            <a href="https://github.com/dsgiitr/VisualML/vanishing_gradients">
+                                <button type="button" class="butn github">Code</button>
+                            </a>
+                            <a href="https://dsgiitr.github.io/vanishing-gradients-demo">
+                                <button type="button" class="butn demo">Demo</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4 style="font-family: 'Exo', sans-serif; text-align: center;">
+                            <a>
+                            Vanishing Gradients
+                        </a>
+                        </h4>
+                        <p style="font-family: 'Exo', sans-serif; text-align: center;">
+                            Visualise how ReLU solves the problem of Vanishing Gradients.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-12">
+                <div class="card block wow fadeInLeft" data-wow-delay="1.0s" style="margin-top: 40px; padding: 0;">
+                    <div class="card-header box">
+                        <img src="img/svm.gif" style="width:500px;" class="img-fluid image" alt="this is a title">
+                        <div class="middle">
+                            <a href="https://github.com/dsgiitr/VisualML/SVM">
+                                <button type="button" class="butn github">Code</button>
+                            </a>
+                            <a href="https://dsgiitr.github.io/svm-demo">
+                                <button type="button" class="butn demo">Demo</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4 style="font-family: 'Exo', sans-serif; text-align: center;">
+                            <a>
+                            Support Vector Machines
+                        </a>
+                        </h4>
+                        <p style="font-family: 'Exo', sans-serif; text-align: center;">
+                            Visualise the effects of kernels and parameters on a SVM.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-around" style="padding-bottom: 30px;">
+            <div class="col-md-4 col-12">
+                <div class="card block wow fadeInLeft" style="margin-top: 40px; padding: 0;">
+                    <div class="card-header box">
+                        <img src="img/pca.gif" style="width:500px;" class="img-fluid image" alt="this is a title">
+                        <div class="middle">
+                            <a href="https://github.com/dsgiitr/VisualML/PCA">
+                                <button type="button" class="butn github">Code</button>
+                            </a>
+                            <a href="https://dsgiitr.github.io/pca-demo">
+                                <button type="button" class="butn demo">Demo</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4 style="font-family: 'Exo', sans-serif; text-align: center;">
+                            <a>
+                            Principal Components Analysis
+                        </a>
+                        </h4>
+                        <p style="font-family: 'Exo', sans-serif; text-align: center;">
+                            Visualise the principal components of different types of datasets.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-12">
+                <div class="card block wow fadeInLeft" data-wow-delay="0.5s" style="margin-top: 40px; padding: 0;">
+                    <div class="card-header box">
+                        <img src="img/lr.gif" style="width:500px;" class="img-fluid image" alt="this is a title">
+                        <div class="middle">
+                            <a href="https://github.com/dsgiitr/VisualML/Logistic Regression">
+                                <button type="button" class="butn github">Code</button>
+                            </a>
+                            <a href="https://dsgiitr.github.io/logistic-regression-demo">
+                                <button type="button" class="butn demo">Demo</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4 style="font-family: 'Exo', sans-serif; text-align: center;">
+                            <a>
+                            Logistic Regression
+                        </a>
+                        </h4>
+                        <p style="font-family: 'Exo', sans-serif; text-align: center;">
+                            Visualise the separation of classes using Logistic Regression.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="wow.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("a").on('click', function(event) {
+                if (this.hash !== "") {
+                    event.preventDefault();
+                    var hash = this.hash;
+                    $('html, body').animate({
+                        scrollTop: $(hash).offset().top
+                    }, 800, function() {
+                        window.location.hash = hash;
+                    });
+                }
+            });
+            $("#dependencies").css("display", "none");
+        });
+
+        $("#home").click(function() {
+            $("#demo_a").removeClass("active");
+            $("#about_a").removeClass("active");
+            $("#tools_a").removeClass("active");
+            $("#home_a").addClass("active");
+            $("#dependencies").css("display", "none");
+            $("#info_div").css("display", "block");
+            $("#info").removeClass();
+            $("#info").addClass("nav-text-home");
+            $("#info").html("Machine Learning in the Browser");
+        });
+        $("#about").click(function() {
+            $("#demo_a").removeClass("active");
+            $("#home_a").removeClass("active");
+            $("#tools_a").removeClass("active");
+            $("#about_a").addClass("active");
+            $("#dependencies").css("display", "none");
+            $("#info_div").css("display", "block");
+            $("#info").removeClass();
+            $("#info").addClass("nav-text-about");
+            $("#info").html("VisualML aims at helping people visualise Machine Learning Algorithms. Interactive Visualisations help build intuition, and thus, better understanding of the algorithm's working. The Project has been built primarily in JavaScript alongwith some libraries.")
+        });
+        $("#tools").click(function() {
+            $("#demo_a").removeClass("active");
+            $("#home_a").removeClass("active");
+            $("#about_a").removeClass("active");
+            $("#tools_a").addClass("active");
+            $("#info_div").css("display", "none");
+            $("#dependencies").css("display", "block");
+        });
+        $("#demo").click(function() {
+            $("#home_a").removeClass("active");
+            $("#about_a").removeClass("active");
+            $("#tools_a").removeClass("active");
+            $("#demo_a").addClass("active");
+            $("#dependencies").css("display", "none");
+            $("#info_div").css("display", "block");
+            $("#info").removeClass();
+            $("#info").addClass("nav-text-home");
+            $("#info").html("Hope you enjoy the Demos!");
+        });
+        new WOW().init();
+    </script>
+</body>
+
+</html>
