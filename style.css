@@ -102,6 +102,7 @@ img {
 .nav-link {
     color: white;
     font-family: 'Exo', sans-serif;
+    text-align: center;
 }
 
 .nav-pills>li>a:hover {
@@ -122,32 +123,6 @@ img {
     opacity: 95%;
 }
 
-
-/*
-Phones: iPhone SE
-*/
-
-@media(max-width: 415px) and (orientation: portrait) {
-    .navbar-brand {
-        height: 70px;
-    }
-    .nav-text-home {
-        font-size: 3em;
-        color: floralwhite;
-        text-align: center;
-        margin-left: 2%;
-    }
-    .nav-text-about {
-        font-size: 0.5em;
-        color: floralwhite;
-        text-align: center;
-        margin-left: 2%;
-    }
-    .nav-link {
-        text-align: center;
-    }
-}
-
 @media(max-width: 569px) and (orientation: landscape) {
     .navbar-brand {
         height: 70px;
@@ -165,7 +140,7 @@ Phones: iPhone SE
         opacity: 95%;
     }
     .nav-text-about {
-        font-size: 1em;
+        font-size: 1.5em;
         color: floralwhite;
         text-align: center;
     }
@@ -183,12 +158,11 @@ Phones: iPhone SE
     .me {
         border-radius: 200px;
         width: 400px;
-        margin-left: 3.5%;
         background-color: white;
         opacity: 95%;
     }
     .nav-text-about {
-        font-size: 1em;
+        font-size: 1.2em;
         color: floralwhite;
         text-align: center;
     }
@@ -202,7 +176,6 @@ Phones: iPhone SE
         font-size: 3em;
         color: floralwhite;
         text-align: center;
-        margin-left: -1%;
     }
     .me {
         border-radius: 200px;
@@ -212,10 +185,9 @@ Phones: iPhone SE
         opacity: 95%;
     }
     .nav-text-about {
-        font-size: 1em;
+        font-size: 1.5em;
         color: floralwhite;
         text-align: center;
-        margin-left: -1%;
     }
 }
 
@@ -227,20 +199,18 @@ Phones: iPhone SE
         font-size: 3em;
         color: floralwhite;
         text-align: center;
-        margin-left: -1%;
     }
     .me {
         border-radius: 200px;
         width: 400px;
-        margin-left: 10%;
+        margin-left: 5%;
         background-color: white;
         opacity: 95%;
     }
     .nav-text-about {
-        font-size: 1em;
+        font-size: 2em;
         color: floralwhite;
         text-align: center;
-        margin-left: -1%;
     }
 }
 
@@ -252,17 +222,16 @@ Phones: iPhone SE
         font-size: 3em;
         color: floralwhite;
         text-align: center;
-        margin-left: 2.5%;
     }
     .me {
         border-radius: 200px;
         width: 400px;
-        margin-left: 15%;
+        margin-left: 14.5%;
         background-color: white;
         opacity: 95%;
     }
     .nav-text-about {
-        font-size: 1em;
+        font-size: 2em;
         color: floralwhite;
         text-align: center;
         margin-left: 2.5%;
@@ -289,7 +258,7 @@ Phones: iPhone SE
         opacity: 95%;
     }
     .nav-text-about {
-        font-size: 0.5em;
+        font-size: 1.2em;
         color: floralwhite;
         text-align: center;
         width: 400px;
@@ -315,7 +284,7 @@ Phones: iPhone SE
         opacity: 95%;
     }
     .nav-text-about {
-        font-size: 1em;
+        font-size: 2em;
         color: floralwhite;
         text-align: center;
         margin-left: 2.5%;
@@ -342,7 +311,7 @@ Phones: iPhone SE
         opacity: 95%;
     }
     .nav-text-about {
-        font-size: 0.5em;
+        font-size: 1.2em;
         color: floralwhite;
         text-align: center;
         margin-left: 0%;
@@ -373,7 +342,7 @@ Phones: iPhone SE
         opacity: 95%;
     }
     .nav-text-about {
-        font-size: 0.5em;
+        font-size: 1.5em;
         color: floralwhite;
         text-align: center;
         margin-left: 0%;
@@ -408,7 +377,7 @@ Tablet1: landscape
         margin-left: 30%;
     }
     .nav-text-about {
-        font-size: 1em;
+        font-size: 1.5em;
         color: floralwhite;
         text-align: center;
         width: 600px;
@@ -444,7 +413,7 @@ Tablet2: landscape
         margin-top: 10%;
     }
     .nav-text-about {
-        font-size: 1em;
+        font-size: 1.5em;
         color: floralwhite;
         text-align: center;
         width: 600px;
@@ -545,7 +514,7 @@ Tablet3: landscape
         margin-top: 5%;
     }
     .nav-text-about {
-        font-size: 0.5em;
+        font-size: 1.5em;
         color: floralwhite;
         text-align: center;
         width: 600px;
