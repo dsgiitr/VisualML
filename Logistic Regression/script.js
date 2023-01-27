@@ -3,6 +3,7 @@ var x1,x2,y,N=1,initial_weight,weights_calculated , cost_history,m1,m2,n1,n2,deg
 var dv=document.getElementById('plt');
 
 async function data(csvUrl) {
+  //importing csv file
    const csvDataset = tf.data.csv(
      csvUrl,{hasHeader:1});
 
@@ -17,20 +18,22 @@ async function data(csvUrl) {
 }
 
 async function loaddata(){
+  //loading the data in final variable 'dt'
   var t=document.getElementById('data').value;
   var dt;
   dt=await data(t+'.csv');
 
-  x1=dt[0];
-  x2=dt[1];
-  y=dt[2];
-  N=x1.length;
-  x1=tf.tensor(x1);
+  x1=dt[0]; //first feature -> x1
+  x2=dt[1]; //second feature -> x2
+  y=dt[2]; // output values
+  N=x1.length; //N-> no. of dataset points
+  x1=tf.tensor(x1); 
   x2=tf.tensor(x2);
   y=tf.tensor(y);
 
-  x1=x1.sub(x1.mean());
-  x1=x1.div(x1.max().sub(x1.min())).mul(4.0);
+  //Feature Scaling of the data
+  x1=x1.sub(x1.mean()); //mean Normalaization -> (x1-mean)
+  x1=x1.div(x1.max().sub(x1.min())).mul(4.0);  //standardization completed -> (x1)/(x1.max()-x1.min())
   //x1=x1.add(1.0);
   x2=x2.sub(x2.mean());
   x2=x2.div(x2.max().sub(x2.min())).mul(4.0);
@@ -56,12 +59,17 @@ async function polynomial_features(x1,x2, degree){
       res[k]=new Array((degree+1)*(degree+1));
       for(var i=0;i<=degree;i++){
         for(var j=0;j<=degree;j++){
-          res[k][i*((degree+1))+j]=(Number(x1[k])**i)*(Number(x2[k])**j);}}}
+          res[k][i*((degree+1))+j]=(Number(x1[k])**i)*(Number(x2[k])**j);
+        }
+      }
+    }
 
     return tf.tensor2d(res);
 }
-function sigmoid(z){
-    return tf.tensor(1).div(z.mul(-1).exp().add(1));}
+function sigmoid(z)
+{
+    return tf.tensor(1).div(z.mul(-1).exp().add(1));  // sigmoid(z) = 1/(1+e^-z)
+}
 
 async function update_weights(features, labels, weights, lr,r){
   const z = tf.dot(features,weights);
